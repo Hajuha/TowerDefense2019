@@ -9,7 +9,7 @@ import javafx.scene.paint.Color;
 public class Bullet extends GameTile{
     final static String Bullet_Img = "RocketBullet";
     final static int dame = 10;
-    final static int speed_bullet = 2;
+    final static int speed_bullet = 3;
     final static int range = 270;
     protected int speed;
     private double angle;
@@ -20,7 +20,7 @@ public class Bullet extends GameTile{
 
     public Bullet( Image bullet)
     {
-        super(500, 450);
+        super(100, 450);
         setImage(bullet);
         setSpeed(speed_bullet);
         angle = 0;
