@@ -5,29 +5,34 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Line;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class NormalEnemy extends Enemy{
-    static final int speed = 2;
+    private List<NormalEnemy> normalEnemies = new ArrayList<>();
+    static final int speed = 1;
     static final int blood_first = 16;
     static final int armor_normal = 2;
     static final String Normal_Image = "SmallEnemy";
-    static final List<Point> roadList = new ArrayList<>();
+
     static final int angle_Right = 0;
     static final int angle_Left = 180;
     static final int angle_Up =  90 ;
     static final int angle_Down = 270;
     private Point point;
+    private List<Point> roadList = new ArrayList<>();
+    private int angle = 0;
+    private  int i ;
+    private int dri ;
 
-
-    static int angle = 0;
-    static  int i  = 0 ;
-    static int dri ;
-
-    static int add = 1;
-    static int up = 1;
+    private int add;
+    private int up ;
+    public void adds(NormalEnemy normalEnemy)
+    {
+        normalEnemies.add(normalEnemy);
+    }
 
     public void loadRoad()
     {
@@ -52,9 +57,12 @@ public class NormalEnemy extends Enemy{
         setArmor(armor_normal);
         loadImage(Normal_Image);
         loadRoad();
-//        todo getx + gety
         setPosition(roadList.get(0).getX(), roadList.get(0).getY());
         setDri(angle_Right);
+        i = 0;
+        up = 1;
+        add = 1;
+        angle = 0;
     }
     @Override
     public void Move() {
@@ -62,46 +70,48 @@ public class NormalEnemy extends Enemy{
         switch (getDri())
         {
             case angle_Right:
-                x_pos += speed;
+                this.x_pos += speed;
                 break;
             case angle_Left:
-                x_pos -= speed;
+                this.x_pos -= speed;
                 break;
             case angle_Down:
-                y_pos += speed;
+                this.y_pos += speed;
                 break;
             case angle_Up :
-                y_pos -= speed;
+                this.y_pos -= speed;
                 break;
         }
-        int delta_x = roadList.get(i + 1).getX() - x_pos;
-        int delta_y = roadList.get(i + 1).getY() - y_pos;
+        int delta_x = this.roadList.get(i + 1).getX() - this.x_pos;
+        int delta_y = this.roadList.get(i + 1).getY() - this.y_pos;
         if(delta_x == 0 && delta_y == 0 && i < roadList.size())
         {
             System.out.println(i++);
         }
-        if(x_pos > 1200) {
+        if(this.x_pos > 1200) {
             i = 0;
-            setPosition(roadList.get(0).getX(), roadList.get(0).getY());
+            setPosition(this.roadList.get(0).getX(), this.roadList.get(0).getY());
             setDri(angle_Right);
         }
-        if(dri != nextRoad())
+        if(this.dri != nextRoad())
         {
-            dri = nextRoad();
+            this.dri = nextRoad();
 //            angle += 90;
             SnapshotParameters snapshotParameters = new SnapshotParameters();
             snapshotParameters.setFill(Color.TRANSPARENT);
-            ImageView imageView = new ImageView(image);
+            ImageView imageView = new ImageView(this.image);
             imageView.setRotate(imageView.getRotate() + 90);
-            image = imageView.snapshot(snapshotParameters, null);
+            this.image = imageView.snapshot(snapshotParameters, null);
         }
     }
     public int nextRoad()
     {
-        int delta_x = roadList.get(i + 1).getX() - roadList.get(i).getX();
-        int delta_y = roadList.get(i + 1).getY() - roadList.get(i).getY();
+        int delta_x =this.roadList.get(i + 1).getX() - this.roadList.get(i).getX();
+        int delta_y = this.roadList.get(i + 1).getY() - this.roadList.get(i).getY();
         if(delta_x == 0 && delta_y > 0)
         {
+            System.out.println(x_pos + " " + y_pos);
+            System.out.println("DOWN");
             return angle_Down;
         }
         if(delta_x == 0 && delta_y < 0)
@@ -127,24 +137,40 @@ public class NormalEnemy extends Enemy{
 
     @Override
     public void Render(GraphicsContext gc) {
-
-//        gc.clearRect(x_pos  , y_pos , 50, 50);
         Move();
-        gc.drawImage(image, x_pos,y_pos, 50, 50);
+        gc.drawImage(image,this.x_pos, this.y_pos, 50, 50);
         gc.setFill(Color.RED);
         gc.fillRect(x_pos + image.getWidth()/4 , y_pos - 3, image.getWidth()/2 * getBlood()/blood_first, 2);
+        gc.setStroke(Color.GREEN);
+        gc.strokeLine(x_pos + 25, y_pos + 25, 600, 360);
     }
 
-    public static void setDri(int dri) {
-        NormalEnemy.dri = dri;
-    }
 
-    public static int getDri() {
-        return dri;
-    }
     public Point getPosition()
     {
-        point = new Point(x_pos, y_pos);
+        point = new Point(x_pos + 15, y_pos + 20);
         return point;
+    }
+    public void RenderList(GraphicsContext gc)
+    {
+        for (NormalEnemy normalEnemy : normalEnemies)
+        {
+            normalEnemy.Render(gc);
+        }
+    }
+
+    public int getDri() {
+        return dri;
+    }
+    public void setDri(int dri) {
+        this.dri = dri;
+    }
+    public Enemy get(int index)
+    {
+        return normalEnemies.get(index);
+    }
+    public int size()
+    {
+        return normalEnemies.size();
     }
 }

@@ -73,14 +73,22 @@ public class Bullet extends GameTile{
     @Override
     public void Render(GraphicsContext gc) {
 //        if(x_pos != Destination.getX() && y_pos != Destination.getY()) {
-            move();
-        System.out.println(x_pos);
+
+//        System.out.println(x_pos);
 //            SnapshotParameters snapshotParameters = new SnapshotParameters();
 //            snapshotParameters.setFill(Color.TRANSPARENT);
 //            ImageView imageView = new ImageView(image);
 //            imageView.setRotate(imageView.getRotate() + angle);
 //            image = imageView.snapshot(snapshotParameters, null);
-            gc.drawImage(image, x_pos, y_pos);
+        if(!isShoot())
+        {
+            move();
+            gc.drawImage(image, x_pos + 5, y_pos);
+
+        }
+        else {
+        }
+
 //        }
     }
 
@@ -95,6 +103,12 @@ public class Bullet extends GameTile{
 
     public void setSpeed(int speed) {
         this.speed = speed;
+    }
+    public boolean isShoot()
+    {
+        return (x_pos + 35 >= Destination.getX() && x_pos - 35 <= Destination.getX()
+                && y_pos + 35 >= Destination.getY() && y_pos - 35 <= Destination.getY()
+        );
     }
 
 }

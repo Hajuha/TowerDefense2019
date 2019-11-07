@@ -29,6 +29,16 @@ public class SmallerEnemy extends Enemy{
     }
 
     @Override
+    public void RenderList(GraphicsContext mainGraphic) {
+
+    }
+
+    @Override
+    public Point getPosition() {
+        return null;
+    }
+
+    @Override
     public void ShowObject(GraphicsContext gc) {
 
     }

@@ -1,5 +1,6 @@
 package sample;
 
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 enum Direction{
     LEFT(180), RIGHT(0), UP(270), DOWN(90);
@@ -56,4 +57,8 @@ public abstract class Enemy extends GameEntity {
     public void loadImage(String path) {
         this.image = new Image(path + ".png", 50, 50, true, true);
     }
+
+    public abstract void RenderList(GraphicsContext mainGraphic);
+
+    public abstract Point getPosition();
 }
