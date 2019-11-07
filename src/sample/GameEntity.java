@@ -23,7 +23,6 @@ public abstract class GameEntity {
     public void setX_pos(int x_pos) {
         this.x_pos = x_pos;
     }
-
     public void setY_pos(int y_pos) {
         this.y_pos = y_pos;
     }

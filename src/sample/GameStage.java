@@ -14,10 +14,7 @@ import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 // Man choi, dinh nghia trang thia bat dau cua game
 public class GameStage {
@@ -34,7 +31,10 @@ public class GameStage {
     private Stage mainStage;
     private Group root;
 
-    public GameStage() throws FileNotFoundException {
+    static  int i = 0;
+    static  int j = 0;
+
+    public GameStage() throws FileNotFoundException, InterruptedException {
         mainCanvas = new Canvas(SCREEN_WIDTH, SCREEN_HEIGHT);
         mainGraphic = mainCanvas.getGraphicsContext2D();
         root = new Group();
@@ -43,8 +43,44 @@ public class GameStage {
         mainStage = new Stage();
         mainStage.setScene(mainScene);
         mainStage.setTitle(GAME_TITLE);
-        NormalEnemy normalEnemy = new NormalEnemy();
+
+        List<Bullet> bulletList = new LinkedList<>();
+
         Bullet bullet = new Bullet(imageBullet);
+        Bullet bullet1 = new Bullet(imageBullet);
+        Bullet bullet2 = new Bullet(imageBullet);
+        Bullet bullet3 = new Bullet(imageBullet);
+        Bullet bullet5 = new Bullet(imageBullet);
+
+        Bullet bullet4 = new Bullet(imageBullet);
+
+
+        bulletList.add(bullet);
+        bulletList.add(bullet1);
+        bulletList.add(bullet2);
+        bulletList.add(bullet3);
+        bulletList.add(bullet4);
+        bulletList.add(bullet5);
+
+        List<Bullet> bulletAction = new ArrayList<>();
+
+        List<Enemy> normalEnemyList = new ArrayList<>();
+        List<Enemy> normalEnemyAction = new ArrayList<>();
+        normalEnemyAction.add(new NormalEnemy());
+        normalEnemyAction.add(new NormalEnemy());
+        normalEnemyAction.add(new NormalEnemy());
+        normalEnemyAction.add(new NormalEnemy());
+        normalEnemyAction.add(new NormalEnemy());
+        normalEnemyAction.add(new NormalEnemy());
+        normalEnemyAction.add(new NormalEnemy());
+        normalEnemyAction.add(new NormalEnemy());
+        normalEnemyAction.add(new NormalEnemy());
+        normalEnemyList.add(new NormalEnemy());
+        normalEnemyList.add(new NormalEnemy());
+        Enemy ListEnemy = new NormalEnemy();
+        Tower SnT = new SniperTower();
+
+
         AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long now) {
@@ -54,21 +90,38 @@ public class GameStage {
                     e.printStackTrace();
                 }
 
-//                GameTile bullet = new Bullet(((NormalEnemy) normalEnemy).getPosition(), imageBullet);
-//                listBullet.add(bullet);
-//                for (int i = 0; i < listBullet.size(); i ++)
-//                {
-//                    listBullet.get(i).Render(mainGraphic);
-//                }
-
-                normalEnemy.Render(mainGraphic);
-                bullet.setDestination(normalEnemy.getPosition());
-                bullet.Render(mainGraphic);
+                if(!bulletList.isEmpty() && i == 0) bulletAction.add(new Bullet(imageBullet));
+                if(!normalEnemyAction.isEmpty() && i == 0)  ((NormalEnemy) ListEnemy).adds((NormalEnemy) normalEnemyAction.remove(0)); ;
+                i = (i > 100) ? 0 : i + 1;
+                int k = 0;
+                for(Bullet b : bulletAction)
+                {
+                    if(b.isShoot())
+                    {
+                        bulletAction.remove(b);
+                        continue;
+                    }
+                    b.setDestination(((NormalEnemy) ListEnemy).get(k).getPosition());
+                    b.Render(mainGraphic);
+                    j = (j > 30) ? 0 : j + 1;
+                    if(j > 30) k ++;
+                    k = (k > (((NormalEnemy) ListEnemy).size() - 1)) ? 0 : k;
+                }
+                ListEnemy.RenderList(mainGraphic);
+                SnT.Render(mainGraphic);
+                try {
+                    Thread.sleep(30);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
 
+
         };
+//        timer.wait(100);
         timer.start();
         LoadMap();
+
     }
 
     public Stage getMainStage() {
