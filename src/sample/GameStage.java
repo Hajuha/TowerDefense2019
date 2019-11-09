@@ -1,5 +1,4 @@
 package sample;
-
 import javafx.animation.Animation;
 import javafx.animation.AnimationTimer;
 import javafx.event.EventHandler;
@@ -21,6 +20,12 @@ import javafx.stage.Stage;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.*;
+
+import sample.*;
+import sample.Enemy;
+import sample.Tower;
+import  sample.NormalEnemy;
+import sample.SniperTower;
 
 // Man choi, dinh nghia trang thia bat dau cua game
 public class GameStage {
@@ -104,12 +109,7 @@ public class GameStage {
         normalEnemyList.add(new NormalEnemy());
         normalEnemyList.add(new NormalEnemy());
         Enemy ListEnemy = new NormalEnemy();
-
         Tower tower = new SniperTower();
-
-
-
-
 
         AnimationTimer timer = new AnimationTimer() {
             @Override
@@ -120,28 +120,25 @@ public class GameStage {
                     e.printStackTrace();
                 }
 
-                if(!bulletList.isEmpty() && i == 0) bulletAction.add(new Bullet(imageBullet));
-                if(!normalEnemyAction.isEmpty() && i == 0)  ((NormalEnemy) ListEnemy).adds(
-                        (NormalEnemy) normalEnemyAction.remove(0)); ;
-                i = (i > 100) ? 0 : i + 1;
-                int k = 0;
-                /*for(Bullet b : bulletAction)
+                if(!bulletList.isEmpty() && i % 20 == 0) bulletAction.add(new Bullet(imageBullet));
+                if(!normalEnemyAction.isEmpty() && i == 0)  ListEnemy.adds(normalEnemyAction.remove(0));
+                i = (i > 120) ? 0 : i + 1;
+//                ((sample.SniperTower) SnT).setTargetShoot(((NormalEnemy)ListEnemy).get(0).getPosition());
+                ListEnemy.RenderList(mainGraphic);
+
+                for(int i = 0; i < bulletAction.size() - 1 ; i ++)
                 {
-                    if(b.isShoot())
+                    if(bulletAction.get(i).isShoot())
                     {
-                        bulletAction.remove(b);
+                        if(bulletAction.isEmpty())  bulletAction.remove(bulletAction.get(i));
                         continue;
                     }
-                    b.setDestination(((NormalEnemy) ListEnemy).get(k).getPosition());
-                    b.Render(mainGraphic);
-                    j = (j > 30) ? 0 : j + 1;
-                    if(j > 30) k ++;
-                    k = (k > (((NormalEnemy) ListEnemy).size() - 1)) ? 0 : k;
-                }*/
+                    bulletAction.get(i).setDestination( ListEnemy.get(i % ListEnemy.size()).getPosition());
+                    bulletAction.get(i).Render(mainGraphic);
+                }
                 for(Tower t : towerList){
                     t.render(mainGraphic);
                 }
-                ListEnemy.RenderList(mainGraphic);
                 tower.Render(mainGraphic);
                 try {
                     Thread.sleep(30);

@@ -1,7 +1,7 @@
 package sample;
 
 import javafx.scene.effect.Light;
-
+import sample.GameTile;
 
 public abstract class Tower extends GameTile{
     protected int dame; // sat thuong

@@ -2,6 +2,7 @@ package sample;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import sample.Tower;
 
 public class SniperTower extends Tower {
     private final String SniperTower_IMG = "file:src/Assets/Tower/Tower";

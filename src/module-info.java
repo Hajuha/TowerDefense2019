@@ -1,5 +1,5 @@
 module TowerDefense2019 {
-    requires javafx.controls;
-    requires javafx.fxml;
-    opens sample;
+   requires javafx.fxml;
+   requires javafx.controls;
+   opens sample;
 }

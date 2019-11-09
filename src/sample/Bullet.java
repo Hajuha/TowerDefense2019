@@ -9,7 +9,7 @@ import javafx.scene.paint.Color;
 public class Bullet extends GameTile{
     final static String Bullet_Img = "file:src/Assets/Bullet/RocketBullet";
     final static int dame = 10;
-    final static int speed_bullet = 3;
+    final static int speed_bullet = 6;
     final static int range = 270;
     protected int speed;
     private double angle;
@@ -50,10 +50,6 @@ public class Bullet extends GameTile{
                                 Math.pow(y_pos - Destination.getY(), 2))   ;
         sinX = (Destination.y - y_pos == 0) ? 0 : (Destination.y - (double) y_pos)/del;
         cosX = (Destination.x - x_pos == 0) ? 0 : (Destination.x - (double) x_pos)/del;
-        if(sinX > 0 && cosX > 0) delta_angle = 0;
-        if(sinX < 0 && cosX < 0) delta_angle =0 ;
-        if(sinX > 0 && cosX < 0) delta_angle =0 ;
-        if(sinX < 0 && cosX < 0) delta_angle =0 ;
 //        angle += delta;
 
     }
@@ -72,14 +68,6 @@ public class Bullet extends GameTile{
 
     @Override
     public void Render(GraphicsContext gc) {
-//        if(x_pos != Destination.getX() && y_pos != Destination.getY()) {
-
-//        System.out.println(x_pos);
-//            SnapshotParameters snapshotParameters = new SnapshotParameters();
-//            snapshotParameters.setFill(Color.TRANSPARENT);
-//            ImageView imageView = new ImageView(image);
-//            imageView.setRotate(imageView.getRotate() + angle);
-//            image = imageView.snapshot(snapshotParameters, null);
         if(!isShoot())
         {
             move();

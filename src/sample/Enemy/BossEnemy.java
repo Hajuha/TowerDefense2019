@@ -2,7 +2,7 @@ package sample;
 
 import javafx.scene.canvas.GraphicsContext;
 
-public class BossEnemy extends Enemy{
+public class BossEnemy extends sample.Enemy {
     final static int blood_first = 100;
     final static int armor_boss = 30;
     final static int speed_boss = 5;
