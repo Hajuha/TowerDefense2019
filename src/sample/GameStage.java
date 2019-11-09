@@ -20,6 +20,9 @@ import javafx.stage.Stage;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.*;
+import sample.Enemy;
+import sample.Tower;
+
 
 import sample.*;
 import sample.Enemy;
@@ -109,7 +112,9 @@ public class GameStage {
         normalEnemyList.add(new NormalEnemy());
         normalEnemyList.add(new NormalEnemy());
         Enemy ListEnemy = new NormalEnemy();
-        Tower tower = new SniperTower();
+
+        Tower tower = new sample.SniperTower(160,400);
+
 
         AnimationTimer timer = new AnimationTimer() {
             @Override
@@ -120,6 +125,7 @@ public class GameStage {
                     e.printStackTrace();
                 }
 
+
                 if(!bulletList.isEmpty() && i % 20 == 0) bulletAction.add(new Bullet(imageBullet));
                 if(!normalEnemyAction.isEmpty() && i == 0)  ListEnemy.adds(normalEnemyAction.remove(0));
                 i = (i > 120) ? 0 : i + 1;
@@ -127,18 +133,22 @@ public class GameStage {
                 ListEnemy.RenderList(mainGraphic);
 
                 for(int i = 0; i < bulletAction.size() - 1 ; i ++)
+
                 {
                     if(bulletAction.get(i).isShoot())
                     {
                         if(bulletAction.isEmpty())  bulletAction.remove(bulletAction.get(i));
                         continue;
                     }
+
                     bulletAction.get(i).setDestination( ListEnemy.get(i % ListEnemy.size()).getPosition());
                     bulletAction.get(i).Render(mainGraphic);
                 }
                 for(Tower t : towerList){
                     t.render(mainGraphic);
                 }
+
+
                 tower.Render(mainGraphic);
                 try {
                     Thread.sleep(30);

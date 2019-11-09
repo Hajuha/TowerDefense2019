@@ -8,6 +8,10 @@ public abstract class GameTile extends GameEntity {
         setPosition(x_pos, y_pos);
     }
 
+    public GameTile() {
+
+    }
+
     @Override
     public void setY_pos(int y_pos) {
         this.y_pos = y_pos;
