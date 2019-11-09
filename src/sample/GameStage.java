@@ -25,7 +25,7 @@ import java.util.*;
 // Man choi, dinh nghia trang thia bat dau cua game
 public class GameStage {
     private final static int SCREEN_HEIGHT = 720;
-    private final static int SCREEN_WIDTH = 1260;
+    private final static int SCREEN_WIDTH = 1200;
     private final static int SCREEN_TITLEMAP = 30;
     private final static String GAME_TITLE = "Tower Defense";
     final static Image imageBullet = new Image("Bullet.png", 30, 30, true, true);
@@ -165,7 +165,7 @@ public class GameStage {
 
         int x_pos = 0;
         int y_pos = 0;
-        int width = SCREEN_WIDTH / 42;
+        int width = SCREEN_WIDTH / 40;
         int height = SCREEN_HEIGHT / 24;
 
         for (int i = 0; i < 24; i++) {
