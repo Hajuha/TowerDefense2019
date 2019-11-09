@@ -21,6 +21,9 @@ import javafx.stage.Stage;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.*;
+import sample.Enemy;
+import sample.Tower;
+
 
 // Man choi, dinh nghia trang thia bat dau cua game
 public class GameStage {
@@ -105,7 +108,7 @@ public class GameStage {
         normalEnemyList.add(new NormalEnemy());
         Enemy ListEnemy = new NormalEnemy();
 
-        Tower tower = new SniperTower();
+        Tower tower = new sample.SniperTower(160,400);
 
 
 
@@ -125,7 +128,7 @@ public class GameStage {
                         (NormalEnemy) normalEnemyAction.remove(0)); ;
                 i = (i > 100) ? 0 : i + 1;
                 int k = 0;
-                /*for(Bullet b : bulletAction)
+                for(Bullet b : bulletAction)
                 {
                     if(b.isShoot())
                     {
@@ -137,10 +140,10 @@ public class GameStage {
                     j = (j > 30) ? 0 : j + 1;
                     if(j > 30) k ++;
                     k = (k > (((NormalEnemy) ListEnemy).size() - 1)) ? 0 : k;
-                }*/
-                for(Tower t : towerList){
-                    t.render(mainGraphic);
                 }
+//                for(Tower t : towerList){
+//                    t.render(mainGraphic);
+//                }
                 ListEnemy.RenderList(mainGraphic);
                 tower.Render(mainGraphic);
                 try {
