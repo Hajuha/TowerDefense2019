@@ -1,40 +1,25 @@
 package sample;
 
+
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import sample.Tower;
 
 public class SniperTower extends Tower {
-    private final String SniperTower_IMG = "file:src/Assets/Tower/Tower";
-    public SniperTower()
-    {
-        super(100, 470);
-        loadImage(SniperTower_IMG);
+    private int newDame;
+    private int newRange;
+    private int newCost;
+
+    public SniperTower() {
+        super();
     }
 
-    public SniperTower(int x_pos, int y_pos) {
+    public SniperTower(double x_pos, double y_pos) {
         super(x_pos, y_pos);
+        this.dame = newDame;
+        this.cost = newCost;
+        this.towerImagePath = "file:src/Assets/Tower/SniperTower";
     }
 
-    @Override
-    public void shoot() {
 
-    }
-
-    @Override
-    public void loadImage(String path) {
-        this.image = new Image(SniperTower_IMG + ".png", 120, 120,
-                true, true);
-
-    }
-
-    @Override
-    public void ShowObject(GraphicsContext gc) {
-
-    }
-
-    @Override
-    public void Render(GraphicsContext gc) {
-
-        gc.drawImage(image,65, 480);
-    }
 }
