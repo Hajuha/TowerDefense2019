@@ -110,8 +110,8 @@ public class NormalEnemy extends Enemy{
         int delta_y = this.roadList.get(i + 1).getY() - this.roadList.get(i).getY();
         if(delta_x == 0 && delta_y > 0)
         {
-            System.out.println(x_pos + " " + y_pos);
-            System.out.println("DOWN");
+            //System.out.println(x_pos + " " + y_pos);
+            //System.out.println("DOWN");
             return angle_Down;
         }
         if(delta_x == 0 && delta_y < 0)

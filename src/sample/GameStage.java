@@ -2,13 +2,19 @@ package sample;
 
 import javafx.animation.Animation;
 import javafx.animation.AnimationTimer;
+import javafx.event.EventHandler;
+import javafx.geometry.Point2D;
+import javafx.scene.Cursor;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.*;
 import javafx.scene.layout.BackgroundImage;
+import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
@@ -19,7 +25,8 @@ import java.util.*;
 // Man choi, dinh nghia trang thia bat dau cua game
 public class GameStage {
     private final static int SCREEN_HEIGHT = 720;
-    private final static int SCREEN_WIDTH = 1200;
+    private final static int SCREEN_WIDTH = 1260;
+    private final static int SCREEN_TITLEMAP = 30;
     private final static String GAME_TITLE = "Tower Defense";
     final static Image imageBullet = new Image("Bullet.png", 30, 30, true, true);
     static int[][] MapTitle = new int[24][40];
@@ -30,6 +37,10 @@ public class GameStage {
     private Scene mainScene;
     private Stage mainStage;
     private Group root;
+    ImageView iv; //vùng thao tác ảnh
+    int curseurX = 0 ; // lưu vị trí hoành độ con trỏ chuột khi trỏ đến vùng chọn tháp
+    int curseurY = 0 ; //tung độ
+    List<Tower> towerList = new ArrayList<>(); //ds tháp được đặt
 
     static  int i = 0;
     static  int j = 0;
@@ -43,6 +54,20 @@ public class GameStage {
         mainStage = new Stage();
         mainStage.setScene(mainScene);
         mainStage.setTitle(GAME_TITLE);
+
+        //tạo khung chọn tháp
+        HBox hBoxTower = new HBox();
+        hBoxTower.setPrefWidth(SCREEN_WIDTH);
+        hBoxTower.setPrefHeight(SCREEN_TITLEMAP*2);
+        hBoxTower.setStyle("-fx-border-color: red;"
+                + "-fx-border-width: 1;"
+                + "-fx-border-style: solid;");
+        hBoxTower.setTranslateX(0);
+        hBoxTower.setTranslateY(SCREEN_HEIGHT);
+        insertImage(new Image("Tower1.png"), hBoxTower);
+
+
+        root.getChildren().add(hBoxTower);
 
         List<Bullet> bulletList = new LinkedList<>();
 
@@ -78,7 +103,11 @@ public class GameStage {
         normalEnemyList.add(new NormalEnemy());
         normalEnemyList.add(new NormalEnemy());
         Enemy ListEnemy = new NormalEnemy();
-        Tower SnT = new SniperTower();
+
+        Tower tower = new SniperTower();
+
+
+
 
 
         AnimationTimer timer = new AnimationTimer() {
@@ -91,10 +120,11 @@ public class GameStage {
                 }
 
                 if(!bulletList.isEmpty() && i == 0) bulletAction.add(new Bullet(imageBullet));
-                if(!normalEnemyAction.isEmpty() && i == 0)  ((NormalEnemy) ListEnemy).adds((NormalEnemy) normalEnemyAction.remove(0)); ;
+                if(!normalEnemyAction.isEmpty() && i == 0)  ((NormalEnemy) ListEnemy).adds(
+                        (NormalEnemy) normalEnemyAction.remove(0)); ;
                 i = (i > 100) ? 0 : i + 1;
                 int k = 0;
-                for(Bullet b : bulletAction)
+                /*for(Bullet b : bulletAction)
                 {
                     if(b.isShoot())
                     {
@@ -106,9 +136,12 @@ public class GameStage {
                     j = (j > 30) ? 0 : j + 1;
                     if(j > 30) k ++;
                     k = (k > (((NormalEnemy) ListEnemy).size() - 1)) ? 0 : k;
+                }*/
+                for(Tower t : towerList){
+                    t.render(mainGraphic);
                 }
                 ListEnemy.RenderList(mainGraphic);
-                SnT.Render(mainGraphic);
+                tower.Render(mainGraphic);
                 try {
                     Thread.sleep(30);
                 } catch (InterruptedException e) {
@@ -132,7 +165,7 @@ public class GameStage {
 
         int x_pos = 0;
         int y_pos = 0;
-        int width = SCREEN_WIDTH / 40;
+        int width = SCREEN_WIDTH / 42;
         int height = SCREEN_HEIGHT / 24;
 
         for (int i = 0; i < 24; i++) {
@@ -178,6 +211,98 @@ public class GameStage {
 
             }
         }
+
+    }
+    void insertImage(Image i, HBox hb){
+
+        iv = new ImageView();
+        iv.setImage(i);
+
+        setupGestureSource(iv);
+
+        hb.getChildren().add(iv);
+    }
+    void setupGestureSource(final ImageView source){
+
+        source.setOnDragDetected(new EventHandler<MouseEvent>() {
+
+            @Override
+            public void handle(MouseEvent event) {
+                System.out.println("DRAG DETECTED");
+                /* allow any transfer mode */
+                Dragboard db = source.startDragAndDrop(TransferMode.MOVE);
+
+                /* put a image on dragboard */
+                ClipboardContent content = new ClipboardContent();
+
+                Image sourceImage = source.getImage();
+                content.putImage(sourceImage);
+                db.setContent(content);
+
+
+                iv = source ;
+
+
+                event.consume();
+                }
+            });
+            source.setOnMouseEntered(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent e) {
+                System.out.println("MOUSE ENTERED");
+                source.setCursor(Cursor.HAND);
+//                    System.out.println("e...: "+e.getSceneX());
+                curseurX = (int) e.getSceneX();
+                curseurY = (int) e.getSceneY();
+            }
+        });
+    }
+    void setupGestureTarget(final Image i){
+        ImageView target = new ImageView(i);
+        target.setOnDragOver(new EventHandler <DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                System.out.println("DRAG OVER");
+                Dragboard db = event.getDragboard();
+
+                if(db.hasImage()){
+                    event.acceptTransferModes(TransferMode.MOVE);
+                }
+
+                event.consume();
+            }
+        });
+
+        target.setOnDragDropped(new EventHandler <DragEvent>(){
+            @Override
+            public void handle(DragEvent event) {
+                System.out.println("DRAG DROPPED");
+                Dragboard db = event.getDragboard();
+
+                if(db.hasImage()){
+
+                    iv.setImage(db.getImage());
+
+                    Point2D localPoint = target.sceneToLocal(new Point2D(event.getSceneX(), event.getSceneY()));
+
+                    //System.out.println("event.getSceneX : "+event.getSceneX());
+                   // System.out.println("localPoint.getX : "+localPoint.getX());
+                    //System.out.println("********");
+                    imageMap[(int)event.getSceneX()/SCREEN_TITLEMAP][(int)event.getSceneY()/SCREEN_TITLEMAP] = null;
+                    iv.setX((int)(localPoint.getX() - iv.getBoundsInLocal().getWidth()  / 2)  );
+                    iv.setY((int)(localPoint.getY() - iv.getBoundsInLocal().getHeight() / 2) );
+
+                    towerList.add(new SniperTower());
+
+
+                    event.setDropCompleted(true);
+                }else{
+                    event.setDropCompleted(false);
+                }
+
+                event.consume();
+            }
+        });
 
     }
 }
