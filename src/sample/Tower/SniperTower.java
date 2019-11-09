@@ -4,7 +4,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
 public class SniperTower extends Tower {
-    private final String SniperTower_IMG = "Tower1";
+    private final String SniperTower_IMG = "file:src/Assets/Tower/Tower";
     public SniperTower()
     {
         super(100, 470);
@@ -22,7 +22,7 @@ public class SniperTower extends Tower {
 
     @Override
     public void loadImage(String path) {
-        this.image = new Image(SniperTower_IMG + ".png", 60, 60,
+        this.image = new Image(SniperTower_IMG + ".png", 120, 120,
                 true, true);
 
     }
