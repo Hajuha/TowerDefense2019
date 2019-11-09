@@ -15,7 +15,7 @@ public class NormalEnemy extends Enemy{
     static final int speed = 1;
     static final int blood_first = 16;
     static final int armor_normal = 2;
-    static final String Normal_Image = "SmallEnemy";
+    static final String Normal_Image = "file:src/Assets/Enemy/SmallEnemy";
 
     static final int angle_Right = 0;
     static final int angle_Left = 180;

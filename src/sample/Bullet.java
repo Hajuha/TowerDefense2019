@@ -7,7 +7,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 
 public class Bullet extends GameTile{
-    final static String Bullet_Img = "RocketBullet";
+    final static String Bullet_Img = "file:src/Assets/Bullet/RocketBullet";
     final static int dame = 10;
     final static int speed_bullet = 3;
     final static int range = 270;
