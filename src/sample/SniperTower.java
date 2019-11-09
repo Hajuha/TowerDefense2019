@@ -10,6 +10,11 @@ public class SniperTower extends Tower {
         super(100, 470);
         loadImage(SniperTower_IMG);
     }
+
+    public SniperTower(int x_pos, int y_pos) {
+        super(x_pos, y_pos);
+    }
+
     @Override
     public void shoot() {
 
@@ -17,7 +22,7 @@ public class SniperTower extends Tower {
 
     @Override
     public void loadImage(String path) {
-        this.image = new Image(SniperTower_IMG + ".png", 100, 100,
+        this.image = new Image(SniperTower_IMG + ".png", 60, 60,
                 true, true);
 
     }
