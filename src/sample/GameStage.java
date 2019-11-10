@@ -75,7 +75,9 @@ public class GameStage {
                 + "-fx-border-style: solid;");
         hBoxTower.setTranslateX(0);
         hBoxTower.setTranslateY(SCREEN_HEIGHT);
-        insertImage(new Image( "file:src/Assets/Tower/SniperTower.png"), hBoxTower);
+
+        insertImage(new Image("file:src/Assets/Tower/SniperTower.png", 120, 120,
+                true, true), hBoxTower);
         root.getChildren().add(hBoxTower);
 
         List<Bullet> bulletList = new LinkedList<>();
@@ -102,7 +104,7 @@ public class GameStage {
 
         Enemy ListEnemy = new NormalEnemy(ListRoad);
 
-        Tower tower = new SniperTower(160,400);
+        Tower tower = new SniperTower(100,400);
         listTower.setupGestureTarget(mainScene, imageMap);
 
         AnimationTimer timer = new AnimationTimer() {
