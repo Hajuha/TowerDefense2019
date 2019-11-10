@@ -109,12 +109,13 @@ public class SniperTower extends Tower {
                     System.out.println("event : "+event.getSceneX() +", " + event.getSceneY());
                     // System.out.println("localPoint.getX : "+localPoint.getX());
                     //System.out.println("********");
-                    imageMap[(int)event.getSceneY()/SCREEN_TITLEMAP][(int)event.getSceneX()/SCREEN_TITLEMAP] =
-                            db.getImage();
+                    int x_tiles = (int) event.getSceneX() / SCREEN_TITLEMAP;
+                    int y_tiles = (int) event.getSceneY() / SCREEN_TITLEMAP;
+
                     //iv.setX((int)(localPoint.getX() - iv.getBoundsInLocal().getWidth()  / 2)  );
                     //iv.setY((int)(localPoint.getY() - iv.getBoundsInLocal().getHeight() / 2) );
 
-                    towerList.add(new SniperTower((int)event.getSceneX(),(int)event.getSceneY()));
+                    towerList.add(new SniperTower((x_tiles) *SCREEN_TITLEMAP,(y_tiles-2) * SCREEN_TITLEMAP));
                     event.setDropCompleted(true);
                 }else{
                     event.setDropCompleted(false);
