@@ -40,10 +40,12 @@ public class GameStage {
     ImageView iv; //vùng thao tác ảnh
     int curseurX = 0 ; // lưu vị trí hoành độ con trỏ chuột khi trỏ đến vùng chọn tháp
     int curseurY = 0 ; //tung độ
-    List<Tower> towerList = new ArrayList<>(); //ds tháp được đặt
+    SniperTower listTower = new SniperTower();
+
 
     static  int i = 0;
     static  int j = 0;
+    Scanner input = new Scanner(new File("src/MapGame1.txt"));
 
     public GameStage() throws FileNotFoundException, InterruptedException {
         mainCanvas = new Canvas(SCREEN_WIDTH, SCREEN_HEIGHT);
@@ -58,14 +60,14 @@ public class GameStage {
         //tạo khung chọn tháp
         HBox hBoxTower = new HBox();
         hBoxTower.setPrefWidth(SCREEN_WIDTH);
-        hBoxTower.setPrefHeight(SCREEN_TITLEMAP*2);
+        hBoxTower.setPrefHeight(SCREEN_TITLEMAP);
         hBoxTower.setStyle("-fx-border-color: red;"
                 + "-fx-border-width: 1;"
                 + "-fx-border-style: solid;");
         hBoxTower.setTranslateX(0);
         hBoxTower.setTranslateY(SCREEN_HEIGHT);
         insertImage(new Image("Tower1.png"), hBoxTower);
-
+        insertImage(new Image("Tower2.png"), hBoxTower);
 
         root.getChildren().add(hBoxTower);
 
@@ -105,7 +107,7 @@ public class GameStage {
         Enemy ListEnemy = new NormalEnemy();
 
         Tower tower = new SniperTower();
-
+        listTower.setupGestureTarget(mainScene, imageMap);
 
 
 
@@ -124,8 +126,8 @@ public class GameStage {
                         (NormalEnemy) normalEnemyAction.remove(0)); ;
                 i = (i > 100) ? 0 : i + 1;
                 int k = 0;
-                /*for(Bullet b : bulletAction)
-                {
+                for(Bullet b : bulletAction){
+
                     if(b.isShoot())
                     {
                         bulletAction.remove(b);
@@ -136,8 +138,8 @@ public class GameStage {
                     j = (j > 30) ? 0 : j + 1;
                     if(j > 30) k ++;
                     k = (k > (((NormalEnemy) ListEnemy).size() - 1)) ? 0 : k;
-                }*/
-                for(Tower t : towerList){
+                }
+                for(Tower t : listTower.towerList){
                     t.render(mainGraphic);
                 }
                 ListEnemy.RenderList(mainGraphic);
@@ -181,7 +183,7 @@ public class GameStage {
     }
 
     public void LoadMap() throws FileNotFoundException {
-        Scanner input = new Scanner(new File("src/MapGame1.txt"));
+
         Image tilemap0 = new Image("file:src/MapGameImage/MapGame" + 0 + ".png",
                 30, 30, true, true);
         Image tilemap1 = new Image("file:src/MapGameImage/MapGame" + 1 + ".png",
@@ -218,91 +220,9 @@ public class GameStage {
         iv = new ImageView();
         iv.setImage(i);
 
-        setupGestureSource(iv);
+        listTower.setupGestureSource(iv);
 
         hb.getChildren().add(iv);
     }
-    void setupGestureSource(final ImageView source){
 
-        source.setOnDragDetected(new EventHandler<MouseEvent>() {
-
-            @Override
-            public void handle(MouseEvent event) {
-                System.out.println("DRAG DETECTED");
-                /* allow any transfer mode */
-                Dragboard db = source.startDragAndDrop(TransferMode.MOVE);
-
-                /* put a image on dragboard */
-                ClipboardContent content = new ClipboardContent();
-
-                Image sourceImage = source.getImage();
-                content.putImage(sourceImage);
-                db.setContent(content);
-
-
-                iv = source ;
-
-
-                event.consume();
-                }
-            });
-            source.setOnMouseEntered(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent e) {
-                System.out.println("MOUSE ENTERED");
-                source.setCursor(Cursor.HAND);
-//                    System.out.println("e...: "+e.getSceneX());
-                curseurX = (int) e.getSceneX();
-                curseurY = (int) e.getSceneY();
-            }
-        });
-    }
-    void setupGestureTarget(final Image i){
-        ImageView target = new ImageView(i);
-        target.setOnDragOver(new EventHandler <DragEvent>() {
-            @Override
-            public void handle(DragEvent event) {
-                System.out.println("DRAG OVER");
-                Dragboard db = event.getDragboard();
-
-                if(db.hasImage()){
-                    event.acceptTransferModes(TransferMode.MOVE);
-                }
-
-                event.consume();
-            }
-        });
-
-        target.setOnDragDropped(new EventHandler <DragEvent>(){
-            @Override
-            public void handle(DragEvent event) {
-                System.out.println("DRAG DROPPED");
-                Dragboard db = event.getDragboard();
-
-                if(db.hasImage()){
-
-                    iv.setImage(db.getImage());
-
-                    Point2D localPoint = target.sceneToLocal(new Point2D(event.getSceneX(), event.getSceneY()));
-
-                    //System.out.println("event.getSceneX : "+event.getSceneX());
-                   // System.out.println("localPoint.getX : "+localPoint.getX());
-                    //System.out.println("********");
-                    imageMap[(int)event.getSceneX()/SCREEN_TITLEMAP][(int)event.getSceneY()/SCREEN_TITLEMAP] = null;
-                    iv.setX((int)(localPoint.getX() - iv.getBoundsInLocal().getWidth()  / 2)  );
-                    iv.setY((int)(localPoint.getY() - iv.getBoundsInLocal().getHeight() / 2) );
-
-                    towerList.add(new SniperTower());
-
-
-                    event.setDropCompleted(true);
-                }else{
-                    event.setDropCompleted(false);
-                }
-
-                event.consume();
-            }
-        });
-
-    }
 }

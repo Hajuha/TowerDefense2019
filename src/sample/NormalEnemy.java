@@ -12,7 +12,7 @@ import java.util.List;
 
 public class NormalEnemy extends Enemy{
     private List<NormalEnemy> normalEnemies = new ArrayList<>();
-    static final int speed = 1;
+    static final int speed = 5;
     static final int blood_first = 16;
     static final int armor_normal = 2;
     static final String Normal_Image = "SmallEnemy";
