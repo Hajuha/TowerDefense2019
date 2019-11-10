@@ -40,6 +40,8 @@ public class GameStage {
     static int[][] MapTitle = new int[24][40];
     static Image[][] imageMap = new Image[24][40];
     static List<GameTile> listBullet = new ArrayList<>();
+    private List<Enemy> normalEnemyAction = new ArrayList<>();
+    private List<Point> ListRoad = new ArrayList<>();
     GraphicsContext mainGraphic;
     private Canvas mainCanvas;
     private Scene mainScene;
@@ -98,20 +100,9 @@ public class GameStage {
 
         List<Bullet> bulletAction = new ArrayList<>();
 
-        List<Enemy> normalEnemyList = new ArrayList<>();
-        List<Enemy> normalEnemyAction = new ArrayList<>();
-        normalEnemyAction.add(new NormalEnemy());
-        normalEnemyAction.add(new NormalEnemy());
-        normalEnemyAction.add(new NormalEnemy());
-        normalEnemyAction.add(new NormalEnemy());
-        normalEnemyAction.add(new NormalEnemy());
-        normalEnemyAction.add(new NormalEnemy());
-        normalEnemyAction.add(new NormalEnemy());
-        normalEnemyAction.add(new NormalEnemy());
-        normalEnemyAction.add(new NormalEnemy());
-        normalEnemyList.add(new NormalEnemy());
-        normalEnemyList.add(new NormalEnemy());
-        Enemy ListEnemy = new NormalEnemy();
+        LoadMap();
+
+        Enemy ListEnemy = new NormalEnemy(ListRoad);
 
         Tower tower = new sample.SniperTower(160,400);
 
@@ -145,23 +136,22 @@ public class GameStage {
                     bulletAction.get(i).Render(mainGraphic);
                 }
                 for(Tower t : towerList){
-                    t.render(mainGraphic);
+                    t.Render(mainGraphic);
                 }
 
 
                 tower.Render(mainGraphic);
-                try {
-                    Thread.sleep(30);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+//                try {
+//                    Thread.sleep(30);
+//                } catch (InterruptedException e) {
+//                    e.printStackTrace();
+//                }
             }
-
-
         };
 //        timer.wait(100);
         timer.start();
-        LoadMap();
+
+
 
     }
 
@@ -177,9 +167,7 @@ public class GameStage {
         int height = SCREEN_HEIGHT / 24;
 
         for (int i = 0; i < 24; i++) {
-
             x_pos = 0;
-
             for (int j = 0; j < 40; j++) {
                 mainGraphic.drawImage(imageMap[i][j], x_pos, y_pos);
                 x_pos += width;
@@ -203,6 +191,29 @@ public class GameStage {
             }
             System.out.println();
         }
+        int index  =0;
+        int maxRoad = input.nextInt();
+        while ( index < maxRoad)
+        {
+            int x = input.nextInt();
+            int y = input.nextInt();
+            System.out.println(x + " " + y);
+            ListRoad.add(new Point(x, y));
+            index ++;
+        }
+        int maxEnemy = input.nextInt();
+        index = 0;
+        while (index < maxEnemy)
+        {
+            index ++;
+            int enemy = input.nextInt();
+            switch (enemy)
+            {
+                case 1 :
+                    normalEnemyAction.add(new NormalEnemy(ListRoad));
+                    break;
+            }
+        }
         for (int i = 0; i < 24; i++) {
             for (int j = 0; j < 40; j++) {
                 switch (MapTitle[i][j]) {
@@ -216,24 +227,18 @@ public class GameStage {
                         imageMap[i][j] = tilemap2;
                         break;
                 }
-
             }
         }
-
     }
     void insertImage(Image i, HBox hb){
 
         iv = new ImageView();
         iv.setImage(i);
-
         setupGestureSource(iv);
-
         hb.getChildren().add(iv);
     }
     void setupGestureSource(final ImageView source){
-
         source.setOnDragDetected(new EventHandler<MouseEvent>() {
-
             @Override
             public void handle(MouseEvent event) {
                 System.out.println("DRAG DETECTED");
@@ -247,10 +252,7 @@ public class GameStage {
                 content.putImage(sourceImage);
                 db.setContent(content);
 
-
-                iv = source ;
-
-
+                iv = source;
                 event.consume();
                 }
             });
@@ -276,7 +278,6 @@ public class GameStage {
                 if(db.hasImage()){
                     event.acceptTransferModes(TransferMode.MOVE);
                 }
-
                 event.consume();
             }
         });
@@ -288,11 +289,8 @@ public class GameStage {
                 Dragboard db = event.getDragboard();
 
                 if(db.hasImage()){
-
-                    iv.setImage(db.getImage());
-
+                    iv.setImage(db.getImage())
                     Point2D localPoint = target.sceneToLocal(new Point2D(event.getSceneX(), event.getSceneY()));
-
                     //System.out.println("event.getSceneX : "+event.getSceneX());
                    // System.out.println("localPoint.getX : "+localPoint.getX());
                     //System.out.println("********");
@@ -301,16 +299,16 @@ public class GameStage {
                     iv.setY((int)(localPoint.getY() - iv.getBoundsInLocal().getHeight() / 2) );
 
                     towerList.add(new SniperTower());
-
-
                     event.setDropCompleted(true);
                 }else{
                     event.setDropCompleted(false);
                 }
-
                 event.consume();
             }
         });
+    }
 
+    public List<Point> getListRoad() {
+        return ListRoad;
     }
 }

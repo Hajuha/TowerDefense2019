@@ -18,18 +18,20 @@ public class NormalEnemy extends Enemy{
     static final int armor_normal = 2;
     static final String Normal_Image = "file:src/Assets/Enemy/SmallEnemy";
 
-    public NormalEnemy()
+    public NormalEnemy(List<Point> pointList)
     {
         super();
         setFirst_Blood(blood_first);
         setSpeed(speed);
         setArmor(armor_normal);
         loadImage(Normal_Image);
-        loadRoad();
+        loadRoad(pointList);
         setPosition(roadList.get(0).getX(), roadList.get(0).getY());
         setDri(angle_Right);
         this.i = 0;
         angle = 0;
+        getRoadList();
+        System.out.println("SS :");
     }
 
     @Override

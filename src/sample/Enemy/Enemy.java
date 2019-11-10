@@ -43,20 +43,9 @@ public abstract class Enemy extends GameEntity {
     {
         normalEnemies.add(normalEnemy);
     }
-    public void loadRoad()
+    public void loadRoad(List<Point> pointList)
     {
-        Point point = new Point(0, 170);
-        Point point1 = new Point(200,  170);
-        Point point2 = new Point(200,  620);
-        Point point3 = new Point(650,  620);
-        Point point4 = new Point(650,  80);
-        Point point5 = new Point(230,  170);
-        roadList.add(point);
-        roadList.add(point1);
-        roadList.add(point2);
-        roadList.add(point3);
-        roadList.add(point4);
-        roadList.add(point5);
+        roadList.addAll(pointList);
     }
     public void Move() {
         /***** To do handle move of Enemy*******/
@@ -182,5 +171,12 @@ public abstract class Enemy extends GameEntity {
     public int size()
     {
         return normalEnemies.size();
+    }
+
+    public void getRoadList() {
+        for(Point p : roadList)
+        {
+            System.out.println(p.getX() + " " + p.getY());
+        }
     }
 }
