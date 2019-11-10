@@ -50,7 +50,8 @@ public class GameStage {
     ImageView iv; //vùng thao tác ảnh
     int curseurX = 0 ; // lưu vị trí hoành độ con trỏ chuột khi trỏ đến vùng chọn tháp
     int curseurY = 0 ; //tung độ
-    List<Tower> towerList = new ArrayList<>(); //ds tháp được đặt
+    SniperTower listTower = new SniperTower();
+    Scanner input = new Scanner(new File("src/MapGame1.txt"));
 
     static  int i = 0;
     static  int j = 0;
@@ -68,16 +69,13 @@ public class GameStage {
         //tạo khung chọn tháp
         HBox hBoxTower = new HBox();
         hBoxTower.setPrefWidth(SCREEN_WIDTH);
-        hBoxTower.setPrefHeight(SCREEN_TITLEMAP*2);
+        hBoxTower.setPrefHeight(SCREEN_TITLEMAP*4);
         hBoxTower.setStyle("-fx-border-color: red;"
                 + "-fx-border-width: 1;"
                 + "-fx-border-style: solid;");
         hBoxTower.setTranslateX(0);
         hBoxTower.setTranslateY(SCREEN_HEIGHT);
-        insertImage(new Image( "file:src/Assets/Tower/Tower.png", 120, 120,
-                true, true), hBoxTower);
-
-
+        insertImage(new Image( "file:src/Assets/Tower/SniperTower.png"), hBoxTower);
         root.getChildren().add(hBoxTower);
 
         List<Bullet> bulletList = new LinkedList<>();
@@ -104,8 +102,8 @@ public class GameStage {
 
         Enemy ListEnemy = new NormalEnemy(ListRoad);
 
-        Tower tower = new sample.SniperTower(160,400);
-
+        Tower tower = new SniperTower(160,400);
+        listTower.setupGestureTarget(mainScene, imageMap);
 
         AnimationTimer timer = new AnimationTimer() {
             @Override
@@ -135,11 +133,9 @@ public class GameStage {
                     bulletAction.get(i).setDestination( ListEnemy.get(i % ListEnemy.size()).getPosition());
                     bulletAction.get(i).Render(mainGraphic);
                 }
-                for(Tower t : towerList){
+                for(Tower t : listTower.towerList){
                     t.Render(mainGraphic);
                 }
-
-
                 tower.Render(mainGraphic);
 //                try {
 //                    Thread.sleep(30);
@@ -177,7 +173,7 @@ public class GameStage {
     }
 
     public void LoadMap() throws FileNotFoundException {
-        Scanner input = new Scanner(new File("src/MapGame1.txt"));
+
         Image tilemap0 = new Image("file:src/Assets/Map/Map-" + 0 + ".png",
                 30, 30, true, true);
         Image tilemap1 = new Image("file:src/Assets/Map/Map-" + 1 + ".png",
@@ -234,79 +230,10 @@ public class GameStage {
 
         iv = new ImageView();
         iv.setImage(i);
-        setupGestureSource(iv);
+        listTower.setupGestureSource(iv);
         hb.getChildren().add(iv);
     }
-    void setupGestureSource(final ImageView source){
-        source.setOnDragDetected(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                System.out.println("DRAG DETECTED");
-                /* allow any transfer mode */
-                Dragboard db = source.startDragAndDrop(TransferMode.MOVE);
 
-                /* put a image on dragboard */
-                ClipboardContent content = new ClipboardContent();
-
-                Image sourceImage = source.getImage();
-                content.putImage(sourceImage);
-                db.setContent(content);
-
-                iv = source;
-                event.consume();
-                }
-            });
-            source.setOnMouseEntered(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent e) {
-                System.out.println("MOUSE ENTERED");
-                source.setCursor(Cursor.HAND);
-//                    System.out.println("e...: "+e.getSceneX());
-                curseurX = (int) e.getSceneX();
-                curseurY = (int) e.getSceneY();
-            }
-        });
-    }
-    void setupGestureTarget(final Image i){
-        ImageView target = new ImageView(i);
-        target.setOnDragOver(new EventHandler <DragEvent>() {
-            @Override
-            public void handle(DragEvent event) {
-                System.out.println("DRAG OVER");
-                Dragboard db = event.getDragboard();
-
-                if(db.hasImage()){
-                    event.acceptTransferModes(TransferMode.MOVE);
-                }
-                event.consume();
-            }
-        });
-
-        target.setOnDragDropped(new EventHandler <DragEvent>(){
-            @Override
-            public void handle(DragEvent event) {
-                System.out.println("DRAG DROPPED");
-                Dragboard db = event.getDragboard();
-
-                if(db.hasImage()){
-                    iv.setImage(db.getImage());
-                    Point2D localPoint = target.sceneToLocal(new Point2D(event.getSceneX(), event.getSceneY()));
-                    //System.out.println("event.getSceneX : "+event.getSceneX());
-                   // System.out.println("localPoint.getX : "+localPoint.getX());
-                    //System.out.println("********");
-                    imageMap[(int)event.getSceneX()/SCREEN_TITLEMAP][(int)event.getSceneY()/SCREEN_TITLEMAP] = null;
-                    iv.setX((int)(localPoint.getX() - iv.getBoundsInLocal().getWidth()  / 2)  );
-                    iv.setY((int)(localPoint.getY() - iv.getBoundsInLocal().getHeight() / 2) );
-
-                    towerList.add(new SniperTower());
-                    event.setDropCompleted(true);
-                }else{
-                    event.setDropCompleted(false);
-                }
-                event.consume();
-            }
-        });
-    }
 
     public List<Point> getListRoad() {
         return ListRoad;

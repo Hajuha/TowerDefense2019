@@ -6,7 +6,7 @@ import javafx.scene.effect.Light;
 import javafx.scene.image.Image;
 
 
-public abstract class Tower {
+public abstract class Tower  {
     protected int dame; // sat thuong
     protected int range; // tam ban
     protected double x_pos;
