@@ -289,7 +289,7 @@ public class GameStage {
                 Dragboard db = event.getDragboard();
 
                 if(db.hasImage()){
-                    iv.setImage(db.getImage())
+                    iv.setImage(db.getImage());
                     Point2D localPoint = target.sceneToLocal(new Point2D(event.getSceneX(), event.getSceneY()));
                     //System.out.println("event.getSceneX : "+event.getSceneX());
                    // System.out.println("localPoint.getX : "+localPoint.getX());
