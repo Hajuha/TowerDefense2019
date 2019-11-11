@@ -36,6 +36,7 @@ public class SniperTower extends Tower {
     public void loadImage(String path) {
         this.image = new Image(SniperTower_IMG + ".png", 30, 30,
                 true, true);
+
     }
     @Override
     public void Render(GraphicsContext gc) {
@@ -44,3 +45,4 @@ public class SniperTower extends Tower {
 
 
 }
+

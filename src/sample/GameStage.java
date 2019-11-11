@@ -52,7 +52,9 @@ public class GameStage {
     int curseurX = 0 ; // lưu vị trí hoành độ con trỏ chuột khi trỏ đến vùng chọn tháp
     int curseurY = 0 ; //tung độ
     SniperTower listTower = new SniperTower();
+
     Scanner input = new Scanner(new File("src/MapGame1.txt")); //ds tháp được đặt
+
 
     static  int i = 0;
     static  int j = 0;
@@ -71,6 +73,7 @@ public class GameStage {
         root.getChildren().add(hbox_sniperTower.getHbox_Tower());
         hbox_sniperTower.setupGestureTarget(mainScene);
 
+
         List<Bullet> bulletAction = new ArrayList<>();
 
         LoadMap();
@@ -80,6 +83,7 @@ public class GameStage {
         Tower tower = new sample.SniperTower(100,400);
         Tower tower1 = new sample.SniperTower(600,300);
         Tower tower2 = new SniperTower(100,400);
+
 
         AnimationTimer timer = new AnimationTimer() {
             @Override
@@ -96,9 +100,11 @@ public class GameStage {
                 if(!normalEnemyAction.isEmpty() && i == 0)  ListEnemy.adds(normalEnemyAction.remove(0));
                 i = (i > 120) ? 0 : i + 1;
                 ListEnemy.RenderList(mainGraphic);
+
                 for(Tower t : listTower.towerList){
                     t.Render(mainGraphic, ListEnemy.getListEnemy());
                 }
+
 //                try {
 //                    Thread.sleep(30);
 //                } catch (InterruptedException e) {
@@ -136,7 +142,7 @@ public class GameStage {
     }
 
     public void LoadMap() throws FileNotFoundException {
-        Scanner input = new Scanner(new File("src/MapGame1.txt"));
+
         Image tilemap0 = new Image("file:src/Assets/Map/Map-" + 0 + ".png",
                 30, 30, true, true);
         Image tilemap1 = new Image("file:src/Assets/Map/Map-" + 1 + ".png",
@@ -189,6 +195,7 @@ public class GameStage {
             }
         }
     }
+
 
     public List<Point> getListRoad() {
         return ListRoad;
