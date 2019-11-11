@@ -70,11 +70,11 @@ public abstract class Enemy extends GameEntity {
         {
             System.out.println(i++);
         }
-        if(this.x_pos > 1200) {
-            i = 0;
-            setPosition(this.roadList.get(0).getX(), this.roadList.get(0).getY());
-            setDri(angle_Right);
-        }
+//        if(this.x_pos > 1200) {
+//            i = 0;
+//            setPosition(this.roadList.get(0).getX(), this.roadList.get(0).getY());
+//            setDri(angle_Right);
+//        }
         if(this.dri != nextRoad())
         {
             this.dri = nextRoad();
@@ -178,5 +178,8 @@ public abstract class Enemy extends GameEntity {
         {
             System.out.println(p.getX() + " " + p.getY());
         }
+    }
+    public List<Enemy> getListEnemy() {
+        return normalEnemies;
     }
 }

@@ -44,9 +44,11 @@ public class NormalEnemy extends Enemy{
     public void Render(GraphicsContext gc) {
         Move();
         gc.drawImage(image,this.x_pos, this.y_pos, 50, 50);
+        gc.setFill(Color.WHITE);
+        gc.fillRect(x_pos + image.getWidth()/4 , y_pos - 3, image.getWidth()/2 /blood_first, 2);
         gc.setFill(Color.RED);
         gc.fillRect(x_pos + image.getWidth()/4 , y_pos - 3, image.getWidth()/2 * getBlood()/blood_first, 2);
-        gc.setStroke(Color.GREEN);
-        gc.strokeLine(x_pos + 25, y_pos + 25, 600, 360);
+//        gc.setStroke(Color.GREEN);
+//        gc.strokeLine(x_pos + 25, y_pos + 25, 600, 360);
     }
 }

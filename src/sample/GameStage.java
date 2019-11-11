@@ -1,4 +1,5 @@
 package sample;
+import HboxTower.Hbox_SniperTower;
 import javafx.animation.Animation;
 import javafx.animation.AnimationTimer;
 import javafx.event.EventHandler;
@@ -50,7 +51,8 @@ public class GameStage {
     ImageView iv; //vùng thao tác ảnh
     int curseurX = 0 ; // lưu vị trí hoành độ con trỏ chuột khi trỏ đến vùng chọn tháp
     int curseurY = 0 ; //tung độ
-    List<Tower> towerList = new ArrayList<>(); //ds tháp được đặt
+    SniperTower listTower = new SniperTower();
+    Scanner input = new Scanner(new File("src/MapGame1.txt")); //ds tháp được đặt
 
     static  int i = 0;
     static  int j = 0;
@@ -65,38 +67,9 @@ public class GameStage {
         mainStage.setScene(mainScene);
         mainStage.setTitle(GAME_TITLE);
 
-        //tạo khung chọn tháp
-        HBox hBoxTower = new HBox();
-        hBoxTower.setPrefWidth(SCREEN_WIDTH);
-        hBoxTower.setPrefHeight(SCREEN_TITLEMAP*2);
-        hBoxTower.setStyle("-fx-border-color: red;"
-                + "-fx-border-width: 1;"
-                + "-fx-border-style: solid;");
-        hBoxTower.setTranslateX(0);
-        hBoxTower.setTranslateY(SCREEN_HEIGHT);
-        insertImage(new Image( "file:src/Assets/Tower/Tower.png", 120, 120,
-                true, true), hBoxTower);
-
-
-        root.getChildren().add(hBoxTower);
-
-        List<Bullet> bulletList = new LinkedList<>();
-
-        Bullet bullet = new Bullet(imageBullet);
-        Bullet bullet1 = new Bullet(imageBullet);
-        Bullet bullet2 = new Bullet(imageBullet);
-        Bullet bullet3 = new Bullet(imageBullet);
-        Bullet bullet5 = new Bullet(imageBullet);
-
-        Bullet bullet4 = new Bullet(imageBullet);
-
-
-        bulletList.add(bullet);
-        bulletList.add(bullet1);
-        bulletList.add(bullet2);
-        bulletList.add(bullet3);
-        bulletList.add(bullet4);
-        bulletList.add(bullet5);
+        Hbox_SniperTower hbox_sniperTower = new Hbox_SniperTower();
+        root.getChildren().add(hbox_sniperTower.getHbox_Tower());
+        hbox_sniperTower.setupGestureTarget(mainScene);
 
         List<Bullet> bulletAction = new ArrayList<>();
 
@@ -104,8 +77,9 @@ public class GameStage {
 
         Enemy ListEnemy = new NormalEnemy(ListRoad);
 
-        Tower tower = new sample.SniperTower(160,400);
-
+        Tower tower = new sample.SniperTower(100,400);
+        Tower tower1 = new sample.SniperTower(600,300);
+        Tower tower2 = new SniperTower(100,400);
 
         AnimationTimer timer = new AnimationTimer() {
             @Override
@@ -115,42 +89,27 @@ public class GameStage {
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
                 }
-
-
-                if(!bulletList.isEmpty() && i % 20 == 0) bulletAction.add(new Bullet(imageBullet));
+                if(hbox_sniperTower.isPut()) {
+                    listTower.towerList.add(new SniperTower(hbox_sniperTower.getTower().x_pos, hbox_sniperTower.getTower().y_pos));
+                    hbox_sniperTower.setPut(false);
+                }
                 if(!normalEnemyAction.isEmpty() && i == 0)  ListEnemy.adds(normalEnemyAction.remove(0));
                 i = (i > 120) ? 0 : i + 1;
-//                ((sample.SniperTower) SnT).setTargetShoot(((NormalEnemy)ListEnemy).get(0).getPosition());
                 ListEnemy.RenderList(mainGraphic);
-
-                for(int i = 0; i < bulletAction.size() - 1 ; i ++)
-
-                {
-                    if(bulletAction.get(i).isShoot())
-                    {
-                        if(bulletAction.isEmpty())  bulletAction.remove(bulletAction.get(i));
-                        continue;
-                    }
-
-                    bulletAction.get(i).setDestination( ListEnemy.get(i % ListEnemy.size()).getPosition());
-                    bulletAction.get(i).Render(mainGraphic);
+                for(Tower t : listTower.towerList){
+                    t.Render(mainGraphic, ListEnemy.getListEnemy());
                 }
-                for(Tower t : towerList){
-                    t.Render(mainGraphic);
-                }
-
-
-                tower.Render(mainGraphic);
 //                try {
 //                    Thread.sleep(30);
 //                } catch (InterruptedException e) {
 //                    e.printStackTrace();
 //                }
+                tower2.Render(mainGraphic, ListEnemy.getListEnemy());
+                hbox_sniperTower.Render_Hbox(mainGraphic);
             }
         };
 //        timer.wait(100);
         timer.start();
-
 
 
     }
@@ -229,83 +188,6 @@ public class GameStage {
                 }
             }
         }
-    }
-    void insertImage(Image i, HBox hb){
-
-        iv = new ImageView();
-        iv.setImage(i);
-        setupGestureSource(iv);
-        hb.getChildren().add(iv);
-    }
-    void setupGestureSource(final ImageView source){
-        source.setOnDragDetected(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                System.out.println("DRAG DETECTED");
-                /* allow any transfer mode */
-                Dragboard db = source.startDragAndDrop(TransferMode.MOVE);
-
-                /* put a image on dragboard */
-                ClipboardContent content = new ClipboardContent();
-
-                Image sourceImage = source.getImage();
-                content.putImage(sourceImage);
-                db.setContent(content);
-
-                iv = source;
-                event.consume();
-                }
-            });
-            source.setOnMouseEntered(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent e) {
-                System.out.println("MOUSE ENTERED");
-                source.setCursor(Cursor.HAND);
-//                    System.out.println("e...: "+e.getSceneX());
-                curseurX = (int) e.getSceneX();
-                curseurY = (int) e.getSceneY();
-            }
-        });
-    }
-    void setupGestureTarget(final Image i){
-        ImageView target = new ImageView(i);
-        target.setOnDragOver(new EventHandler <DragEvent>() {
-            @Override
-            public void handle(DragEvent event) {
-                System.out.println("DRAG OVER");
-                Dragboard db = event.getDragboard();
-
-                if(db.hasImage()){
-                    event.acceptTransferModes(TransferMode.MOVE);
-                }
-                event.consume();
-            }
-        });
-
-        target.setOnDragDropped(new EventHandler <DragEvent>(){
-            @Override
-            public void handle(DragEvent event) {
-                System.out.println("DRAG DROPPED");
-                Dragboard db = event.getDragboard();
-
-                if(db.hasImage()){
-                    iv.setImage(db.getImage())
-                    Point2D localPoint = target.sceneToLocal(new Point2D(event.getSceneX(), event.getSceneY()));
-                    //System.out.println("event.getSceneX : "+event.getSceneX());
-                   // System.out.println("localPoint.getX : "+localPoint.getX());
-                    //System.out.println("********");
-                    imageMap[(int)event.getSceneX()/SCREEN_TITLEMAP][(int)event.getSceneY()/SCREEN_TITLEMAP] = null;
-                    iv.setX((int)(localPoint.getX() - iv.getBoundsInLocal().getWidth()  / 2)  );
-                    iv.setY((int)(localPoint.getY() - iv.getBoundsInLocal().getHeight() / 2) );
-
-                    towerList.add(new SniperTower());
-                    event.setDropCompleted(true);
-                }else{
-                    event.setDropCompleted(false);
-                }
-                event.consume();
-            }
-        });
     }
 
     public List<Point> getListRoad() {
