@@ -6,26 +6,38 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 
+import java.util.List;
+
 public class Bullet extends GameTile{
-    final static String Bullet_Img = "file:src/Assets/Bullet/RocketBullet";
-    final static int dame = 10;
+    final static String Bullet_Img = "file:src/Assets/Bullet/Bullet";
+    final static int dame = 3;
     final static int speed_bullet = 6;
-    final static int range = 270;
+
+    private sample.Enemy TargetEnemy;
+    private boolean is_found;
     protected int speed;
     private double angle;
     private double sinX;
     private double cosX;
+    private int indexListEnemy;
+    private boolean isshoot ;
 
     public Point Destination  = new Point(0, 0);
 
-    public Bullet( Image bullet)
+    public Bullet(sample.Enemy enemy, int x, int y)
     {
-        super(100, 450);
-        setImage(bullet);
+        super(x, y);
+//        setImage(Bullet_Img);
+        loadImage(Bullet_Img);
         setSpeed(speed_bullet);
+        setTargetEnemy(enemy);
+        setDestination(enemy.getPosition());
+        is_found = false;
         angle = 0;
         sinX = 0;
         cosX = 1;
+        indexListEnemy = 0;
+        isshoot = false;
     }
     public Bullet(int x_pos, int y_pos) {
         super(x_pos, y_pos);
@@ -46,8 +58,10 @@ public class Bullet extends GameTile{
     public void setAngle()
     {
         double delta_angle = 0;
+        setDestination(TargetEnemy.getPosition());
+        System.out.println("x = " + Destination.getX() + ",y = " + Destination.getY());
         double del = Math.sqrt(Math.pow((x_pos - Destination.getX()), 2) +
-                                Math.pow(y_pos - Destination.getY(), 2))   ;
+                Math.pow(y_pos - Destination.getY(), 2))   ;
         sinX = (Destination.y - y_pos == 0) ? 0 : (Destination.y - (double) y_pos)/del;
         cosX = (Destination.x - x_pos == 0) ? 0 : (Destination.x - (double) x_pos)/del;
 //        angle += delta;
@@ -68,16 +82,19 @@ public class Bullet extends GameTile{
 
     @Override
     public void Render(GraphicsContext gc) {
-        if(!isShoot())
+        if(!isshoot)
         {
             move();
-            gc.drawImage(image, x_pos + 5, y_pos);
-
+//            gc.drawImage(image, x_pos + 5, y_pos);
+            gc.setFill(Color.RED);
+            gc.fillOval(x_pos + 5, y_pos, 7, 7);
         }
-        else {
+        isshoot = isShoot();
+        if(isshoot) {
+            TargetEnemy.bleed(dame);
+            System.out.println("Blood = " + TargetEnemy.getBlood());
+            System.out.println("Da ban trung");
         }
-
-//        }
     }
 
     public void setDestination(Point destination) {
@@ -97,6 +114,39 @@ public class Bullet extends GameTile{
         return (x_pos + 35 >= Destination.getX() && x_pos - 35 <= Destination.getX()
                 && y_pos + 35 >= Destination.getY() && y_pos - 35 <= Destination.getY()
         );
+    }
+    public void setTargetEnemy(List<sample.Enemy> listTarget) {
+        // tim kiem muc tieu de ban
+        //khoang cach tu node thu index den vien dan
+        if(TargetEnemy.is_dead()) // trong truong hop muc tieu da chet
+        {
+            int preRange = (int) Math.sqrt(Math.pow(x_pos - listTarget.get(indexListEnemy).getX_pos(), 2)
+                    + Math.pow(y_pos - listTarget.get(indexListEnemy).getY_pos(), 2));
+            for(int i = indexListEnemy; i < listTarget.size(); i ++)
+            {
+                int preRange2 = (int) Math.sqrt(Math.pow(x_pos - listTarget.get(i).getX_pos(), 2)
+                        + Math.pow(y_pos - listTarget.get(i).getY_pos(), 2));
+                if(preRange > preRange2)
+                {
+                    TargetEnemy = listTarget.get(i - 1);
+                    break;
+                }
+                preRange = preRange2;
+            }
+        }
+
+    }
+
+    public void setTargetEnemy(sample.Enemy targetEnemy) {
+        TargetEnemy = targetEnemy;
+    }
+
+    public sample.Enemy getTargetEnemy() {
+        return TargetEnemy;
+    }
+
+    public static int getDame() {
+        return dame;
     }
 
 }

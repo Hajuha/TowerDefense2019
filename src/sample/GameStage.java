@@ -1,4 +1,5 @@
 package sample;
+import HboxTower.Hbox_SniperTower;
 import javafx.animation.Animation;
 import javafx.animation.AnimationTimer;
 import javafx.event.EventHandler;
@@ -51,7 +52,9 @@ public class GameStage {
     int curseurX = 0 ; // lưu vị trí hoành độ con trỏ chuột khi trỏ đến vùng chọn tháp
     int curseurY = 0 ; //tung độ
     SniperTower listTower = new SniperTower();
-    Scanner input = new Scanner(new File("src/MapGame1.txt"));
+
+    Scanner input = new Scanner(new File("src/MapGame1.txt")); //ds tháp được đặt
+
 
     static  int i = 0;
     static  int j = 0;
@@ -66,37 +69,10 @@ public class GameStage {
         mainStage.setScene(mainScene);
         mainStage.setTitle(GAME_TITLE);
 
-        //tạo khung chọn tháp
-        HBox hBoxTower = new HBox();
-        hBoxTower.setPrefWidth(SCREEN_WIDTH);
-        hBoxTower.setPrefHeight(SCREEN_TITLEMAP*4);
-        hBoxTower.setStyle("-fx-border-color: red;"
-                + "-fx-border-width: 1;"
-                + "-fx-border-style: solid;");
-        hBoxTower.setTranslateX(0);
-        hBoxTower.setTranslateY(SCREEN_HEIGHT);
+        Hbox_SniperTower hbox_sniperTower = new Hbox_SniperTower();
+        root.getChildren().add(hbox_sniperTower.getHbox_Tower());
+        hbox_sniperTower.setupGestureTarget(mainScene);
 
-        insertImage(new Image("file:src/Assets/Tower/SniperTower.png", 120, 120,
-                true, true), hBoxTower);
-        root.getChildren().add(hBoxTower);
-
-        List<Bullet> bulletList = new LinkedList<>();
-
-        Bullet bullet = new Bullet(imageBullet);
-        Bullet bullet1 = new Bullet(imageBullet);
-        Bullet bullet2 = new Bullet(imageBullet);
-        Bullet bullet3 = new Bullet(imageBullet);
-        Bullet bullet5 = new Bullet(imageBullet);
-
-        Bullet bullet4 = new Bullet(imageBullet);
-
-
-        bulletList.add(bullet);
-        bulletList.add(bullet1);
-        bulletList.add(bullet2);
-        bulletList.add(bullet3);
-        bulletList.add(bullet4);
-        bulletList.add(bullet5);
 
         List<Bullet> bulletAction = new ArrayList<>();
 
@@ -104,8 +80,10 @@ public class GameStage {
 
         Enemy ListEnemy = new NormalEnemy(ListRoad);
 
-        Tower tower = new SniperTower(100,400);
-        listTower.setupGestureTarget(mainScene, imageMap);
+        Tower tower = new sample.SniperTower(100,400);
+        Tower tower1 = new sample.SniperTower(600,300);
+        Tower tower2 = new SniperTower(100,400);
+
 
         AnimationTimer timer = new AnimationTimer() {
             @Override
@@ -115,40 +93,29 @@ public class GameStage {
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
                 }
-
-
-                if(!bulletList.isEmpty() && i % 20 == 0) bulletAction.add(new Bullet(imageBullet));
+                if(hbox_sniperTower.isPut()) {
+                    listTower.towerList.add(new SniperTower(hbox_sniperTower.getTower().x_pos, hbox_sniperTower.getTower().y_pos));
+                    hbox_sniperTower.setPut(false);
+                }
                 if(!normalEnemyAction.isEmpty() && i == 0)  ListEnemy.adds(normalEnemyAction.remove(0));
                 i = (i > 120) ? 0 : i + 1;
-//                ((sample.SniperTower) SnT).setTargetShoot(((NormalEnemy)ListEnemy).get(0).getPosition());
                 ListEnemy.RenderList(mainGraphic);
 
-                for(int i = 0; i < bulletAction.size() - 1 ; i ++)
-
-                {
-                    if(bulletAction.get(i).isShoot())
-                    {
-                        if(bulletAction.isEmpty())  bulletAction.remove(bulletAction.get(i));
-                        continue;
-                    }
-
-                    bulletAction.get(i).setDestination( ListEnemy.get(i % ListEnemy.size()).getPosition());
-                    bulletAction.get(i).Render(mainGraphic);
-                }
                 for(Tower t : listTower.towerList){
-                    t.Render(mainGraphic);
+                    t.Render(mainGraphic, ListEnemy.getListEnemy());
                 }
-                tower.Render(mainGraphic);
+
 //                try {
 //                    Thread.sleep(30);
 //                } catch (InterruptedException e) {
 //                    e.printStackTrace();
 //                }
+                tower2.Render(mainGraphic, ListEnemy.getListEnemy());
+                hbox_sniperTower.Render_Hbox(mainGraphic);
             }
         };
 //        timer.wait(100);
         timer.start();
-
 
 
     }
@@ -227,13 +194,6 @@ public class GameStage {
                 }
             }
         }
-    }
-    void insertImage(Image i, HBox hb){
-
-        iv = new ImageView();
-        iv.setImage(i);
-        listTower.setupGestureSource(iv);
-        hb.getChildren().add(iv);
     }
 
 

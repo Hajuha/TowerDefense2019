@@ -38,92 +38,11 @@ public class SniperTower extends Tower {
                 true, true);
 
     }
-
-
     @Override
     public void Render(GraphicsContext gc) {
-
         gc.drawImage(image,90, 480);
     }*/
 
-    void setupGestureSource(final ImageView source){
-
-        source.setOnDragDetected(new EventHandler<MouseEvent>() {
-
-            @Override
-            public void handle(MouseEvent event) {
-                System.out.println("DRAG DETECTED");
-                /* allow any transfer mode */
-                Dragboard db = source.startDragAndDrop(TransferMode.MOVE);
-
-                /* put a image on dragboard */
-                ClipboardContent content = new ClipboardContent();
-
-                Image sourceImage = source.getImage();
-                content.putImage(sourceImage);
-                db.setContent(content);
-
-
-                iv = source ;
-
-
-                event.consume();
-            }
-        });
-        source.setOnMouseEntered(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent e) {
-                System.out.println("MOUSE ENTERED");
-                source.setCursor(Cursor.HAND);
-//                    System.out.println("e...: "+e.getSceneX());
-
-            }
-        });
-    }
-    void setupGestureTarget(Scene i, Image[][] imageMap){
-        //ImageView target = new ImageView(i);
-        i.setOnDragOver(new EventHandler <DragEvent>() {
-            @Override
-            public void handle(DragEvent event) {
-                System.out.println("DRAG OVER");
-                Dragboard db = event.getDragboard();
-
-                if(db.hasImage()){
-                    event.acceptTransferModes(TransferMode.MOVE);
-                }
-
-                event.consume();
-            }
-        });
-        i.setOnDragDropped(new EventHandler <DragEvent>(){
-            @Override
-            public void handle(DragEvent event) {
-                System.out.println("DRAG DROPPED");
-                Dragboard db = event.getDragboard();
-
-                if(db.hasImage()){
-
-                    iv.setImage(db.getImage());
-
-                    //Point2D localPoint = target.sceneToLocal(new Point2D(event.getSceneX(), event.getSceneY()));
-                    System.out.println("event : "+event.getSceneX() +", " + event.getSceneY());
-                    // System.out.println("localPoint.getX : "+localPoint.getX());
-                    //System.out.println("********");
-                    int x_tiles = (int) event.getSceneX() / SCREEN_TITLEMAP;
-                    int y_tiles = (int) event.getSceneY() / SCREEN_TITLEMAP;
-
-                    //iv.setX((int)(localPoint.getX() - iv.getBoundsInLocal().getWidth()  / 2)  );
-                    //iv.setY((int)(localPoint.getY() - iv.getBoundsInLocal().getHeight() / 2) );
-
-                    towerList.add(new SniperTower((x_tiles) *SCREEN_TITLEMAP,(y_tiles-2) * SCREEN_TITLEMAP));
-                    event.setDropCompleted(true);
-                }else{
-                    event.setDropCompleted(false);
-                }
-
-                event.consume();
-            }
-        });
-    }
 
 }
+
