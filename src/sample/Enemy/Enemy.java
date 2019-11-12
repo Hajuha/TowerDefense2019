@@ -119,7 +119,10 @@ public abstract class Enemy extends GameEntity {
     {
         for (Enemy normalEnemy : normalEnemies)
         {
-            normalEnemy.Render(gc);
+            if(normalEnemy.is_dead()) normalEnemies.remove(normalEnemy);
+            else {
+                normalEnemy.Render(gc);
+            }
         }
     }
     public void setArmor(int armor) {
@@ -151,7 +154,7 @@ public abstract class Enemy extends GameEntity {
     }
     public boolean is_dead()
     {
-        return  (this.Blood <= 0);
+        return  (this.Blood <= 0  ||  this.x_pos > 1200);
     }
 
     @Override

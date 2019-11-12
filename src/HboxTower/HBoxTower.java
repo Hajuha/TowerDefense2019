@@ -8,6 +8,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.*;
 import javafx.scene.layout.HBox;
+import javafx.scene.paint.Color;
 import sample.Enemy;
 import sample.Tower;
 
@@ -109,6 +110,7 @@ public abstract class HBoxTower {
 
                     int x_tiles = (int) event.getSceneX() / SCREEN_TITLEMAP;
                     int y_tiles = (int) event.getSceneY() / SCREEN_TITLEMAP;
+
                     if (MapTitle[y_tiles][x_tiles] == 1 && MapTitle[y_tiles+1][x_tiles] == 1) {
                         System.out.println("event : "+event.getSceneX() +", " + event.getSceneY());
                         MapTitle[y_tiles][x_tiles] = 0;
@@ -117,7 +119,6 @@ public abstract class HBoxTower {
                         tower.setY_pos((y_tiles) * SCREEN_TITLEMAP);
                         isPut = true;
                     }
-                    event.setDropCompleted(true);
                 }else{
                     event.setDropCompleted(false);
                 }
@@ -141,5 +142,6 @@ public abstract class HBoxTower {
     public HBox getHbox_Tower() {
         return Hbox_Tower;
     }
+
     public abstract void Render_Hbox(GraphicsContext gc);
 }
