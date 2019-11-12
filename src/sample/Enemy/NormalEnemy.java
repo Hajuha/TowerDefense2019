@@ -31,7 +31,7 @@ public class NormalEnemy extends Enemy{
         this.i = 0;
         angle = 0;
         getRoadList();
-        System.out.println("SS :");
+        //System.out.println("SS :");
     }
 
     @Override

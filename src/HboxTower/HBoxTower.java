@@ -83,12 +83,12 @@ public abstract class HBoxTower {
             }
         });
     }
-    public void setupGestureTarget(Scene scene){ // Xu li phan keo tha
+    public void setupGestureTarget(Scene scene, int[][] MapTitle){ // Xu li phan keo tha
         //ImageView target = new ImageView(i);
         scene.setOnDragOver(new EventHandler <DragEvent>() {
             @Override
             public void handle(DragEvent event) {
-                System.out.println("DRAG OVER");
+                //System.out.println("DRAG OVER");
                 Dragboard db = event.getDragboard();
 
                 if(db.hasImage()){
@@ -105,15 +105,18 @@ public abstract class HBoxTower {
 
                 if(db.hasImage()){
 
-                    imageView_Hbox.setImage(db.getImage());
+                    //imageView_Hbox.setImage(db.getImage());
 
-                    System.out.println("event : "+event.getSceneX() +", " + event.getSceneY());
                     int x_tiles = (int) event.getSceneX() / SCREEN_TITLEMAP;
                     int y_tiles = (int) event.getSceneY() / SCREEN_TITLEMAP;
-
-                    tower.setX_pos((x_tiles) *SCREEN_TITLEMAP);
-                    tower.setY_pos((y_tiles) * SCREEN_TITLEMAP);
-                    isPut = true;
+                    if (MapTitle[y_tiles][x_tiles] == 1 && MapTitle[y_tiles+1][x_tiles] == 1) {
+                        System.out.println("event : "+event.getSceneX() +", " + event.getSceneY());
+                        MapTitle[y_tiles][x_tiles] = 0;
+                        MapTitle[y_tiles+1][x_tiles] = 0;
+                        tower.setX_pos((x_tiles) *SCREEN_TITLEMAP);
+                        tower.setY_pos((y_tiles) * SCREEN_TITLEMAP);
+                        isPut = true;
+                    }
                     event.setDropCompleted(true);
                 }else{
                     event.setDropCompleted(false);

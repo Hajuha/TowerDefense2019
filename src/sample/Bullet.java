@@ -59,7 +59,7 @@ public class Bullet extends GameTile{
     {
         double delta_angle = 0;
         setDestination(TargetEnemy.getPosition());
-        System.out.println("x = " + Destination.getX() + ",y = " + Destination.getY());
+        //System.out.println("x = " + Destination.getX() + ",y = " + Destination.getY());
         double del = Math.sqrt(Math.pow((x_pos - Destination.getX()), 2) +
                 Math.pow(y_pos - Destination.getY(), 2))   ;
         sinX = (Destination.y - y_pos == 0) ? 0 : (Destination.y - (double) y_pos)/del;
@@ -92,8 +92,8 @@ public class Bullet extends GameTile{
         isshoot = isShoot();
         if(isshoot) {
             TargetEnemy.bleed(dame);
-            System.out.println("Blood = " + TargetEnemy.getBlood());
-            System.out.println("Da ban trung");
+            //System.out.println("Blood = " + TargetEnemy.getBlood());
+            //System.out.println("Da ban trung");
         }
     }
 
