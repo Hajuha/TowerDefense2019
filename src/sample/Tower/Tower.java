@@ -1,13 +1,12 @@
 package sample;
-
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.effect.Light;
 
 import javafx.scene.image.Image;
+import javafx.scene.paint.Color;
 
 import java.util.ArrayList;
 import java.util.List;
-
 
 public abstract class Tower  {
     protected int dame; // sat thuong
@@ -46,50 +45,44 @@ public abstract class Tower  {
 
     public void Shoot(List<sample.Enemy> enemyList)
     {
+        if(targetEnemy == null || !utilInRange()){
+            isFoundEnemy = false;
+        }
         if(isFoundEnemy)
         {
-            if(i == 0)
-            {bulletList.add(new Bullet(targetEnemy,(int) x_pos, (int) y_pos));
-                System.out.println("da tim thay target : x  " + targetEnemy.x_pos + ",y = " + targetEnemy.y_pos);}
-            i = (i > 100) ? 0 : i + 1;
+            if(i == 0)  bulletList.add(new Bullet(targetEnemy,(int) x_pos, (int) y_pos));
+            i = (i > 20) ? 0 : i + 1;
         }
         else {
-            setTargetEnemy(enemyList);
             System.out.println("chua tim thay target");
+            setTargetEnemy(enemyList); // tim target
         }
     }
 
     public void setTargetEnemy(List <sample.Enemy> enemyList) {
         if(enemyList.isEmpty()) {
             System.out.println("EnemyList Empty");
+            isFoundEnemy = false;
             return;
         }
-        targetEnemy = enemyList.get(0);
-        int preRange = (int) Math.sqrt(Math.pow(x_pos - enemyList.get(0).getX_pos(), 2)
-                + Math.pow(y_pos - enemyList.get(0).getY_pos(), 2));
-        for(int i = 1;i < enemyList.size() ; i++)
+        isFoundEnemy = false;
+        for(int i = 0;i < enemyList.size() ; i++)
         {
             int preRange2 = (int) Math.sqrt(Math.pow(x_pos - enemyList.get(i).getX_pos(), 2)
                     + Math.pow(y_pos - enemyList.get(i).getY_pos(), 2));
-            if(preRange > preRange2)
+            if(preRange2 < range)
             {
-//                targetEnemy = enemyList.get(i - 1);
-                System.out.println("Da tim thay target");
+                targetEnemy = enemyList.get(i);
+                isFoundEnemy = true;
                 break;
             }
-            preRange = preRange2;
-            targetEnemy = enemyList.get(i - 1);
         }
-        isFoundEnemy = true;
-
     }
     public void RenderBullet(GraphicsContext gc,List<sample.Enemy> enemyList)
     {
-//        if(!bulletList.isEmpty())
         if(bulletList == null) return;
         for(Bullet b : bulletList)
         {
-
             b.Render(gc);
             if(b.isShoot())
             {
@@ -97,20 +90,22 @@ public abstract class Tower  {
                 if(bulletList == null) return;
                 continue;
             }
-            else if(b.getTargetEnemy().is_dead())
+            if(b.getTargetEnemy().is_dead())
             {
+                isFoundEnemy = false;
                 enemyList.remove(b.getTargetEnemy());
                 b.setTargetEnemy(enemyList);
+                System.out.println("dang tim");
             }
 
         }
     }
     public void Render(GraphicsContext gc, List<sample.Enemy> enemyList) {
-
-        if(isFoundEnemy) RenderBullet(gc, enemyList);
         Shoot(enemyList);
-        loadImage(towerImagePath);
+        if(isFoundEnemy) RenderBullet(gc, enemyList);
         gc.drawImage(image, x_pos, y_pos);
+//        gc.setStroke(Color.RED);
+//        gc.strokeOval(this.x_pos - range + 15 , this.y_pos  - range+ 30, getRange()*2  , getRange()*2);
     }
 
     public double getY_pos() {
@@ -127,5 +122,13 @@ public abstract class Tower  {
 
     public void setX_pos(double x_pos) {
         this.x_pos = x_pos;
+    }
+
+    public int getRange() {
+        return range;
+    }
+    public boolean utilInRange() {
+        return (range > (int) Math.sqrt(Math.pow(this.x_pos - targetEnemy.getX_pos(), 2)
+                + Math.pow(this.y_pos - targetEnemy.getY_pos(), 2))|| targetEnemy.getX_pos() > 1200);
     }
 }

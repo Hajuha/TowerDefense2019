@@ -126,7 +126,7 @@ public class Bullet extends GameTile{
             {
                 int preRange2 = (int) Math.sqrt(Math.pow(x_pos - listTarget.get(i).getX_pos(), 2)
                         + Math.pow(y_pos - listTarget.get(i).getY_pos(), 2));
-                if(preRange > preRange2)
+                if(preRange <  preRange2)
                 {
                     TargetEnemy = listTarget.get(i - 1);
                     break;

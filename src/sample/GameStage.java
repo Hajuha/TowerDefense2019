@@ -99,11 +99,12 @@ public class GameStage {
                 }
                 if(!normalEnemyAction.isEmpty() && i == 0)  ListEnemy.adds(normalEnemyAction.remove(0));
                 i = (i > 120) ? 0 : i + 1;
-                ListEnemy.RenderList(mainGraphic);
 
                 for(Tower t : listTower.towerList){
                     t.Render(mainGraphic, ListEnemy.getListEnemy());
                 }
+                ListEnemy.RenderList(mainGraphic);
+                hbox_sniperTower.Render_Hbox(mainGraphic);
 
 //                try {
 //                    Thread.sleep(30);
