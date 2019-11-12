@@ -51,7 +51,7 @@ public abstract class Tower  {
         if(isFoundEnemy)
         {
             if(i == 0)  bulletList.add(new Bullet(targetEnemy,(int) x_pos, (int) y_pos));
-            i = (i > 20) ? 0 : i + 1;
+            i = (i > 100) ? 0 : i + 1;
         }
         else {
             System.out.println("chua tim thay target");
@@ -81,23 +81,22 @@ public abstract class Tower  {
     public void RenderBullet(GraphicsContext gc,List<sample.Enemy> enemyList)
     {
         if(bulletList == null) return;
-        for(Bullet b : bulletList)
+        for(int i = 0 ; i < bulletList.size(); i ++)
         {
-            b.Render(gc);
-            if(b.isShoot())
+            bulletList.get(i).Render(gc);
+            if(bulletList.get(i).isShoot())
             {
-                bulletList.remove(b);
+                bulletList.remove(i);
                 if(bulletList == null) return;
                 continue;
             }
-            if(b.getTargetEnemy().is_dead())
+            if(bulletList.get(i).getTargetEnemy().is_dead())
             {
                 isFoundEnemy = false;
-                enemyList.remove(b.getTargetEnemy());
-                b.setTargetEnemy(enemyList);
+                enemyList.remove(bulletList.get(i).getTargetEnemy());
+                bulletList.get(i).setTargetEnemy(enemyList);
                 System.out.println("dang tim");
             }
-
         }
     }
     public void Render(GraphicsContext gc, List<sample.Enemy> enemyList) {

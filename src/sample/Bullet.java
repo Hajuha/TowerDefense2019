@@ -1,17 +1,21 @@
 package sample;
 
+import javafx.geometry.Rectangle2D;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
+import javafx.scene.transform.Rotate;
 
 import java.util.List;
 
 public class Bullet extends GameTile{
-    final static String Bullet_Img = "file:src/Assets/Bullet/Bullet";
+    final static String Bullet_Img = "file:src/Assets/Bullet/RocketBullet";
     final static int dame = 3;
-    final static int speed_bullet = 6;
+    final static int speed_bullet = 3;
+    private SnapshotParameters snapshotParameters = new SnapshotParameters();
+    private final Image image_Bullt = new Image(Bullet_Img + ".png", 20, 20, true, true);
 
     private sample.Enemy TargetEnemy;
     private boolean is_found;
@@ -21,17 +25,19 @@ public class Bullet extends GameTile{
     private double cosX;
     private int indexListEnemy;
     private boolean isshoot ;
+    private ImageView imageView = new ImageView();
 
     public Point Destination  = new Point(0, 0);
 
     public Bullet(sample.Enemy enemy, int x, int y)
     {
         super(x, y);
-//        setImage(Bullet_Img);
-        loadImage(Bullet_Img);
+        this.image = image_Bullt;
+        imageView.setImage(image);
         setSpeed(speed_bullet);
         setTargetEnemy(enemy);
         setDestination(enemy.getPosition());
+        snapshotParameters.setFill(Color.TRANSPARENT);
         is_found = false;
         angle = 0;
         sinX = 0;
@@ -51,22 +57,41 @@ public class Bullet extends GameTile{
     public void setSinX(double sinX) {
         this.sinX = sinX;
     }
-
     public void setCosX(double cosX) {
         this.cosX = cosX;
     }
+
     public void setAngle()
     {
-        double delta_angle = 0;
         setDestination(TargetEnemy.getPosition());
-        //System.out.println("x = " + Destination.getX() + ",y = " + Destination.getY());
         double del = Math.sqrt(Math.pow((x_pos - Destination.getX()), 2) +
                 Math.pow(y_pos - Destination.getY(), 2))   ;
         sinX = (Destination.y - y_pos == 0) ? 0 : (Destination.y - (double) y_pos)/del;
         cosX = (Destination.x - x_pos == 0) ? 0 : (Destination.x - (double) x_pos)/del;
-//        angle += delta;
-
+        double angle2 = Math.abs(Math.asin(sinX) * 180 / Math.PI) ;
+        if(sinX >= 0 &&  cosX >= 0)
+        {
+            angle2 = 270 - angle2;
+        }
+        else if(sinX >= 0 && cosX <= 0)
+        {
+            angle2 = 90 + angle2;
+        }
+        else if(sinX <= 0 && cosX >= 0)
+        {
+            angle2 = 270 + angle2;
+        }
+        else if(sinX <= 0 && cosX <= 0)
+        {
+            angle2 = 90 - angle2;
+        }
+        double delta_angle = (angle - angle2 > 180) ? (angle - angle2 - 360) : angle - angle2;
+        System.out.println("delta_angle = " + angle + " ,"+  angle2);
+        angle = angle2;
+        this.imageView.setRotate(imageView.getRotate() + delta_angle);
+        image = imageView.snapshot(snapshotParameters, null);
     }
+
 
     @Override
     public void ShowObject(GraphicsContext gc) {
@@ -74,9 +99,10 @@ public class Bullet extends GameTile{
     }
     public void move()
     {
+
+        x_pos += ((double) speed) * cosX;
+        y_pos += ((double) speed) * sinX;
         setAngle();
-        x_pos += speed * cosX;
-        y_pos += speed * sinX;
     }
 
 
@@ -85,15 +111,11 @@ public class Bullet extends GameTile{
         if(!isshoot)
         {
             move();
-//            gc.drawImage(image, x_pos + 5, y_pos);
-            gc.setFill(Color.RED);
-            gc.fillOval(x_pos + 5, y_pos, 7, 7);
+            gc.drawImage(image, x_pos + 5, y_pos + 7);
         }
         isshoot = isShoot();
         if(isshoot) {
             TargetEnemy.bleed(dame);
-            //System.out.println("Blood = " + TargetEnemy.getBlood());
-            //System.out.println("Da ban trung");
         }
     }
 
@@ -105,14 +127,13 @@ public class Bullet extends GameTile{
         return Destination;
     }
 
-
     public void setSpeed(int speed) {
         this.speed = speed;
     }
     public boolean isShoot()
     {
-        return (x_pos + 35 >= Destination.getX() && x_pos - 35 <= Destination.getX()
-                && y_pos + 35 >= Destination.getY() && y_pos - 35 <= Destination.getY()
+        return (x_pos + 15 >= Destination.getX() && x_pos - 15 <= Destination.getX()
+                && y_pos + 15 >= Destination.getY() && y_pos - 15 <= Destination.getY()
         );
     }
     public void setTargetEnemy(List<sample.Enemy> listTarget) {
@@ -134,7 +155,6 @@ public class Bullet extends GameTile{
                 preRange = preRange2;
             }
         }
-
     }
 
     public void setTargetEnemy(sample.Enemy targetEnemy) {

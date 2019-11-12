@@ -20,7 +20,7 @@ public class SniperTower extends Tower {
     private int newRange;
     private int newCost;
     private final static int SCREEN_TITLEMAP = 30;
-    private final int Range_Sniper = 200;
+    private final int Range_Sniper = 250;
     List<Tower> towerList = new ArrayList<>(); //ds tháp được đặt
     private final String SniperTower_IMG = "Tower1";
     ImageView iv;

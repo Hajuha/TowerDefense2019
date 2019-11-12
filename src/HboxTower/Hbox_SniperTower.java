@@ -22,12 +22,10 @@ public class Hbox_SniperTower extends HBoxTower {
 
     @Override
     public void Render_Hbox(GraphicsContext gc) {
-//        gc.drawImage(image_NormalTower, x_pos, y_pos);
-//        gc.drawImage(image_NormalTower, tower.getX_pos(), tower.getY_pos());
         if(this.isDrag)
         {
             if(canPut) {
-                gc.setStroke(Color.YELLOWGREEN);
+                gc.setStroke(Color.PAPAYAWHIP);
             }
             else gc.setStroke(Color.RED);
             gc.strokeOval(x_pos - tower.getRange() , y_pos - tower.getRange() , tower.getRange()* 2, tower.getRange() * 2);

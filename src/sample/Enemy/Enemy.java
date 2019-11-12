@@ -112,16 +112,16 @@ public abstract class Enemy extends GameEntity {
     }
     public Point getPosition()
     {
-        point = new Point(x_pos + 15, y_pos + 20);
+        point = new Point(x_pos + 5, y_pos + 10);
         return point;
     }
     public void RenderList(GraphicsContext gc)
     {
-        for (Enemy normalEnemy : normalEnemies)
+        for (int i = 0; i < normalEnemies.size(); i ++)
         {
-            if(normalEnemy.is_dead()) normalEnemies.remove(normalEnemy);
+            if(normalEnemies.get(i).is_dead()) normalEnemies.remove(i);
             else {
-                normalEnemy.Render(gc);
+                normalEnemies.get(i).Render(gc);
             }
         }
     }
