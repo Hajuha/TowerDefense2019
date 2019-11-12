@@ -29,7 +29,9 @@ public abstract class HBoxTower {
     protected Tower tower;
     private final int BoxTower_WIDTH = 30;
     private final int BoxTower_HEIGHT =  60;
-    private boolean isPut;
+    protected boolean isPut;
+    protected boolean isDrag;
+    protected boolean canPut;
     public HBoxTower()
     {
         Hbox_Tower.setPrefWidth(BoxTower_WIDTH);
@@ -39,6 +41,8 @@ public abstract class HBoxTower {
                 + "-fx-border-style: solid;");
         insertImage();
         isPut = false;
+        isDrag = false;
+        canPut = false;
     }
     void insertImage(){
         this.setupGestureSource();
@@ -94,8 +98,18 @@ public abstract class HBoxTower {
 
                 if(db.hasImage()){
                     event.acceptTransferModes(TransferMode.MOVE);
+                    setPosition((int)event.getX() , (int) event.getY() );
+                    int x_tiles = (int) event.getSceneX() / SCREEN_TITLEMAP;
+                    int y_tiles = (int) event.getSceneY() / SCREEN_TITLEMAP;
+                    if (MapTitle[y_tiles][x_tiles] == 1 && MapTitle[y_tiles+1][x_tiles] == 1)
+                    {
+                        canPut = true;
+                    }
+                    else canPut = false;
+                    isDrag = true;
                 }
                 event.consume();
+
             }
         });
         scene.setOnDragDropped(new EventHandler <DragEvent>(){
@@ -103,11 +117,8 @@ public abstract class HBoxTower {
             public void handle(DragEvent event) {
                 System.out.println("DRAG DROPPED");
                 Dragboard db = event.getDragboard();
-
                 if(db.hasImage()){
-
                     //imageView_Hbox.setImage(db.getImage());
-
                     int x_tiles = (int) event.getSceneX() / SCREEN_TITLEMAP;
                     int y_tiles = (int) event.getSceneY() / SCREEN_TITLEMAP;
 
@@ -118,6 +129,11 @@ public abstract class HBoxTower {
                         tower.setX_pos((x_tiles) *SCREEN_TITLEMAP);
                         tower.setY_pos((y_tiles) * SCREEN_TITLEMAP);
                         isPut = true;
+                        isDrag = false;
+                        canPut = false;
+                    }else {
+                        isPut = false;
+                        isDrag = false;
                     }
                 }else{
                     event.setDropCompleted(false);

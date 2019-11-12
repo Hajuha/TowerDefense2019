@@ -3,6 +3,7 @@ package HboxTower;
 import HboxTower.HBoxTower;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.scene.paint.Color;
 import sample.SniperTower;
 
 public class Hbox_SniperTower extends HBoxTower {
@@ -23,5 +24,13 @@ public class Hbox_SniperTower extends HBoxTower {
     public void Render_Hbox(GraphicsContext gc) {
 //        gc.drawImage(image_NormalTower, x_pos, y_pos);
 //        gc.drawImage(image_NormalTower, tower.getX_pos(), tower.getY_pos());
+        if(this.isDrag)
+        {
+            if(canPut) {
+                gc.setStroke(Color.YELLOWGREEN);
+            }
+            else gc.setStroke(Color.RED);
+            gc.strokeOval(x_pos - tower.getRange() , y_pos - tower.getRange() , tower.getRange()* 2, tower.getRange() * 2);
+        }
     }
 }

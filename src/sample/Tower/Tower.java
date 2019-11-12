@@ -104,8 +104,8 @@ public abstract class Tower  {
         Shoot(enemyList);
         if(isFoundEnemy) RenderBullet(gc, enemyList);
         gc.drawImage(image, x_pos, y_pos);
-        gc.setFill(Color.RED);
-        gc.strokeOval(this.x_pos - range + 15 , this.y_pos  - range+ 30, getRange()*2  , getRange()*2);
+//        gc.setStroke(Color.RED);
+//        gc.strokeOval(this.x_pos - range + 15 , this.y_pos  - range+ 30, getRange()*2  , getRange()*2);
     }
 
     public double getY_pos() {
