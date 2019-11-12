@@ -71,7 +71,7 @@ public class GameStage {
 
         Hbox_SniperTower hbox_sniperTower = new Hbox_SniperTower();
         root.getChildren().add(hbox_sniperTower.getHbox_Tower());
-        hbox_sniperTower.setupGestureTarget(mainScene);
+        hbox_sniperTower.setupGestureTarget(mainScene, MapTitle);
 
 
         List<Bullet> bulletAction = new ArrayList<>();
@@ -82,7 +82,7 @@ public class GameStage {
 
         Tower tower = new sample.SniperTower(100,400);
         Tower tower1 = new sample.SniperTower(600,300);
-        Tower tower2 = new SniperTower(100,400);
+        //Tower tower2 = new SniperTower(100,400);
 
 
         AnimationTimer timer = new AnimationTimer() {
@@ -110,7 +110,7 @@ public class GameStage {
 //                } catch (InterruptedException e) {
 //                    e.printStackTrace();
 //                }
-                tower2.Render(mainGraphic, ListEnemy.getListEnemy());
+                //tower2.Render(mainGraphic, ListEnemy.getListEnemy());
                 hbox_sniperTower.Render_Hbox(mainGraphic);
             }
         };
@@ -154,7 +154,7 @@ public class GameStage {
                 int a = input.nextInt();
                 MapTitle[i][j] = a;
             }
-            System.out.println();
+            //System.out.println();
         }
         int index  =0;
         int maxRoad = input.nextInt();
@@ -162,7 +162,7 @@ public class GameStage {
         {
             int x = input.nextInt();
             int y = input.nextInt();
-            System.out.println(x + " " + y);
+            //System.out.println(x + " " + y);
             ListRoad.add(new Point(x, y));
             index ++;
         }
