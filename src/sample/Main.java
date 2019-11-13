@@ -10,7 +10,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        GameStage  gameStage = new GameStage();
+        Start gameStage = new Start();
         primaryStage = gameStage.getMainStage();
         primaryStage.show();
     }

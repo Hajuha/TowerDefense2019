@@ -1,35 +1,16 @@
 package sample;
 import HboxTower.Hbox_SniperTower;
-import javafx.animation.Animation;
 import javafx.animation.AnimationTimer;
-import javafx.event.EventHandler;
-import javafx.geometry.Point2D;
-import javafx.scene.Cursor;
 import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.SnapshotParameters;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.*;
-import javafx.scene.layout.BackgroundImage;
-import javafx.scene.layout.HBox;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.*;
-import sample.Enemy;
-import sample.Tower;
-
-
-import sample.*;
-import sample.Enemy;
-import sample.Tower;
-import  sample.NormalEnemy;
-import sample.SniperTower;
 
 // Man choi, dinh nghia trang thia bat dau cua game
 public class GameStage {
@@ -37,23 +18,20 @@ public class GameStage {
     private final static int SCREEN_WIDTH = 1200;
     private final static int SCREEN_TITLEMAP = 30;
     private final static String GAME_TITLE = "Tower Defense";
-    final static Image imageBullet = new Image("file:src/Assets/Bullet/Bullet.png", 30, 30, true, true);
-    static int[][] MapTitle = new int[24][40];
-    static Image[][] imageMap = new Image[24][40];
+    private static int[][] MapTitle = new int[24][40];
+    private static Image[][] imageMap = new Image[24][40];
     static List<GameTile> listBullet = new ArrayList<>();
-    private List<Enemy> normalEnemyAction = new ArrayList<>();
+    private List<sample.Enemy> normalEnemyAction = new ArrayList<>();
     private List<Point> ListRoad = new ArrayList<>();
-    GraphicsContext mainGraphic;
+    private GraphicsContext mainGraphic;
     private Canvas mainCanvas;
     private Scene mainScene;
     private Stage mainStage;
     private Group root;
     ImageView iv; //vùng thao tác ảnh
-    int curseurX = 0 ; // lưu vị trí hoành độ con trỏ chuột khi trỏ đến vùng chọn tháp
-    int curseurY = 0 ; //tung độ
-    SniperTower listTower = new SniperTower();
+    private sample.SniperTower listTower = new sample.SniperTower();
 
-    Scanner input = new Scanner(new File("src/MapGame1.txt")); //ds tháp được đặt
+    private Scanner input = new Scanner(new File("src/MapGame1.txt")); //ds tháp được đặt
 
 
     static  int i = 0;
@@ -78,12 +56,7 @@ public class GameStage {
 
         LoadMap();
 
-        Enemy ListEnemy = new NormalEnemy(ListRoad);
-
-        Tower tower = new sample.SniperTower(100,400);
-        Tower tower1 = new sample.SniperTower(600,300);
-        //Tower tower2 = new SniperTower(100,400);
-
+        sample.Enemy ListEnemy = new sample.NormalEnemy(ListRoad);
 
         AnimationTimer timer = new AnimationTimer() {
             @Override
@@ -103,20 +76,12 @@ public class GameStage {
                 for(Tower t : listTower.towerList){
                     t.Render(mainGraphic, ListEnemy.getListEnemy());
                 }
-
-
                 hbox_sniperTower.Render_Hbox(mainGraphic);
 
-//                try {
-//                    Thread.sleep(30);
-//                } catch (InterruptedException e) {
-//                    e.printStackTrace();
-//                }
-                //tower2.Render(mainGraphic, ListEnemy.getListEnemy());
                 hbox_sniperTower.Render_Hbox(mainGraphic);
             }
         };
-//        timer.wait(100);
+
         timer.start();
 
 
@@ -196,6 +161,14 @@ public class GameStage {
                 }
             }
         }
+    }
+
+    public Scene getMainScene() {
+        return mainScene;
+    }
+
+    public Group getRoot() {
+        return root;
     }
 
 
