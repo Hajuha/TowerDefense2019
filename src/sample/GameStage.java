@@ -104,6 +104,7 @@ public class GameStage {
                     t.Render(mainGraphic, ListEnemy.getListEnemy());
                 }
 
+
                 hbox_sniperTower.Render_Hbox(mainGraphic);
 
 //                try {

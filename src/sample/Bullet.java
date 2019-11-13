@@ -13,7 +13,7 @@ import java.util.List;
 public class Bullet extends GameTile{
     final static String Bullet_Img = "file:src/Assets/Bullet/RocketBullet";
     final static int dame = 3;
-    final static int speed_bullet = 3;
+    final static int speed_bullet = 5;
     private SnapshotParameters snapshotParameters = new SnapshotParameters();
     private final Image image_Bullt = new Image(Bullet_Img + ".png", 20, 20, true, true);
 
@@ -86,7 +86,7 @@ public class Bullet extends GameTile{
             angle2 = 90 - angle2;
         }
         double delta_angle = (angle - angle2 > 180) ? (angle - angle2 - 360) : angle - angle2;
-        System.out.println("delta_angle = " + angle + " ,"+  angle2);
+//        System.out.println("delta_angle = " + angle + " ,"+  angle2);
         angle = angle2;
         this.imageView.setRotate(imageView.getRotate() + delta_angle);
         image = imageView.snapshot(snapshotParameters, null);
@@ -111,7 +111,9 @@ public class Bullet extends GameTile{
         if(!isshoot)
         {
             move();
-            gc.drawImage(image, x_pos + 5, y_pos + 7);
+            gc.drawImage(image, x_pos , y_pos);
+//            gc.setFill(Color.YELLOW);
+//            gc.fillOval(x_pos, y_pos, 5, 5);
         }
         isshoot = isShoot();
         if(isshoot) {
@@ -139,7 +141,7 @@ public class Bullet extends GameTile{
     public void setTargetEnemy(List<sample.Enemy> listTarget) {
         // tim kiem muc tieu de ban
         //khoang cach tu node thu index den vien dan
-        if(TargetEnemy.is_dead()) // trong truong hop muc tieu da chet
+        if(TargetEnemy.is_dead() && !listTarget.isEmpty()) // trong truong hop muc tieu da chet
         {
             int preRange = (int) Math.sqrt(Math.pow(x_pos - listTarget.get(indexListEnemy).getX_pos(), 2)
                     + Math.pow(y_pos - listTarget.get(indexListEnemy).getY_pos(), 2));
@@ -149,11 +151,13 @@ public class Bullet extends GameTile{
                         + Math.pow(y_pos - listTarget.get(i).getY_pos(), 2));
                 if(preRange <  preRange2)
                 {
-                    TargetEnemy = listTarget.get(i - 1);
+                    preRange = preRange2;
+                    indexListEnemy = i - 1;
                     break;
                 }
-                preRange = preRange2;
             }
+            TargetEnemy = listTarget.get(indexListEnemy);
+
         }
     }
 

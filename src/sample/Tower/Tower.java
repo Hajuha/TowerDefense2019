@@ -50,31 +50,36 @@ public abstract class Tower  {
         }
         if(isFoundEnemy)
         {
-            if(i == 0)  bulletList.add(new Bullet(targetEnemy,(int) x_pos, (int) y_pos));
-            i = (i > 100) ? 0 : i + 1;
+            if(i == 0)
+            {
+                bulletList.add(new Bullet(targetEnemy,(int) x_pos, (int) y_pos));
+                isFoundEnemy = false;
+            }
+            i = (i > 15 ) ? 0 : i + 1;
         }
         else {
-            System.out.println("chua tim thay target");
+//            System.out.println("chua tim thay target");
             setTargetEnemy(enemyList); // tim target
         }
     }
 
     public void setTargetEnemy(List <sample.Enemy> enemyList) {
         if(enemyList.isEmpty()) {
-            System.out.println("EnemyList Empty");
+//            System.out.println("EnemyList Empty");
             isFoundEnemy = false;
             return;
         }
+        int preRange = range;
         isFoundEnemy = false;
         for(int i = 0;i < enemyList.size() ; i++)
         {
             int preRange2 = (int) Math.sqrt(Math.pow(x_pos - enemyList.get(i).getX_pos(), 2)
                     + Math.pow(y_pos - enemyList.get(i).getY_pos(), 2));
-            if(preRange2 < range)
+            if(preRange2 < range && !enemyList.get(i).is_dead() && preRange2 < preRange)
             {
                 targetEnemy = enemyList.get(i);
                 isFoundEnemy = true;
-                break;
+                preRange = preRange2;
             }
         }
     }
@@ -83,6 +88,14 @@ public abstract class Tower  {
         if(bulletList == null) return;
         for(int i = 0 ; i < bulletList.size(); i ++)
         {
+            if(bulletList.get(i).getTargetEnemy().is_dead())
+            {
+                isFoundEnemy = false;
+//                bulletList.remove(i);
+                enemyList.remove(bulletList.get(i).getTargetEnemy());
+                bulletList.get(i).setTargetEnemy(enemyList);
+//                System.out.println("dang tim");
+            }
             bulletList.get(i).Render(gc);
             if(bulletList.get(i).isShoot())
             {
@@ -90,18 +103,12 @@ public abstract class Tower  {
                 if(bulletList == null) return;
                 continue;
             }
-            if(bulletList.get(i).getTargetEnemy().is_dead())
-            {
-                isFoundEnemy = false;
-                enemyList.remove(bulletList.get(i).getTargetEnemy());
-                bulletList.get(i).setTargetEnemy(enemyList);
-                System.out.println("dang tim");
-            }
+
         }
     }
     public void Render(GraphicsContext gc, List<sample.Enemy> enemyList) {
         Shoot(enemyList);
-        if(isFoundEnemy) RenderBullet(gc, enemyList);
+        RenderBullet(gc, enemyList);
         gc.drawImage(image, x_pos, y_pos);
 //        gc.setStroke(Color.RED);
 //        gc.strokeOval(this.x_pos - range + 15 , this.y_pos  - range+ 30, getRange()*2  , getRange()*2);
