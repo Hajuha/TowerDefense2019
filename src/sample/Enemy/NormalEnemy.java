@@ -14,7 +14,7 @@ import sample.Enemy;
 public class NormalEnemy extends Enemy{
 
     static final int speed = 1;
-    static final int blood_first =3;
+    static final int blood_first =100;
     static final int armor_normal = 2;
     static final String Normal_Image = "file:src/Assets/Enemy/SmallEnemy";
 
