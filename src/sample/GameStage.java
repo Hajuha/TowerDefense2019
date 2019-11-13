@@ -163,6 +163,14 @@ public class GameStage {
         }
     }
 
+    public Scene getMainScene() {
+        return mainScene;
+    }
+
+    public Group getRoot() {
+        return root;
+    }
+
 
     public List<Point> getListRoad() {
         return ListRoad;
