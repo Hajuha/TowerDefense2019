@@ -65,7 +65,7 @@ public abstract class HBoxTower {
         imageView_Hbox.setOnDragDetected(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                System.out.println("DRAG DETECTED");
+//                System.out.println("DRAG DETECTED");
                 /* allow any transfer mode */
                 Dragboard db = imageView_Hbox.startDragAndDrop(TransferMode.MOVE);
 
@@ -81,7 +81,7 @@ public abstract class HBoxTower {
         imageView_Hbox.setOnMouseEntered(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent e) {
-                System.out.println("MOUSE ENTERED");
+//                System.out.println("MOUSE ENTERED");
                 imageView_Hbox.setCursor(Cursor.HAND);
 //                    System.out.println("e...: "+e.getSceneX());
 
@@ -115,7 +115,7 @@ public abstract class HBoxTower {
         scene.setOnDragDropped(new EventHandler <DragEvent>(){
             @Override
             public void handle(DragEvent event) {
-                System.out.println("DRAG DROPPED");
+//                System.out.println("DRAG DROPPED");
                 Dragboard db = event.getDragboard();
                 if(db.hasImage()){
                     //imageView_Hbox.setImage(db.getImage());
@@ -123,7 +123,7 @@ public abstract class HBoxTower {
                     int y_tiles = (int) event.getSceneY() / SCREEN_TITLEMAP;
 
                     if (MapTitle[y_tiles][x_tiles] == 1 && MapTitle[y_tiles+1][x_tiles] == 1) {
-                        System.out.println("event : "+event.getSceneX() +", " + event.getSceneY());
+//                        System.out.println("event : "+event.getSceneX() +", " + event.getSceneY());
                         MapTitle[y_tiles][x_tiles] = 0;
                         MapTitle[y_tiles+1][x_tiles] = 0;
                         tower.setX_pos((x_tiles) *SCREEN_TITLEMAP);

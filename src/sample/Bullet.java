@@ -11,11 +11,10 @@ import javafx.scene.transform.Rotate;
 import java.util.List;
 
 public class Bullet extends GameTile{
-    final static String Bullet_Img = "file:src/Assets/Bullet/RocketBullet";
     final static int dame = 3;
     final static int speed_bullet = 5;
     private SnapshotParameters snapshotParameters = new SnapshotParameters();
-    private final Image image_Bullt = new Image(Bullet_Img + ".png", 20, 20, true, true);
+
 
     private sample.Enemy TargetEnemy;
     private boolean is_found;
@@ -29,21 +28,29 @@ public class Bullet extends GameTile{
 
     public Point Destination  = new Point(0, 0);
 
-    public Bullet(sample.Enemy enemy, int x, int y)
+    public Bullet(sample.Enemy enemy, int x_pos, int y_pos, int indexListEnemy, Image image_Bullt)
     {
-        super(x, y);
+        super(x_pos, y_pos);
         this.image = image_Bullt;
         imageView.setImage(image);
         setSpeed(speed_bullet);
-        setTargetEnemy(enemy);
-        setDestination(enemy.getPosition());
-        snapshotParameters.setFill(Color.TRANSPARENT);
         is_found = false;
         angle = 0;
         sinX = 0;
         cosX = 1;
-        indexListEnemy = 0;
+        this.indexListEnemy = indexListEnemy;
         isshoot = false;
+        snapshotParameters.setFill(Color.TRANSPARENT);
+
+        setTargetEnemy(enemy);
+        setDestination(enemy.getPosition());
+    }
+    public void  setBullet(sample.Enemy enemy, int x_pos, int y_pos)
+    {
+    }
+    public Bullet getBullet()
+    {
+        return this;
     }
     public Bullet(int x_pos, int y_pos) {
         super(x_pos, y_pos);
@@ -51,7 +58,7 @@ public class Bullet extends GameTile{
 
     @Override
     public void loadImage(String path) {
-        this.image = new Image(Bullet_Img + ".png", 30, 30, true, true);
+//        this.image = new Image(Bullet_Img + ".png", 30, 30, true, true);
     }
 
     public void setSinX(double sinX) {
@@ -141,7 +148,7 @@ public class Bullet extends GameTile{
     public void setTargetEnemy(List<sample.Enemy> listTarget) {
         // tim kiem muc tieu de ban
         //khoang cach tu node thu index den vien dan
-        if(TargetEnemy.is_dead() && !listTarget.isEmpty()) // trong truong hop muc tieu da chet
+        if(TargetEnemy.is_dead() && !listTarget.isEmpty() && indexListEnemy < listTarget.size()) // trong truong hop muc tieu da chet
         {
             int preRange = (int) Math.sqrt(Math.pow(x_pos - listTarget.get(indexListEnemy).getX_pos(), 2)
                     + Math.pow(y_pos - listTarget.get(indexListEnemy).getY_pos(), 2));
@@ -149,15 +156,14 @@ public class Bullet extends GameTile{
             {
                 int preRange2 = (int) Math.sqrt(Math.pow(x_pos - listTarget.get(i).getX_pos(), 2)
                         + Math.pow(y_pos - listTarget.get(i).getY_pos(), 2));
-                if(preRange <  preRange2)
+                if(preRange >  preRange2 && preRange2 < 250)
                 {
                     preRange = preRange2;
-                    indexListEnemy = i - 1;
-                    break;
+                    indexListEnemy = i;
                 }
             }
-            TargetEnemy = listTarget.get(indexListEnemy);
-
+            if(preRange < 250) TargetEnemy = listTarget.get(indexListEnemy);
+            System.out.println(preRange);
         }
     }
 
