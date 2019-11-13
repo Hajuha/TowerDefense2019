@@ -68,7 +68,8 @@ public abstract class Enemy extends GameEntity {
         int delta_y = this.roadList.get(i + 1).getY() - this.y_pos;
         if(delta_x == 0 && delta_y == 0 && i < roadList.size())
         {
-            System.out.println(i++);
+//            System.out.println(i++);
+            i ++;
         }
 //        if(this.x_pos > 1200) {
 //            i = 0;
@@ -179,7 +180,7 @@ public abstract class Enemy extends GameEntity {
     public void getRoadList() {
         for(Point p : roadList)
         {
-            System.out.println(p.getX() + " " + p.getY());
+//            System.out.println(p.getX() + " " + p.getY());
         }
     }
     public List<Enemy> getListEnemy() {
