@@ -5,7 +5,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import java.io.File;
 import javafx.animation.TranslateTransition;
 import javafx.geometry.*;
 import javafx.scene.*;
@@ -25,19 +27,24 @@ public class Start {
     private static final Font FONT = Font.font("", FontWeight.BOLD, 18);
     private static Font font;
     private MenuBox menu;
-    private GameStage gameStage = new GameStage();
-
+    private String musicFile = "src/sound.mp3";     // For example
+    private Media sound = new Media(new File(musicFile).toURI().toString());
+    private MediaPlayer mediaPlayer = new MediaPlayer(sound);
+    private Media gameSound = new Media(new File("src/stageSound.mp3").toURI().toString());
+    private MediaPlayer gameMedia = new MediaPlayer(gameSound);
     public Start() throws FileNotFoundException, InterruptedException {
     }
 
     private Scene createGame() throws FileNotFoundException, InterruptedException {
+        GameStage gameStage = new GameStage();
         return gameStage.getMainScene();
     }
+
     private Scene createCredit() {
 
         StackPane root = new StackPane();
-        root.setPrefSize(width,height);
-        Rectangle bg = new Rectangle(width,height);
+        root.setPrefSize(width, height);
+        Rectangle bg = new Rectangle(width, height);
         bg.setOpacity(0.6);
         try (InputStream is = Files.newInputStream(Paths.get("src/Assets/bg2.jpg"));
              InputStream fontStream = Files.newInputStream(Paths.get("src/Assets/Font/cod_font.ttf"))) {
@@ -70,9 +77,9 @@ public class Start {
     public Stage createContent() throws FileNotFoundException, InterruptedException {
         Stage createContent = new Stage();
         Scene creditsScene = createCredit();
-        Scene gameScene = createGame();
-        Pane root = new Pane();
-        root.setPrefSize(width,height);
+        gameMedia.setVolume(0.2);
+        StackPane root = new StackPane();
+        root.setPrefSize(width, height);
 
         try (InputStream is = Files.newInputStream(Paths.get("src/Assets/bg2.jpg"));
              InputStream fontStream = Files.newInputStream(Paths.get("src/Assets/Font/cod_font.ttf"))) {
@@ -93,25 +100,40 @@ public class Start {
         MenuItem itemCredits = new MenuItem("CREDITS");
         itemCredits.setOnMouseClicked(e -> createContent.setScene(creditsScene));
         MenuItem itemStart = new MenuItem("NEW GAME");
-        itemStart.setOnMouseClicked(e -> createContent.setScene(gameScene));
         menu = new MenuBox("TOWER DEFENSE",
                 itemStart,
                 itemCredits,
                 itemQuit);
 
         root.getChildren().add(menu);
+        root.setAlignment(Pos.CENTER);
         Scene startScene = new Scene(root);
         creditsScene.setOnKeyPressed(event -> {
             if (event.getCode() == KeyCode.ESCAPE) {
+                createContent.setScene(startScene);
+            }
+        });
+        itemStart.setOnMouseClicked(e -> {
+            mediaPlayer.stop();
+            gameMedia.play();
+            Scene gameScene = null;
+            try {
+                gameScene = createGame();
+            } catch (FileNotFoundException | InterruptedException ex) {
+                ex.printStackTrace();
+            }
+            createContent.setScene(gameScene);
+            assert gameScene != null;
+            gameScene.setOnKeyPressed(event -> {
+                if (event.getCode() == KeyCode.ESCAPE) {
+                    gameMedia.stop();
+                    mediaPlayer.play();
+                    createContent.setScene(startScene);
+                }
+            });
 
-                createContent.setScene(startScene);
-            }
         });
-        gameScene.setOnKeyPressed(event -> {
-            if (event.getCode() == KeyCode.ESCAPE) {
-                createContent.setScene(startScene);
-            }
-        });
+
         createContent.setScene(startScene);
         startScene.setOnKeyPressed(event -> {
             if (event.getCode() == KeyCode.ESCAPE) {
@@ -122,6 +144,7 @@ public class Start {
                 }
             }
         });
+        mediaPlayer.play();
         return createContent;
     }
 
@@ -139,7 +162,7 @@ public class Start {
 
             bg.setEffect(shadow);
 
-            Text text = new Text(title + "   ");
+            Text text = new Text(title);
             text.setFont(font);
             text.setFill(Color.WHITE);
 
@@ -156,13 +179,19 @@ public class Start {
             vSep.setOpacity(0.4);
 
             VBox vbox = new VBox();
-            vbox.setAlignment(Pos.TOP_RIGHT);
+            vbox.setPrefHeight(600);
+            vbox.setPrefWidth(400);
+            vbox.setAlignment(Pos.TOP_CENTER);
             vbox.setPadding(new Insets(200, 0, 0, 0));
-            vbox.getChildren().addAll(text, hSep);
+            vbox.getChildren().addAll(text);
             vbox.getChildren().addAll(items);
-
-            setAlignment(Pos.TOP_RIGHT);
-            getChildren().addAll(bg, vSep, vbox);
+            System.out.print(vbox.getPrefHeight());
+            vbox.setAlignment(Pos.TOP_CENTER);
+            //setAlignment(Pos.CENTER);
+            Text end = new Text("ver 1.0.0. Powered by JavaFX");
+            end.setFill(Color.WHITE);
+            end.setFont(Font.font("",FontWeight.LIGHT,13));
+            getChildren().addAll(bg, vbox, end);
         }
 
         public void show() {
@@ -191,13 +220,11 @@ public class Start {
             bg.setVisible(false);
             bg.setEffect(new DropShadow(5, 0, 5, Color.BLACK));
 
-            Text text = new Text(name + "      ");
+            Text text = new Text(name);
             text.setFill(Color.LIGHTGREY);
-            text.setFont(Font.font(30));
-
-            setAlignment(Pos.CENTER_RIGHT);
+            text.setFont(font);
             getChildren().addAll(bg, text);
-
+            setAlignment(Pos.CENTER);
             setOnMouseEntered(event -> {
                 bg.setVisible(true);
                 text.setFill(Color.WHITE);
