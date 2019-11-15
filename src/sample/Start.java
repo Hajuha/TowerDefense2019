@@ -197,13 +197,13 @@ public class Start {
         public void show() {
             setVisible(true);
             TranslateTransition tt = new TranslateTransition(Duration.seconds(0.5), this);
-            tt.setToX(0);
+            tt.setToY(0);
             tt.play();
         }
 
         public void hide() {
-            TranslateTransition tt = new TranslateTransition(Duration.seconds(0.5), this);
-            tt.setToX(-300);
+            TranslateTransition tt = new TranslateTransition(Duration.seconds(0.2), this);
+            tt.setToY(-350);
             tt.setOnFinished(event -> setVisible(false));
             tt.play();
         }

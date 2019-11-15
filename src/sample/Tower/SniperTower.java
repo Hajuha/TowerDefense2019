@@ -48,6 +48,11 @@ public class SniperTower extends Tower {
     public void Render(GraphicsContext gc) {
         gc.drawImage(image,90, 480);
     }*/
+    public void Render(GraphicsContext gc, List<sample.Enemy> enemyList) {
+        gc.drawImage(image, x_pos, y_pos);
+        Shoot(enemyList);
+        RenderBullet(gc, enemyList);
+    }
 
 
 }

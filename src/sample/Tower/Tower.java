@@ -9,9 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class Tower  {
-    private final Image image_Bullt = new Image(Bullet_Img + ".png", 20, 20, true, true);
+    protected final Image image_Bullt = new Image(Bullet_Img + ".png", 20, 20, true, true);
     final static String Bullet_Img = "file:src/Assets/Bullet/RocketBullet";
-
     protected int dame; // sat thuong
     protected int range; // tam ban
     protected double x_pos;
@@ -20,11 +19,11 @@ public abstract class Tower  {
     protected String towerImagePath;
     protected Image image;
     protected List<Bullet> bulletList;
-    private boolean isFoundEnemy;
-    private sample.Enemy targetEnemy;
-    private int indexEnemy;
-    private int i ;
-    private int sizeBulet;
+    protected boolean isFoundEnemy;
+    protected Enemy targetEnemy;
+    protected int indexEnemy;
+    protected int i ;
+    protected int sizeBulet;
 
     public Tower(double x_pos, double y_pos) {
         super();
@@ -58,21 +57,19 @@ public abstract class Tower  {
         {
             if(i == 0)
             {
-                bulletList.add(new Bullet(targetEnemy, (int)x_pos,(int) y_pos,indexEnemy, image_Bullt ));
+                bulletList.add(new Bullet(targetEnemy, (int)x_pos ,(int) y_pos,indexEnemy, image_Bullt ));
                 sizeBulet ++;
                 isFoundEnemy = false;
             }
-            i = (i > 15 ) ? 0 : i + 1;
+            i = (i > 50) ? 0 : i + 1;
         }
         else {
-//            System.out.println("chua tim thay target");
             setTargetEnemy(enemyList); // tim target
         }
     }
 
     public void setTargetEnemy(List <sample.Enemy> enemyList) {
         if(enemyList.isEmpty()) {
-//            System.out.println("EnemyList Empty");
             isFoundEnemy = false;
             return;
         }
@@ -91,10 +88,10 @@ public abstract class Tower  {
             }
         }
     }
-    public void RenderBullet(GraphicsContext gc,List<sample.Enemy> enemyList)
+    public void RenderBullet(GraphicsContext gc,List<Enemy> enemyList)
     {
         if(bulletList == null) return;
-        for(int i = 0 ; i < sizeBulet; i ++)
+        for(int i = 0 ; i < bulletList.size(); i ++)
         {
             if(bulletList.get(i).getTargetEnemy().is_dead())
             {
@@ -112,13 +109,7 @@ public abstract class Tower  {
             }
         }
     }
-    public void Render(GraphicsContext gc, List<sample.Enemy> enemyList) {
-        gc.drawImage(image, x_pos, y_pos);
-        Shoot(enemyList);
-        RenderBullet(gc, enemyList);
-//        gc.setStroke(Color.RED);
-//        gc.strokeOval(this.x_pos - range + 15 , this.y_pos  - range+ 30, getRange()*2  , getRange()*2);
-    }
+
 
     public double getY_pos() {
         return y_pos;
@@ -143,4 +134,9 @@ public abstract class Tower  {
         return (range > (int) Math.sqrt(Math.pow(this.x_pos - targetEnemy.getX_pos(), 2)
                 + Math.pow(this.y_pos - targetEnemy.getY_pos(), 2))|| targetEnemy.getX_pos() > 1200);
     }
+
+    public Enemy getTargetEnemy() {
+        return targetEnemy;
+    }
+    abstract public void Render(GraphicsContext gc, List<sample.Enemy> enemyList) ;
 }
