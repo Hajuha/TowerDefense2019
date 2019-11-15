@@ -10,20 +10,20 @@ public class SmallerEnemy extends Enemy {
     private static final int speed = 1;
     private static final int blood_first = 10;
     private static final int armor_normal = 2;
-    private static final String SmallEnemy_Image= "file:src/Assets/Enemy/SmallEnemy" ;
-
+    private static final Image  Small_Img = new Image("file:src/Assets/Enemy/SmallEnemy.png",
+            60, 60, false, false);
     public SmallerEnemy(List<Point> pointList)
     {
         super();
         setFirst_Blood(blood_first);
         setSpeed(speed);
         setArmor(armor_normal);
-        loadImage(SmallEnemy_Image);
+        this.image = Small_Img;
         loadRoad(pointList);
         setPosition(roadList.get(0).getX(), roadList.get(0).getY());
         setDri(angle_Right);
         this.i = 0;
-        angle = angle_Right;
+        angle = getDri();
         getRoadList();
     }
 

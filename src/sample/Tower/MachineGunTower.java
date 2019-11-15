@@ -36,6 +36,12 @@ public class MachineGunTower extends Tower {
     public MachineGunTower() {
         super();
     }
+
+    @Override
+    public void Shoot(List<Enemy> enemyList) {
+
+    }
+
     private  double x_posGun;
     private  double y_posGun;
 

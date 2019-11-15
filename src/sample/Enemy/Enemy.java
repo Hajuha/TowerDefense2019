@@ -99,7 +99,7 @@ public abstract class Enemy extends GameEntity {
     }
     public Point getPosition()
     {
-        point = new Point(x_pos + 5, y_pos + 10);
+        point = new Point(x_pos + 25, y_pos + 25);
         return point;
     }
     public void RenderList(GraphicsContext gc)
@@ -160,10 +160,6 @@ public abstract class Enemy extends GameEntity {
     }
 
     public void getRoadList() {
-        for(Point p : roadList)
-        {
-//            System.out.println(p.getX() + " " + p.getY());
-        }
     }
     public List<Enemy> getListEnemy() {
         return normalEnemies;
