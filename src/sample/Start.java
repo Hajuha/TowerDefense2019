@@ -5,9 +5,14 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+
+import javafx.concurrent.Task;
+import javafx.scene.media.AudioClip;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
+
 import java.io.File;
+
 import javafx.animation.TranslateTransition;
 import javafx.geometry.*;
 import javafx.scene.*;
@@ -32,28 +37,38 @@ public class Start {
     private MediaPlayer mediaPlayer = new MediaPlayer(sound);
     private Media gameSound = new Media(new File("src/stageSound.mp3").toURI().toString());
     private MediaPlayer gameMedia = new MediaPlayer(gameSound);
-    public Start() throws FileNotFoundException, InterruptedException {
-    }
+    private AudioClip clickMedia = new AudioClip(new File("src/clickSound.mp3").toURI().toString());
+
+
 
     private Scene createGame() throws FileNotFoundException, InterruptedException {
         GameStage gameStage = new GameStage();
         return gameStage.getMainScene();
     }
 
-    private Scene createCredit() {
+    private Scene createInstruction() throws IOException {
+        StackPane root = new StackPane();
+        InputStream is = Files.newInputStream(Paths.get("src/Assets/ins.jpg"));
+        ImageView img = new ImageView(new Image(is));
+        img.setFitWidth(width);
+        img.setFitHeight(height);
+        root.getChildren().add(img);
+        Scene scene = new Scene(root);
+        return scene;
+    }
 
+    private Scene createCredit() {
         StackPane root = new StackPane();
         root.setPrefSize(width, height);
         Rectangle bg = new Rectangle(width, height);
         bg.setOpacity(0.6);
+
         try (InputStream is = Files.newInputStream(Paths.get("src/Assets/bg2.jpg"));
              InputStream fontStream = Files.newInputStream(Paths.get("src/Assets/Font/cod_font.ttf"))) {
             ImageView img = new ImageView(new Image(is));
             img.setFitWidth(width);
             img.setFitHeight(height);
-
             root.getChildren().add(img);
-
             font = Font.loadFont(fontStream, 30);
         } catch (IOException e) {
             System.out.println("Couldn't load image or font");
@@ -62,11 +77,13 @@ public class Start {
                 "by\n" +
                 "Dai, Hao, Tiep\n" +
                 "Source: https://github.com/Hajuha/TowerDefense2019");
+
         credit.setTextAlignment(TextAlignment.CENTER);
         credit.setFill(Color.WHITE);
         credit.setLineSpacing(2);
         credit.setFont(FONT);
         credit.setOpacity(1);
+
         root.getChildren().addAll(bg, credit);
         StackPane.setAlignment(credit, Pos.CENTER);
         Scene scene = new Scene(root);
@@ -74,9 +91,10 @@ public class Start {
     }
 
 
-    public Stage createContent() throws FileNotFoundException, InterruptedException {
+    public Stage createContent() throws IOException, InterruptedException {
         Stage createContent = new Stage();
         Scene creditsScene = createCredit();
+        Scene instructionScene = createInstruction();
         gameMedia.setVolume(0.2);
         StackPane root = new StackPane();
         root.setPrefSize(width, height);
@@ -93,27 +111,47 @@ public class Start {
         } catch (IOException e) {
             System.out.println("Couldn't load image or font");
         }
-        Stage startStage = new Stage();
-        startStage.setScene(createCredit());
+
         MenuItem itemQuit = new MenuItem("QUIT");
         itemQuit.setOnMouseClicked(event -> System.exit(0));
         MenuItem itemCredits = new MenuItem("CREDITS");
-        itemCredits.setOnMouseClicked(e -> createContent.setScene(creditsScene));
+        itemCredits.setOnMouseClicked(e -> {
+            clickMedia.play();
+            createContent.setScene(creditsScene);
+
+        });
+        MenuItem itemInstruction = new MenuItem("INSTRUCTION");
+        itemInstruction.setOnMouseClicked(e -> {
+            clickMedia.play();
+            createContent.setScene(instructionScene);
+
+        });
         MenuItem itemStart = new MenuItem("NEW GAME");
         menu = new MenuBox("TOWER DEFENSE",
                 itemStart,
+                itemInstruction,
                 itemCredits,
                 itemQuit);
 
         root.getChildren().add(menu);
         root.setAlignment(Pos.CENTER);
         Scene startScene = new Scene(root);
+
         creditsScene.setOnKeyPressed(event -> {
             if (event.getCode() == KeyCode.ESCAPE) {
                 createContent.setScene(startScene);
             }
         });
+
+        instructionScene.setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.ESCAPE) {
+                createContent.setScene(startScene);
+            }
+        });
+
         itemStart.setOnMouseClicked(e -> {
+            clickMedia.play();
+            menu.hide();
             mediaPlayer.stop();
             gameMedia.play();
             Scene gameScene = null;
@@ -128,6 +166,7 @@ public class Start {
                 if (event.getCode() == KeyCode.ESCAPE) {
                     gameMedia.stop();
                     mediaPlayer.play();
+                    menu.show();
                     createContent.setScene(startScene);
                 }
             });
@@ -135,6 +174,7 @@ public class Start {
         });
 
         createContent.setScene(startScene);
+
         startScene.setOnKeyPressed(event -> {
             if (event.getCode() == KeyCode.ESCAPE) {
                 if (menu.isVisible()) {
@@ -142,14 +182,18 @@ public class Start {
                 } else {
                     menu.show();
                 }
+
             }
         });
-        mediaPlayer.setAutoPlay(true);
+
+
+        mediaPlayer.play();
+
 
         return createContent;
     }
 
-    public Stage getMainStage() throws FileNotFoundException, InterruptedException {
+    public Stage getMainStage() throws IOException, InterruptedException {
         return createContent();
     }
 
@@ -161,7 +205,7 @@ public class Start {
             DropShadow shadow = new DropShadow(7, 5, 0, Color.BLACK);
             shadow.setSpread(0.8);
 
-            bg.setEffect(shadow);
+            //bg.setEffect(shadow);
 
             Text text = new Text(title);
             text.setFont(font);
@@ -179,31 +223,48 @@ public class Start {
             vSep.setStroke(Color.DARKGREEN);
             vSep.setOpacity(0.4);
 
+            VBox vb = new VBox();
+            vb.getChildren().addAll(text);
+            vb.setPadding(new Insets(100, 0, 0, 0));
+            vb.setAlignment(Pos.TOP_CENTER);
+
             VBox vbox = new VBox();
-            vbox.setPrefHeight(600);
-            vbox.setPrefWidth(400);
             vbox.setAlignment(Pos.TOP_CENTER);
-            vbox.setPadding(new Insets(200, 0, 0, 0));
-            vbox.getChildren().addAll(text);
+            vbox.setPadding(new Insets(300, 0, 0, 0));
             vbox.getChildren().addAll(items);
+
             System.out.print(vbox.getPrefHeight());
             vbox.setAlignment(Pos.TOP_CENTER);
             //setAlignment(Pos.CENTER);
             Text end = new Text("Ver 1.0.0. Powered by JavaFX");
+
+
+           // VBox endBox = new VBox();
+           // Text end = new Text("ver 1.0.0. Powered by JavaFX");
+
             end.setFill(Color.WHITE);
-            end.setFont(Font.font("",FontWeight.LIGHT,13));
-            getChildren().addAll(bg, vbox, end);
+            end.setFont(Font.font("", FontWeight.LIGHT, 13));
+            endBox.getChildren().addAll(end);
+            endBox.setAlignment(Pos.BOTTOM_CENTER);
+            endBox.setPrefSize(200, 50);
+            //    endBox.setPadding( new Insets(0,0,0,100));
+
+            getChildren().addAll(bg, vb, endBox, vbox);
         }
 
         public void show() {
             setVisible(true);
-            TranslateTransition tt = new TranslateTransition(Duration.seconds(0.5), this);
+
+            TranslateTransition tt = new TranslateTransition(Duration.seconds(0.3), this);
+
             tt.setToY(0);
             tt.play();
         }
 
         public void hide() {
-            TranslateTransition tt = new TranslateTransition(Duration.seconds(0.2), this);
+
+            TranslateTransition tt = new TranslateTransition(Duration.seconds(0.3), this);
+
             tt.setToY(-350);
             tt.setOnFinished(event -> setVisible(false));
             tt.play();
