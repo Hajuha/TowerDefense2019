@@ -1,4 +1,5 @@
 package sample;
+import HboxTower.Hbox_MachineGunTower;
 import HboxTower.Hbox_SniperTower;
 import javafx.animation.AnimationTimer;
 import javafx.scene.Group;
@@ -8,6 +9,8 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
+import sample.Tower;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.*;
@@ -21,7 +24,7 @@ public class GameStage {
     private static int[][] MapTitle = new int[24][40];
     private static Image[][] imageMap = new Image[24][40];
     static List<GameTile> listBullet = new ArrayList<>();
-    private List<sample.Enemy> normalEnemyAction = new ArrayList<>();
+    private List<Enemy> normalEnemyAction = new ArrayList<>();
     private List<Point> ListRoad = new ArrayList<>();
     private GraphicsContext mainGraphic;
     private Canvas mainCanvas;
@@ -29,7 +32,7 @@ public class GameStage {
     private Stage mainStage;
     private Group root;
     ImageView iv; //vùng thao tác ảnh
-    private sample.SniperTower listTower = new sample.SniperTower();
+    private SniperTower listTower = new SniperTower();
 
     private Scanner input = new Scanner(new File("src/MapGame1.txt")); //ds tháp được đặt
 
@@ -47,16 +50,21 @@ public class GameStage {
         mainStage.setScene(mainScene);
         mainStage.setTitle(GAME_TITLE);
 
-        Hbox_SniperTower hbox_sniperTower = new Hbox_SniperTower();
-        root.getChildren().add(hbox_sniperTower.getHbox_Tower());
-        hbox_sniperTower.setupGestureTarget(mainScene, MapTitle);
 
+        Hbox_SniperTower hbox_sniperTower= new Hbox_SniperTower();
+        hbox_sniperTower.setupGestureTarget(mainScene,MapTitle);
+
+        root.getChildren().addAll( hbox_sniperTower.getHbox_Tower());
 
         List<Bullet> bulletAction = new ArrayList<>();
 
         LoadMap();
+        Enemy ListEnemy = new NormalEnemy(ListRoad);
+        Tower tower1 = new MachineGunTower(700, 400);
+        Tower tower2 = new MachineGunTower(500, 450);
 
-        sample.Enemy ListEnemy = new sample.NormalEnemy(ListRoad);
+        listTower.towerList.add(tower1);
+        listTower.towerList.add(tower2);
 
         AnimationTimer timer = new AnimationTimer() {
             @Override
@@ -66,10 +74,12 @@ public class GameStage {
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
                 }
+
                 if(hbox_sniperTower.isPut()) {
                     listTower.towerList.add(new SniperTower(hbox_sniperTower.getTower().x_pos, hbox_sniperTower.getTower().y_pos));
                     hbox_sniperTower.setPut(false);
                 }
+
                 if(!normalEnemyAction.isEmpty() && i == 0)  ListEnemy.adds(normalEnemyAction.remove(0));
                 i = (i > 120) ? 0 : i + 1;
                 ListEnemy.RenderList(mainGraphic);
@@ -141,8 +151,18 @@ public class GameStage {
             int enemy = input.nextInt();
             switch (enemy)
             {
+                case 0 :
+                    normalEnemyAction.add(new SmallerEnemy(ListRoad));
+                    break;
+
                 case 1 :
                     normalEnemyAction.add(new NormalEnemy(ListRoad));
+                    break;
+                case 2 :
+                    normalEnemyAction.add(new TankerEnemy(ListRoad));
+                    break;
+                case 3 :
+                    normalEnemyAction.add(new BossEnemy(ListRoad));
                     break;
             }
         }
