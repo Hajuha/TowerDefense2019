@@ -7,6 +7,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 
 import javafx.concurrent.Task;
+import javafx.scene.media.AudioClip;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 
@@ -36,6 +37,8 @@ public class Start {
     private MediaPlayer mediaPlayer = new MediaPlayer(sound);
     private Media gameSound = new Media(new File("src/stageSound.mp3").toURI().toString());
     private MediaPlayer gameMedia = new MediaPlayer(gameSound);
+    private AudioClip clickMedia = new AudioClip(new File("src/clickSound.mp3").toURI().toString());
+
 
 
     private Scene createGame() throws FileNotFoundException, InterruptedException {
@@ -112,9 +115,17 @@ public class Start {
         MenuItem itemQuit = new MenuItem("QUIT");
         itemQuit.setOnMouseClicked(event -> System.exit(0));
         MenuItem itemCredits = new MenuItem("CREDITS");
-        itemCredits.setOnMouseClicked(e -> createContent.setScene(creditsScene));
+        itemCredits.setOnMouseClicked(e -> {
+            clickMedia.play();
+            createContent.setScene(creditsScene);
+
+        });
         MenuItem itemInstruction = new MenuItem("INSTRUCTION");
-        itemInstruction.setOnMouseClicked(e -> createContent.setScene(instructionScene));
+        itemInstruction.setOnMouseClicked(e -> {
+            clickMedia.play();
+            createContent.setScene(instructionScene);
+
+        });
         MenuItem itemStart = new MenuItem("NEW GAME");
         menu = new MenuBox("TOWER DEFENSE",
                 itemStart,
@@ -139,6 +150,7 @@ public class Start {
         });
 
         itemStart.setOnMouseClicked(e -> {
+            clickMedia.play();
             menu.hide();
             mediaPlayer.stop();
             gameMedia.play();
@@ -170,11 +182,12 @@ public class Start {
                 } else {
                     menu.show();
                 }
+
             }
         });
 
         mediaPlayer.play();
-        
+
         return createContent;
     }
 
