@@ -11,12 +11,12 @@ import javafx.scene.transform.Rotate;
 import java.util.List;
 
 public class Bullet extends GameTile{
-    final static int dame = 3;
+    final static int dame = 5;
     final static int speed_bullet = 5;
     private SnapshotParameters snapshotParameters = new SnapshotParameters();
 
 
-    private sample.Enemy TargetEnemy;
+    private Enemy TargetEnemy;
     private boolean is_found;
     protected int speed;
     private double angle;
@@ -28,7 +28,7 @@ public class Bullet extends GameTile{
 
     public Point Destination  = new Point(0, 0);
 
-    public Bullet(sample.Enemy enemy, int x_pos, int y_pos, int indexListEnemy, Image image_Bullt)
+    public Bullet(Enemy enemy, int x_pos, int y_pos, int indexListEnemy, Image image_Bullt)
     {
         super(x_pos, y_pos);
         this.image = image_Bullt;
@@ -72,7 +72,7 @@ public class Bullet extends GameTile{
     {
         setDestination(TargetEnemy.getPosition());
         double del = Math.sqrt(Math.pow((x_pos - Destination.getX()), 2) +
-                Math.pow(y_pos - Destination.getY(), 2))   ;
+                Math.pow(y_pos - Destination.getY(), 2))  ;
         sinX = (Destination.y - y_pos == 0) ? 0 : (Destination.y - (double) y_pos)/del;
         cosX = (Destination.x - x_pos == 0) ? 0 : (Destination.x - (double) x_pos)/del;
         double angle2 = Math.abs(Math.asin(sinX) * 180 / Math.PI) ;
@@ -145,7 +145,7 @@ public class Bullet extends GameTile{
                 && y_pos + 15 >= Destination.getY() && y_pos - 15 <= Destination.getY()
         );
     }
-    public void setTargetEnemy(List<sample.Enemy> listTarget) {
+    public void setTargetEnemy(List<Enemy> listTarget) {
         // tim kiem muc tieu de ban
         //khoang cach tu node thu index den vien dan
         if(TargetEnemy.is_dead() && !listTarget.isEmpty() && indexListEnemy < listTarget.size()) // trong truong hop muc tieu da chet
@@ -167,11 +167,11 @@ public class Bullet extends GameTile{
         }
     }
 
-    public void setTargetEnemy(sample.Enemy targetEnemy) {
+    public void setTargetEnemy(Enemy targetEnemy) {
         TargetEnemy = targetEnemy;
     }
 
-    public sample.Enemy getTargetEnemy() {
+    public Enemy getTargetEnemy() {
         return TargetEnemy;
     }
 

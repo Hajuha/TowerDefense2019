@@ -15,16 +15,6 @@ import sample.Tower;
 import  sample.NormalEnemy;
 import sample.SniperTower;
 
-enum Direction{
-    LEFT(180), RIGHT(0), UP(270), DOWN(90);
-    int direction;
-     Direction(int i){
-        this.direction = i;
-    }
-    public int getDirection() {
-        return direction;
-    }
-}
 public abstract class Enemy extends GameEntity {
     protected int speed ;
     protected int Blood;
@@ -36,7 +26,7 @@ public abstract class Enemy extends GameEntity {
     static final int angle_Down = 270;
     protected Point point;
     protected List<Point> roadList = new ArrayList<>();
-    protected int angle = 0;
+    protected int angle;
     protected  int i ;
     protected int dri ;
     public void adds(Enemy normalEnemy)
@@ -49,6 +39,17 @@ public abstract class Enemy extends GameEntity {
     }
     public void Move() {
         /***** To do handle move of Enemy*******/
+        int next_road = nextRoad();
+        if(this.dri != next_road)
+        {
+            this.dri = next_road;
+            SnapshotParameters snapshotParameters = new SnapshotParameters();
+            snapshotParameters.setFill(Color.TRANSPARENT);
+            ImageView imageView = new ImageView(this.image);
+            imageView.setRotate(angle - this.dri);
+            angle = this.dri;
+            this.image = imageView.snapshot(snapshotParameters, null);
+        }
         switch (getDri())
         {
             case angle_Right:
@@ -66,26 +67,13 @@ public abstract class Enemy extends GameEntity {
         }
         int delta_x = this.roadList.get(i + 1).getX() - this.x_pos;
         int delta_y = this.roadList.get(i + 1).getY() - this.y_pos;
-        if(delta_x == 0 && delta_y == 0 && i < roadList.size())
-        {
-//            System.out.println(i++);
-            i ++;
-        }
+        if(delta_x == 0 && delta_y == 0 && i < roadList.size())  i ++;
+
 //        if(this.x_pos > 1200) {
 //            i = 0;
 //            setPosition(this.roadList.get(0).getX(), this.roadList.get(0).getY());
 //            setDri(angle_Right);
 //        }
-        if(this.dri != nextRoad())
-        {
-            this.dri = nextRoad();
-//            angle += 90;
-            SnapshotParameters snapshotParameters = new SnapshotParameters();
-            snapshotParameters.setFill(Color.TRANSPARENT);
-            ImageView imageView = new ImageView(this.image);
-            imageView.setRotate(imageView.getRotate() + 90);
-            this.image = imageView.snapshot(snapshotParameters, null);
-        }
     }
     public int nextRoad()
     {
@@ -93,8 +81,6 @@ public abstract class Enemy extends GameEntity {
         int delta_y = this.roadList.get(i + 1).getY() - this.roadList.get(i).getY();
         if(delta_x == 0 && delta_y > 0)
         {
-            //System.out.println(x_pos + " " + y_pos);
-            //System.out.println("DOWN");
             return angle_Down;
         }
         if(delta_x == 0 && delta_y < 0)
@@ -158,10 +144,6 @@ public abstract class Enemy extends GameEntity {
         return  (this.Blood <= 0  ||  this.x_pos > 1200);
     }
 
-    @Override
-    public void loadImage(String path) {
-        this.image = new Image(path + ".png", 50, 50, true, true);
-    }
     public int getDri() {
         return dri;
     }
@@ -185,5 +167,15 @@ public abstract class Enemy extends GameEntity {
     }
     public List<Enemy> getListEnemy() {
         return normalEnemies;
+    }
+
+    @Override
+    public int getX_pos() {
+        return super.getX_pos();
+    }
+
+    @Override
+    public int getY_pos() {
+        return super.getY_pos();
     }
 }

@@ -1,54 +1,50 @@
 package sample;
-
-import javafx.scene.SnapshotParameters;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Line;
-
-import java.util.ArrayList;
+import sample.Enemy;
+import javafx.scene.canvas.GraphicsContext;
+import sample.Point;
 import java.util.List;
 
-import sample.Enemy;
-public class NormalEnemy extends Enemy{
-
+public class SmallerEnemy extends Enemy {
     private static final int speed = 1;
-    private static final int blood_first = 80;
+    private static final int blood_first = 10;
     private static final int armor_normal = 2;
-    private static final String Normal_Image = "file:src/Assets/Enemy/NormalEnemy" ;
+    private static final String SmallEnemy_Image= "file:src/Assets/Enemy/SmallEnemy" ;
 
-    public NormalEnemy(List<Point> pointList)
+    public SmallerEnemy(List<Point> pointList)
     {
         super();
         setFirst_Blood(blood_first);
         setSpeed(speed);
         setArmor(armor_normal);
-        loadImage(Normal_Image);
+        loadImage(SmallEnemy_Image);
         loadRoad(pointList);
         setPosition(roadList.get(0).getX(), roadList.get(0).getY());
-        setDri(angle_Up);
+        setDri(angle_Right);
         this.i = 0;
-        angle = angle_Up;
+        angle = angle_Right;
         getRoadList();
     }
 
     @Override
+    public void loadImage(String path) {
+        this.image = new Image(path + ".png", 50, 50, true, true);
+    }
+
+
+    @Override
     public void ShowObject(GraphicsContext gc) {
-        Move();
-        gc.drawImage(this.image,x_pos, y_pos);
+
     }
 
     @Override
     public void Render(GraphicsContext gc) {
         Move();
-        gc.drawImage(image,this.x_pos, this.y_pos, 50, 50);
+        gc.drawImage(image,this.x_pos, this.y_pos, 40, 40);
         gc.setFill(Color.GRAY);
         gc.fillRect(x_pos + image.getWidth()/4 , y_pos - 3, image.getWidth()/2, 2);
         gc.setFill(Color.RED);
         gc.fillRect(x_pos + image.getWidth()/4 , y_pos - 3, image.getWidth()/2 * getBlood()/blood_first, 2);
-    }
-    public void loadImage(String path) {
-        this.image = new Image(path + ".png", 50, 50, false, false);
     }
 }

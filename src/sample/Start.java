@@ -245,13 +245,17 @@ public class Start {
 
         public void show() {
             setVisible(true);
+
             TranslateTransition tt = new TranslateTransition(Duration.seconds(0.3), this);
+
             tt.setToY(0);
             tt.play();
         }
 
         public void hide() {
+
             TranslateTransition tt = new TranslateTransition(Duration.seconds(0.3), this);
+
             tt.setToY(-350);
             tt.setOnFinished(event -> setVisible(false));
             tt.play();
