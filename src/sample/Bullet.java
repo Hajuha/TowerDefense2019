@@ -10,21 +10,18 @@ import javafx.scene.transform.Rotate;
 
 import java.util.List;
 
-public class Bullet extends GameTile{
-    final static int dame = 5;
-    final static int speed_bullet = 5;
-    private SnapshotParameters snapshotParameters = new SnapshotParameters();
+public abstract class  Bullet extends GameTile{
+    protected SnapshotParameters snapshotParameters = new SnapshotParameters();
 
-
-    private Enemy TargetEnemy;
-    private boolean is_found;
+    protected Enemy TargetEnemy;
+    protected boolean is_found;
     protected int speed;
-    private double angle;
-    private double sinX;
-    private double cosX;
-    private int indexListEnemy;
-    private boolean isshoot ;
-    private ImageView imageView = new ImageView();
+    protected double angle;
+    protected double sinX;
+    protected double cosX;
+    protected int indexListEnemy;
+    protected boolean isshoot ;
+    protected ImageView imageView = new ImageView();
 
     public Point Destination  = new Point(0, 0);
 
@@ -33,7 +30,6 @@ public class Bullet extends GameTile{
         super(x_pos, y_pos);
         this.image = image_Bullt;
         imageView.setImage(image);
-        setSpeed(speed_bullet);
         is_found = false;
         angle = 0;
         sinX = 0;
@@ -93,7 +89,6 @@ public class Bullet extends GameTile{
             angle2 = 90 - angle2;
         }
         double delta_angle = (angle - angle2 > 180) ? (angle - angle2 - 360) : angle - angle2;
-//        System.out.println("delta_angle = " + angle + " ,"+  angle2);
         angle = angle2;
         this.imageView.setRotate(imageView.getRotate() + delta_angle);
         image = imageView.snapshot(snapshotParameters, null);
@@ -106,7 +101,6 @@ public class Bullet extends GameTile{
     }
     public void move()
     {
-
         x_pos += ((double) speed) * cosX;
         y_pos += ((double) speed) * sinX;
         setAngle();
@@ -114,19 +108,7 @@ public class Bullet extends GameTile{
 
 
     @Override
-    public void Render(GraphicsContext gc) {
-        if(!isshoot)
-        {
-            move();
-            gc.drawImage(image, x_pos , y_pos);
-//            gc.setFill(Color.YELLOW);
-//            gc.fillOval(x_pos, y_pos, 5, 5);
-        }
-        isshoot = isShoot();
-        if(isshoot) {
-            TargetEnemy.bleed(dame);
-        }
-    }
+    public abstract void Render(GraphicsContext gc);
 
     public void setDestination(Point destination) {
         this.Destination = destination;
@@ -175,8 +157,5 @@ public class Bullet extends GameTile{
         return TargetEnemy;
     }
 
-    public static int getDame() {
-        return dame;
-    }
 
 }

@@ -48,25 +48,8 @@ public abstract class Tower  {
                 true, true);
     }
 
-    public void Shoot(List<sample.Enemy> enemyList)
-    {
-        if(targetEnemy == null || !utilInRange()){
-            isFoundEnemy = false;
-        }
-        if(isFoundEnemy)
-        {
-            if(i == 0)
-            {
-                bulletList.add(new Bullet(targetEnemy, (int)x_pos ,(int) y_pos,indexEnemy, image_Bullt ));
-                sizeBulet ++;
-                isFoundEnemy = false;
-            }
-            i = (i > 50) ? 0 : i + 1;
-        }
-        else {
-            setTargetEnemy(enemyList); // tim target
-        }
-    }
+    public abstract void Shoot(List<sample.Enemy> enemyList);
+
 
     public void setTargetEnemy(List <sample.Enemy> enemyList) {
         if(enemyList.isEmpty()) {

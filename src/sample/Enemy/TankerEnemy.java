@@ -8,7 +8,7 @@ import javafx.scene.paint.Color;
 import sample.Enemy;
 public class TankerEnemy extends Enemy {
     private static final int speed = 1;
-    private static final int blood_first =200;
+    private static final int blood_first =500;
     private static final int armor_tank = 2;
     private static final String Tank_Image = "file:src/Assets/Enemy/tank";
     public TankerEnemy(List<Point> pointList)

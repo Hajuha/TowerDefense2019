@@ -144,7 +144,8 @@ public class Start {
                 }
             }
         });
-        mediaPlayer.play();
+        mediaPlayer.setAutoPlay(true);
+
         return createContent;
     }
 
@@ -188,7 +189,7 @@ public class Start {
             System.out.print(vbox.getPrefHeight());
             vbox.setAlignment(Pos.TOP_CENTER);
             //setAlignment(Pos.CENTER);
-            Text end = new Text("ver 1.0.0. Powered by JavaFX");
+            Text end = new Text("Ver 1.0.0. Powered by JavaFX");
             end.setFill(Color.WHITE);
             end.setFont(Font.font("",FontWeight.LIGHT,13));
             getChildren().addAll(bg, vbox, end);

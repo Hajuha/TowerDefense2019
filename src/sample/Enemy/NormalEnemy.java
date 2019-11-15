@@ -14,9 +14,10 @@ import sample.Enemy;
 public class NormalEnemy extends Enemy{
 
     private static final int speed = 1;
-    private static final int blood_first = 80;
+    private static final int blood_first = 100;
     private static final int armor_normal = 2;
-    private static final String Normal_Image = "file:src/Assets/Enemy/NormalEnemy" ;
+    private static final Image  Normal_Img = new Image("file:src/Assets/Enemy/NormalEnemy.png",
+            60, 60, false, false);
 
     public NormalEnemy(List<Point> pointList)
     {
@@ -24,8 +25,8 @@ public class NormalEnemy extends Enemy{
         setFirst_Blood(blood_first);
         setSpeed(speed);
         setArmor(armor_normal);
-        loadImage(Normal_Image);
         loadRoad(pointList);
+        this.image = Normal_Img;
         setPosition(roadList.get(0).getX(), roadList.get(0).getY());
         setDri(angle_Up);
         this.i = 0;

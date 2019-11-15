@@ -35,8 +35,6 @@ public class GameStage {
     private SniperTower listTower = new SniperTower();
 
     private Scanner input = new Scanner(new File("src/MapGame1.txt")); //ds tháp được đặt
-
-
     static  int i = 0;
     static  int j = 0;
 
@@ -50,7 +48,6 @@ public class GameStage {
         mainStage.setScene(mainScene);
         mainStage.setTitle(GAME_TITLE);
 
-
         Hbox_SniperTower hbox_sniperTower= new Hbox_SniperTower();
         hbox_sniperTower.setupGestureTarget(mainScene,MapTitle);
 
@@ -62,9 +59,11 @@ public class GameStage {
         Enemy ListEnemy = new NormalEnemy(ListRoad);
         Tower tower1 = new MachineGunTower(700, 400);
         Tower tower2 = new MachineGunTower(500, 450);
+        Tower tower3 = new NormalTower(300, 300);
 
         listTower.towerList.add(tower1);
         listTower.towerList.add(tower2);
+        listTower.towerList.add(tower3);
 
         AnimationTimer timer = new AnimationTimer() {
             @Override
@@ -126,6 +125,7 @@ public class GameStage {
                 30, 30, true, true);
         Image tilemap2 = new Image("file:src/Assets/Map/Map-" + 2 + ".png",
                 30, 30, true, true);
+        *
         for (int i = 0; i < 24; i++) {
             for (int j = 0; j < 40; j++) {
                 int a = input.nextInt();
@@ -154,7 +154,6 @@ public class GameStage {
                 case 0 :
                     normalEnemyAction.add(new SmallerEnemy(ListRoad));
                     break;
-
                 case 1 :
                     normalEnemyAction.add(new NormalEnemy(ListRoad));
                     break;
