@@ -49,7 +49,6 @@ public class MachineGunTower extends Tower {
         super(x_pos, y_pos);
         this.dame = newDame;
         this.cost = newCost;
-        this.towerImagePath = "file:src/Assets/Tower/SniperTower";
         this.image = image_MachineGun;
         this.gun = image_Gun;
         this.range = Range_Sniper;

@@ -1,5 +1,7 @@
 package sample;
+import HboxTower.HBoxTower;
 import HboxTower.Hbox_MachineGunTower;
+import HboxTower.Hbox_NormalTower;
 import HboxTower.Hbox_SniperTower;
 import javafx.animation.AnimationTimer;
 import javafx.scene.Group;
@@ -49,22 +51,13 @@ public class GameStage {
         mainStage.setTitle(GAME_TITLE);
 
         Hbox_SniperTower hbox_sniperTower= new Hbox_SniperTower();
-        hbox_sniperTower.setupGestureTarget(mainScene,MapTitle);
-
-        root.getChildren().addAll( hbox_sniperTower.getHbox_Tower());
+        Hbox_NormalTower hbox_normalTower= new Hbox_NormalTower();
+        Hbox_MachineGunTower hbox_machineGunTower = new Hbox_MachineGunTower();
+        root.getChildren().addAll( hbox_sniperTower.getHbox_Tower(), hbox_normalTower.getHbox_Tower(), hbox_machineGunTower.getHbox_Tower());
 
         List<Bullet> bulletAction = new ArrayList<>();
-
         LoadMap();
         Enemy ListEnemy = new NormalEnemy(ListRoad);
-        Tower tower1 = new MachineGunTower(700, 400);
-        Tower tower2 = new MachineGunTower(500, 450);
-        Tower tower3 = new NormalTower(300, 300);
-
-        listTower.towerList.add(tower1);
-        listTower.towerList.add(tower2);
-        listTower.towerList.add(tower3);
-
         AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long now) {
@@ -73,10 +66,47 @@ public class GameStage {
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
                 }
+                if(hbox_sniperTower.isIs_click())
+                {
+                    System.out.println("Sniper");
+                    hbox_sniperTower.setupGestureTarget(mainScene,MapTitle, mainGraphic);
+                    hbox_sniperTower.Render_Hbox(mainGraphic);
+                    if(hbox_sniperTower.isPut()) {
+                        listTower.towerList.add(new sample.SniperTower(hbox_sniperTower.getTower().x_pos, hbox_sniperTower.getTower().y_pos));
+                        hbox_sniperTower.setPut(false);
+                        hbox_sniperTower.setIs_click(false);
+                    }
+                    System.out.println(hbox_sniperTower.isIs_click());
+                    hbox_machineGunTower.setIs_click(true);
+                    hbox_machineGunTower.setDrag(false);
+                }
+                else if(hbox_normalTower.isIs_click())
+                {
+                    System.out.println("Normal");
+                    hbox_normalTower.setupGestureTarget(mainScene, MapTitle, mainGraphic);
+                    hbox_normalTower.Render_Hbox(mainGraphic);
+                    if(hbox_normalTower.isPut())
+                    {
+                        listTower.towerList.add(new NormalTower(hbox_normalTower
+                                .getTower().x_pos, hbox_normalTower.getTower().y_pos));
+                        hbox_normalTower.setPut(false);
+                        hbox_normalTower.setIs_click(false);
+                    }
+                    hbox_machineGunTower.setDrag(false);
 
-                if(hbox_sniperTower.isPut()) {
-                    listTower.towerList.add(new SniperTower(hbox_sniperTower.getTower().x_pos, hbox_sniperTower.getTower().y_pos));
-                    hbox_sniperTower.setPut(false);
+                }
+                else if(hbox_machineGunTower.isIs_click())
+                {
+                    System.out.println("Machine");
+                    hbox_machineGunTower.setupGestureTarget(mainScene, MapTitle, mainGraphic);
+                    hbox_machineGunTower.Render_Hbox(mainGraphic);
+                    if(hbox_machineGunTower.isPut())
+                    {
+                        listTower.towerList.add(new sample.MachineGunTower(hbox_machineGunTower
+                                .getTower().x_pos, hbox_machineGunTower.getTower().y_pos));
+                        hbox_machineGunTower.setPut(false);
+                        hbox_machineGunTower.setIs_click(false);
+                    }
                 }
 
                 if(!normalEnemyAction.isEmpty() && i == 0)  ListEnemy.adds(normalEnemyAction.remove(0));
@@ -85,9 +115,6 @@ public class GameStage {
                 for(Tower t : listTower.towerList){
                     t.Render(mainGraphic, ListEnemy.getListEnemy());
                 }
-                hbox_sniperTower.Render_Hbox(mainGraphic);
-
-                hbox_sniperTower.Render_Hbox(mainGraphic);
             }
         };
 
@@ -125,7 +152,6 @@ public class GameStage {
                 30, 30, true, true);
         Image tilemap2 = new Image("file:src/Assets/Map/Map-" + 2 + ".png",
                 30, 30, true, true);
-        *
         for (int i = 0; i < 24; i++) {
             for (int j = 0; j < 40; j++) {
                 int a = input.nextInt();
