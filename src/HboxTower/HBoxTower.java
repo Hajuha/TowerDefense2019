@@ -32,6 +32,7 @@ public abstract class HBoxTower {
     protected boolean isPut;
     protected boolean isDrag;
     protected boolean canPut;
+    protected boolean is_click;
     public HBoxTower()
     {
         Hbox_Tower.setPrefWidth(BoxTower_WIDTH);
@@ -65,37 +66,28 @@ public abstract class HBoxTower {
         imageView_Hbox.setOnDragDetected(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-//                System.out.println("DRAG DETECTED");
-                /* allow any transfer mode */
                 Dragboard db = imageView_Hbox.startDragAndDrop(TransferMode.MOVE);
-
-                /* put a image on dragboard */
                 ClipboardContent content = new ClipboardContent();
-
                 Image sourceImage = imageView_Hbox.getImage();
                 content.putImage(sourceImage);
                 db.setContent(content);
                 event.consume();
+                is_click  = true;
             }
         });
         imageView_Hbox.setOnMouseEntered(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent e) {
-//                System.out.println("MOUSE ENTERED");
                 imageView_Hbox.setCursor(Cursor.HAND);
-//                    System.out.println("e...: "+e.getSceneX());
-
             }
         });
     }
-    public void setupGestureTarget(Scene scene, int[][] MapTitle){ // Xu li phan keo tha
-        //ImageView target = new ImageView(i);
+    public void setupGestureTarget(Scene scene, int[][] MapTitle, GraphicsContext graphicsContext){ // Xu li phan keo tha
         scene.setOnDragOver(new EventHandler <DragEvent>() {
             @Override
             public void handle(DragEvent event) {
-                //System.out.println("DRAG OVER");
                 Dragboard db = event.getDragboard();
-
+                is_click = true;
                 if(db.hasImage()){
                     event.acceptTransferModes(TransferMode.MOVE);
                     setPosition((int)event.getX() , (int) event.getY() );
@@ -107,23 +99,20 @@ public abstract class HBoxTower {
                     }
                     else canPut = false;
                     isDrag = true;
+                    Render_Hbox(graphicsContext);
                 }
                 event.consume();
-
             }
         });
         scene.setOnDragDropped(new EventHandler <DragEvent>(){
             @Override
             public void handle(DragEvent event) {
-//                System.out.println("DRAG DROPPED");
                 Dragboard db = event.getDragboard();
                 if(db.hasImage()){
-                    //imageView_Hbox.setImage(db.getImage());
                     int x_tiles = (int) event.getSceneX() / SCREEN_TITLEMAP;
                     int y_tiles = (int) event.getSceneY() / SCREEN_TITLEMAP;
 
                     if (MapTitle[y_tiles][x_tiles] == 1 && MapTitle[y_tiles+1][x_tiles] == 1) {
-//                        System.out.println("event : "+event.getSceneX() +", " + event.getSceneY());
                         MapTitle[y_tiles][x_tiles] = 0;
                         MapTitle[y_tiles+1][x_tiles] = 0;
                         tower.setX_pos((x_tiles) *SCREEN_TITLEMAP);
@@ -134,6 +123,7 @@ public abstract class HBoxTower {
                     }else {
                         isPut = false;
                         isDrag = false;
+                        is_click = false;
                     }
                 }else{
                     event.setDropCompleted(false);
@@ -160,4 +150,16 @@ public abstract class HBoxTower {
     }
 
     public abstract void Render_Hbox(GraphicsContext gc);
+
+    public boolean isIs_click() {
+        return is_click;
+    }
+    public void setDrag(boolean drag)
+    {
+        this.isDrag = drag;
+    }
+
+    public void setIs_click(boolean is_click) {
+        this.is_click = is_click;
+    }
 }
