@@ -10,8 +10,12 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 import sample.Tower;
+import sample.Enemy;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -23,6 +27,9 @@ public class GameStage {
     private final static int SCREEN_WIDTH = 1200;
     private final static int SCREEN_TITLEMAP = 30;
     private final static String GAME_TITLE = "Tower Defense";
+    private final static int CASH_SNIPERTOWER = 50;
+    private final static int CASH_NORMALTOWER = 70;
+    private final static int CASH_MACHINEGUNTOWER = 100;
     private static int[][] MapTitle = new int[24][40];
     private static Image[][] imageMap = new Image[24][40];
     static List<GameTile> listBullet = new ArrayList<>();
@@ -35,6 +42,8 @@ public class GameStage {
     private Group root;
     ImageView iv; //vùng thao tác ảnh
     private SniperTower listTower = new SniperTower();
+    private int cash = 200; // số tiền đang có
+    private int bloodFull = 100; //số máu ban đầu của nhà chủ
 
     private Scanner input = new Scanner(new File("src/MapGame1.txt")); //ds tháp được đặt
     static  int i = 0;
@@ -58,6 +67,11 @@ public class GameStage {
         List<Bullet> bulletAction = new ArrayList<>();
         LoadMap();
         Enemy ListEnemy = new NormalEnemy(ListRoad);
+        Font theFont = Font.font( "Helvetica", FontWeight.BOLD, 24 );
+        mainGraphic.setFont( theFont );
+        mainGraphic.setFill( Color.GREEN );
+        mainGraphic.setStroke( Color.BLACK );
+        mainGraphic.setLineWidth(1);
         AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long now) {
@@ -66,12 +80,14 @@ public class GameStage {
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
                 }
-                if(hbox_sniperTower.isIs_click())
+
+                if(hbox_sniperTower.isIs_click() && cash >= CASH_SNIPERTOWER)
                 {
                     System.out.println("Sniper");
                     hbox_sniperTower.setupGestureTarget(mainScene,MapTitle, mainGraphic);
                     hbox_sniperTower.Render_Hbox(mainGraphic);
                     if(hbox_sniperTower.isPut()) {
+                        cash-=CASH_SNIPERTOWER;
                         listTower.towerList.add(new sample.SniperTower(hbox_sniperTower.getTower().x_pos, hbox_sniperTower.getTower().y_pos));
                         hbox_sniperTower.setPut(false);
                         hbox_sniperTower.setIs_click(false);
@@ -80,13 +96,14 @@ public class GameStage {
                     hbox_machineGunTower.setIs_click(true);
                     hbox_machineGunTower.setDrag(false);
                 }
-                else if(hbox_normalTower.isIs_click())
+                else if(hbox_normalTower.isIs_click() && cash >= CASH_NORMALTOWER)
                 {
                     System.out.println("Normal");
                     hbox_normalTower.setupGestureTarget(mainScene, MapTitle, mainGraphic);
                     hbox_normalTower.Render_Hbox(mainGraphic);
-                    if(hbox_normalTower.isPut())
+                    if(hbox_normalTower.isPut() && cash >= CASH_NORMALTOWER)
                     {
+                        cash-=CASH_NORMALTOWER;
                         listTower.towerList.add(new NormalTower(hbox_normalTower
                                 .getTower().x_pos, hbox_normalTower.getTower().y_pos));
                         hbox_normalTower.setPut(false);
@@ -95,13 +112,14 @@ public class GameStage {
                     hbox_machineGunTower.setDrag(false);
 
                 }
-                else if(hbox_machineGunTower.isIs_click())
+                else if(hbox_machineGunTower.isIs_click() && cash >= CASH_MACHINEGUNTOWER)
                 {
                     System.out.println("Machine");
                     hbox_machineGunTower.setupGestureTarget(mainScene, MapTitle, mainGraphic);
                     hbox_machineGunTower.Render_Hbox(mainGraphic);
                     if(hbox_machineGunTower.isPut())
                     {
+                        cash-=CASH_MACHINEGUNTOWER;
                         listTower.towerList.add(new sample.MachineGunTower(hbox_machineGunTower
                                 .getTower().x_pos, hbox_machineGunTower.getTower().y_pos));
                         hbox_machineGunTower.setPut(false);
@@ -115,6 +133,12 @@ public class GameStage {
                 for(Tower t : listTower.towerList){
                     t.Render(mainGraphic, ListEnemy.getListEnemy());
                 }
+                String pointsText = "CASH: $" + (cash + ListEnemy.cashIncrease);
+                mainGraphic.fillText( pointsText, SCREEN_WIDTH/2, SCREEN_TITLEMAP );
+                mainGraphic.strokeText( pointsText, SCREEN_WIDTH/2, SCREEN_TITLEMAP );
+                String bloodText = "Blood: " + (bloodFull - ListEnemy.bloodDecrease);
+                mainGraphic.fillText( bloodText, SCREEN_WIDTH*3/4, SCREEN_TITLEMAP );
+                mainGraphic.strokeText( bloodText, SCREEN_WIDTH*3/4, SCREEN_TITLEMAP );
             }
         };
 

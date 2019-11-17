@@ -49,6 +49,8 @@ public class NormalEnemy extends Enemy{
         gc.setFill(Color.RED);
         gc.fillRect(x_pos + image.getWidth()/4 , y_pos - 3, image.getWidth()/2 * getBlood()/blood_first, 2);
     }
+
+
     public void loadImage(String path) {
         this.image = new Image(path + ".png", 50, 50, false, false);
     }
