@@ -29,6 +29,8 @@ public abstract class Enemy extends GameEntity {
     protected int angle;
     protected  int i ;
     protected int dri ;
+    protected int cashIncrease = 0;
+    protected int bloodDecrease = 0;
     public void adds(Enemy normalEnemy)
     {
         normalEnemies.add(normalEnemy);
@@ -106,7 +108,13 @@ public abstract class Enemy extends GameEntity {
     {
         for (int i = 0; i < normalEnemies.size(); i ++)
         {
-            if(normalEnemies.get(i).is_dead()) normalEnemies.remove(i);
+            if(normalEnemies.get(i).is_dead()) {
+                normalEnemies.remove(i);
+                cashIncrease += 30;
+            } if (normalEnemies.get(i).is_over()){
+                normalEnemies.remove(i);
+                bloodDecrease += 20;
+            }
             else {
                 normalEnemies.get(i).Render(gc);
             }
@@ -141,7 +149,11 @@ public abstract class Enemy extends GameEntity {
     }
     public boolean is_dead()
     {
-        return  (this.Blood <= 0  ||  this.x_pos > 1200);
+        return  (this.Blood <= 0  );
+    }
+    //kiểm tra địch có vượt qua các tháp ko
+    public boolean is_over(){
+        return (this.x_pos > 1200);
     }
 
     public int getDri() {
