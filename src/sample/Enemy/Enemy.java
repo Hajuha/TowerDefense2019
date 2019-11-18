@@ -71,12 +71,6 @@ public abstract class Enemy extends GameEntity {
         int delta_x = this.roadList.get(i + 1).getX() - this.x_pos;
         int delta_y = this.roadList.get(i + 1).getY() - this.y_pos;
         if(delta_x == 0 && delta_y == 0 && i < roadList.size())  i ++;
-
-//        if(this.x_pos > 1200) {
-//            i = 0;
-//            setPosition(this.roadList.get(0).getX(), this.roadList.get(0).getY());
-//            setDri(angle_Right);
-//        }
     }
     public int nextRoad()
     {
@@ -112,7 +106,8 @@ public abstract class Enemy extends GameEntity {
             if(normalEnemies.get(i).is_dead()) {
                 normalEnemies.remove(i);
                 cashIncrease += cash;
-            } if (normalEnemies.get(i).is_over()){
+            }
+            else if (normalEnemies.get(i).is_over()){
                 normalEnemies.remove(i);
                 bloodDecrease += 20;
             }
@@ -146,7 +141,7 @@ public abstract class Enemy extends GameEntity {
     }
     public void bleed(int blood_delta)
     {
-        this.Blood -= blood_delta;
+        this.Blood -= blood_delta * ( 10 - this.armor) /10;
     }
     public boolean is_dead()
     {
@@ -154,7 +149,7 @@ public abstract class Enemy extends GameEntity {
     }
     //kiểm tra địch có vượt qua các tháp ko
     public boolean is_over(){
-        return (this.x_pos > 1200);
+        return (this.x_pos >= 1220 || this.y_pos >= 750 || this.x_pos <= -30 || this.y_pos <= - 30);
     }
 
     public int getDri() {

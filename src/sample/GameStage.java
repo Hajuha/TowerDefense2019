@@ -46,7 +46,7 @@ public class GameStage {
     private Enemy ListEnemy;
     private   int i;
     private   int j;
-    private int level = 1;
+    private int level = 2;
 
     public GameStage() throws FileNotFoundException, InterruptedException {
         mainCanvas = new Canvas(SCREEN_WIDTH, SCREEN_HEIGHT);
@@ -244,7 +244,7 @@ public class GameStage {
         catch (Exception e) {}
         ListEnemy = new NormalEnemy(ListRoad);
         this.bloodFull = 100;
-        this.cash = 70;
+        this.cash = 70 + (level - 1) * 30;
     }
     public boolean isWin()
     {
@@ -252,7 +252,7 @@ public class GameStage {
     }
     public boolean isLose()
     {
-        return (bloodFull <= 0)
+        return (bloodFull <= 0);
     }
     public void NextGame()
     {
