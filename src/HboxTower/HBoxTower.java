@@ -29,8 +29,8 @@ public abstract class HBoxTower {
     protected int x_pos;
     protected int y_pos;
     protected Tower tower;
-    private final int BoxTower_WIDTH = 30;
-    private final int BoxTower_HEIGHT =  60;
+    private final int BoxTower_WIDTH = 45;
+    private final int BoxTower_HEIGHT =  90;
     protected boolean isPut;
     protected boolean isDrag;
     protected boolean canPut;
