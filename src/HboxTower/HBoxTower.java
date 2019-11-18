@@ -19,6 +19,8 @@ import sample.Tower.*;
 import  sample.NormalEnemy;
 import sample.SniperTower;
 
+import java.util.Map;
+
 public abstract class HBoxTower {
     private final static int SCREEN_TITLEMAP = 30;
     protected HBox Hbox_Tower = new HBox();
@@ -95,7 +97,8 @@ public abstract class HBoxTower {
                     setPosition((int)event.getX() , (int) event.getY() );
                     int x_tiles = (int) event.getSceneX() / SCREEN_TITLEMAP;
                     int y_tiles = (int) event.getSceneY() / SCREEN_TITLEMAP;
-                    if (MapTitle[y_tiles][x_tiles] == 1 && MapTitle[y_tiles+1][x_tiles] == 1)
+                    if (MapTitle[y_tiles][x_tiles] == 1 && MapTitle[y_tiles+1][x_tiles] == 1
+                            && MapTitle[y_tiles + 1][x_tiles + 1] == 1 && MapTitle[y_tiles + 1][x_tiles] == 1)
                     {
                         canPut = true;
                     }
@@ -113,9 +116,12 @@ public abstract class HBoxTower {
                     int x_tiles = (int) event.getSceneX() / SCREEN_TITLEMAP;
                     int y_tiles = (int) event.getSceneY() / SCREEN_TITLEMAP;
 
-                    if (MapTitle[y_tiles][x_tiles] == 1 && MapTitle[y_tiles+1][x_tiles] == 1) {
+                    if (MapTitle[y_tiles][x_tiles] == 1 && MapTitle[y_tiles+1][x_tiles] == 1
+                            && MapTitle[y_tiles + 1][x_tiles + 1] == 1 && MapTitle[y_tiles + 1][x_tiles] == 1) {
                         MapTitle[y_tiles][x_tiles] = 0;
                         MapTitle[y_tiles+1][x_tiles] = 0;
+                        MapTitle[y_tiles + 1][x_tiles + 1] = 0;
+                        MapTitle[y_tiles + 1][x_tiles] =0;
                         tower.setX_pos((x_tiles) *SCREEN_TITLEMAP);
                         tower.setY_pos((y_tiles) * SCREEN_TITLEMAP);
                         isPut = true;

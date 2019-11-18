@@ -11,7 +11,7 @@ public class BossEnemy extends Enemy {
     private final int cash_Boss = 200;
 
     private final  int blood_first = 1000;
-    private final int armor_boss = 30;
+    private final int armor_boss = 2;
     private final  int speed_boss = 1;
     private final String Boss_Image = "file:src/Assets/Enemy/bos"; // get name to here
 
