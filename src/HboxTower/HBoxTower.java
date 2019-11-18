@@ -39,7 +39,7 @@ public abstract class HBoxTower {
         Hbox_Tower.setPrefWidth(BoxTower_WIDTH);
         Hbox_Tower.setPrefHeight(BoxTower_HEIGHT);
         Hbox_Tower.setStyle("-fx-border-color: red;"
-                + "-fx-border-width: 1;"
+                + "-fx-border-width: 0;"
                 + "-fx-border-style: solid;");
         insertImage();
         isPut = false;
