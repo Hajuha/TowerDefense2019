@@ -8,9 +8,9 @@ import sample.MachineGunTower;
 
 public class Hbox_MachineGunTower extends HBoxTower {
     private final Image image_machine = new Image("file:src/Assets/Tower/a.gif",
-            60 , 60, true, true);
-    private final int X_Hbox = 200;
-    private final int Y_Hbox = 0;
+            90 , 90, true, true);
+    private final int X_Hbox = 455;
+    private final int Y_Hbox = 5;
     public Hbox_MachineGunTower()
     {
         super();

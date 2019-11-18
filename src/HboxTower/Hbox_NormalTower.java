@@ -10,9 +10,9 @@ import sample.SniperTower;
 
 public class Hbox_NormalTower extends HBoxTower {
     private final Image image_NormalTower = new Image("file:src/Assets/Tower/normal.gif",
-                                    60 , 60, true, true);
-    private final int X_Hbox = 400;
-    private final int Y_Hbox = 0;
+                                    40 , 70, false, true);
+    private final int X_Hbox = 380;
+    private final int Y_Hbox = 15;
     public Hbox_NormalTower()
     {
         super();
