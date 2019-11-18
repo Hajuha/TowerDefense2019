@@ -8,7 +8,7 @@ import java.util.List;
 
 public class SmallerEnemy extends Enemy {
     private static final int speed = 1;
-    private static final int blood_first = 10;
+    private static final int blood_first = 100;
     private static final int armor_normal = 2;
     private static final Image  Small_Img = new Image("file:src/Assets/Enemy/SmallEnemy.png",
             60, 60, false, false);
