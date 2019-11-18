@@ -49,6 +49,7 @@ public class GameStage {
     private int cash;// số tiền đang có
     private int bloodFull;//số máu ban đầu của nhà chủ
     private Enemy ListEnemy;
+    private  final  Image topbar = new Image("file:src/Assets/Map/Topbar.png");
 
     private int i;
     private int j;
@@ -70,6 +71,7 @@ public class GameStage {
         Hbox_MachineGunTower hbox_machineGunTower = new Hbox_MachineGunTower();
         root.getChildren().addAll(hbox_sniperTower.getHbox_Tower(), hbox_normalTower.getHbox_Tower(), hbox_machineGunTower.getHbox_Tower());
         hbox_machineGunTower.setupGestureTarget(mainScene, MapTitle, mainGraphic);
+
         try (InputStream fontStream = Files.newInputStream(Paths.get("src/Assets/Font/cod_font.ttf"))) {
 
             theFont = Font.loadFont(fontStream, 30);
@@ -82,7 +84,7 @@ public class GameStage {
         mainGraphic.setStroke(Color.BLACK);
         mainGraphic.setLineWidth(1);
 
-        cash = 70;
+        cash = 500;
         bloodFull = 100;
         i = 0;
         j = 0;
@@ -111,7 +113,7 @@ public class GameStage {
                         ((HBoxTower) hbox_machineGunTower).Render_Hbox(mainGraphic, hbox_normalTower.getTower().getRange());
                         if (hbox_machineGunTower.isPut() && cash >= CASH_NORMALTOWER) {
                             cash -= CASH_NORMALTOWER;
-                            listTower.towerList.add(new sample.NormalTower(hbox_machineGunTower.getTower().x_pos, hbox_machineGunTower.getTower().y_pos));
+                            listTower.towerList.add(new sample.NormalTower(hbox_machineGunTower.getTower().x_pos - 20, hbox_machineGunTower.getTower().y_pos - 20));
                         }
                         hbox_machineGunTower.setPut(false);
                         break;
@@ -119,7 +121,7 @@ public class GameStage {
                         ((HBoxTower) hbox_machineGunTower).Render_Hbox(mainGraphic, hbox_machineGunTower.getTower().getRange());
                         if (hbox_machineGunTower.isPut() && cash >= CASH_MACHINEGUNTOWER) {
                             cash -= CASH_MACHINEGUNTOWER;
-                            listTower.towerList.add(new sample.MachineGunTower(hbox_machineGunTower.getTower().x_pos, hbox_machineGunTower.getTower().y_pos));
+                            listTower.towerList.add(new sample.MachineGunTower(hbox_machineGunTower.getTower().x_pos , hbox_machineGunTower.getTower().y_pos - 20));
                         }
                         hbox_machineGunTower.setPut(false);
                         break;
@@ -154,7 +156,7 @@ public class GameStage {
     }
 
     public void DrawMap() throws FileNotFoundException {
-        Image topbar = new Image("file:src/Assets/Map/Topbar.png");
+
         mainGraphic.drawImage(topbar, 0, 0);
         int x_pos = 0;
         int y_pos = 100;

@@ -7,7 +7,7 @@ import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import sample.Enemy;
 public class TankerEnemy extends Enemy {
-    private final int cash_tank = 100;
+    private final int cash_tank = 230;
 
     private static final int speed = 1;
     private static final int blood_first =400;

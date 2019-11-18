@@ -76,14 +76,12 @@ public abstract class HBoxTower {
                 content.putImage(sourceImage);
                 db.setContent(content);
                 event.consume();
-                is_click  = true;
             }
         });
         imageView_Hbox.setOnMouseEntered(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent e) {
                 imageView_Hbox.setCursor(Cursor.HAND);
-                is_click = true;
             }
         });
     }
@@ -94,9 +92,9 @@ public abstract class HBoxTower {
                 Dragboard db = event.getDragboard();
                 if(db.hasImage()){
                     event.acceptTransferModes(TransferMode.MOVE);
-                    setPosition((int)event.getX() , (int) event.getY() );
+                    setPosition((int)event.getX()  , (int) event.getY() );
                     int x_tiles = (int) event.getSceneX() / SCREEN_TITLEMAP;
-                    int y_tiles = (int) event.getSceneY() / SCREEN_TITLEMAP;
+                    int y_tiles = (event.getSceneY() >= 100) ?  ((int) event.getSceneY() - 100)  / SCREEN_TITLEMAP : 0;
                     if (MapTitle[y_tiles][x_tiles] == 1 && MapTitle[y_tiles+1][x_tiles] == 1
                             && MapTitle[y_tiles + 1][x_tiles + 1] == 1 && MapTitle[y_tiles + 1][x_tiles] == 1)
                     {
@@ -114,16 +112,16 @@ public abstract class HBoxTower {
                 Dragboard db = event.getDragboard();
                 if(db.hasImage()){
                     int x_tiles = (int) event.getSceneX() / SCREEN_TITLEMAP;
-                    int y_tiles = (int) event.getSceneY() / SCREEN_TITLEMAP;
+                    int y_tiles = (event.getSceneY() >= 100) ?  ((int) event.getSceneY() - 100)  / SCREEN_TITLEMAP : 0;
 
                     if (MapTitle[y_tiles][x_tiles] == 1 && MapTitle[y_tiles+1][x_tiles] == 1
                             && MapTitle[y_tiles + 1][x_tiles + 1] == 1 && MapTitle[y_tiles + 1][x_tiles] == 1) {
                         MapTitle[y_tiles][x_tiles] = 0;
                         MapTitle[y_tiles+1][x_tiles] = 0;
                         MapTitle[y_tiles + 1][x_tiles + 1] = 0;
-                        MapTitle[y_tiles + 1][x_tiles] =0;
+                        MapTitle[y_tiles + 1][x_tiles] = 0 ;
                         tower.setX_pos((x_tiles) *SCREEN_TITLEMAP);
-                        tower.setY_pos((y_tiles) * SCREEN_TITLEMAP);
+                        tower.setY_pos((y_tiles) * SCREEN_TITLEMAP+ 100);
                         isPut = true;
                         canPut = false;
                         isDrag = false;
@@ -140,12 +138,12 @@ public abstract class HBoxTower {
         scene.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                if(event.getX() >= 0 && event.getX()< 60
-                        && event.getY() >= 0 && event.getY() < 60) index_tower = 1;
-                else if(event.getX() >= 200 && event.getX() < 260
-                        && event.getY() >= 0 && event.getY() < 60) index_tower = 3;
-                else if(event.getX() >= 400 && event.getX() < 460
-                        && event.getY() >= 0 && event.getY() < 60) index_tower = 2;
+                if(event.getX() >= 280 && event.getX()< 370
+                        && event.getY() >= 10 && event.getY() < 150) index_tower = 1;
+                else if(event.getX() >= 460 && event.getX() < 545
+                        && event.getY() >= 10 && event.getY() < 150) index_tower = 3;
+                else if(event.getX() >= 380 && event.getX() < 450
+                        && event.getY() >= 10 && event.getY() < 150) index_tower = 2;
                 if(index_tower != 0) is_click  = true;
                 System.out.println(index_tower);
             }

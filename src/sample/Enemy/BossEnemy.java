@@ -8,7 +8,7 @@ import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import sample.Enemy;
 public class BossEnemy extends Enemy {
-    private final int cash_Boss = 200;
+    private final int cash_Boss = 300;
 
     private final  int blood_first = 1000;
     private final int armor_boss = 2;
