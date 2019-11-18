@@ -7,13 +7,13 @@ import sample.Point;
 import java.util.List;
 
 public class SmallerEnemy extends Enemy {
-    private final int cash_Small = 50;
+    private final int cash_Small = 30;
 
     private static final int speed = 1;
     private static final int blood_first = 10;
-    private static final int armor_normal = 2;
+    private static final int armor_normal = 0;
     private static final Image  Small_Img = new Image("file:src/Assets/Enemy/SmallEnemy.png",
-            60, 60, false, false);
+            40, 40, false, false);
     public SmallerEnemy(List<Point> pointList)
     {
         super();

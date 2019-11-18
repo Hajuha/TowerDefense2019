@@ -49,10 +49,12 @@ public class GameStage {
     private int cash;// số tiền đang có
     private int bloodFull;//số máu ban đầu của nhà chủ
     private Enemy ListEnemy;
+
     private int i;
     private int j;
-    private int level = 1;
+    private int level = 2;
     private static Font theFont;
+
     public GameStage() throws FileNotFoundException, InterruptedException {
         mainCanvas = new Canvas(SCREEN_WIDTH, SCREEN_HEIGHT);
         mainGraphic = mainCanvas.getGraphicsContext2D();
@@ -251,14 +253,16 @@ public class GameStage {
         }
         ListEnemy = new NormalEnemy(ListRoad);
         this.bloodFull = 100;
-        this.cash = 70;
+        this.cash = 70 + (level - 1) * 30;
     }
 
     public boolean isWin() {
         return (ListEnemy.getListEnemy().isEmpty() && normalEnemyAction.isEmpty() && bloodFull > 0);
     }
 
+
     public boolean isLose() {
+
         return (bloodFull <= 0);
     }
 
