@@ -101,7 +101,7 @@ public class GameStage {
                     System.out.println("Normal");
                     hbox_normalTower.setupGestureTarget(mainScene, MapTitle, mainGraphic);
                     hbox_normalTower.Render_Hbox(mainGraphic);
-                    if(hbox_normalTower.isPut() && cash >= CASH_NORMALTOWER)
+                    if(hbox_normalTower.isPut())
                     {
                         cash-=CASH_NORMALTOWER;
                         listTower.towerList.add(new NormalTower(hbox_normalTower
@@ -133,10 +133,14 @@ public class GameStage {
                 for(Tower t : listTower.towerList){
                     t.Render(mainGraphic, ListEnemy.getListEnemy());
                 }
-                String pointsText = "CASH: $" + (cash + ListEnemy.cashIncrease);
+                cash += ListEnemy.cashIncrease;
+                ListEnemy.cashIncrease = 0;
+                bloodFull -= ListEnemy.bloodDecrease;
+                ListEnemy.bloodDecrease = 0;
+                String pointsText = "CASH: $" + (cash);
                 mainGraphic.fillText( pointsText, SCREEN_WIDTH/2, SCREEN_TITLEMAP );
                 mainGraphic.strokeText( pointsText, SCREEN_WIDTH/2, SCREEN_TITLEMAP );
-                String bloodText = "Blood: " + (bloodFull - ListEnemy.bloodDecrease);
+                String bloodText = "Blood: " + (bloodFull);
                 mainGraphic.fillText( bloodText, SCREEN_WIDTH*3/4, SCREEN_TITLEMAP );
                 mainGraphic.strokeText( bloodText, SCREEN_WIDTH*3/4, SCREEN_TITLEMAP );
             }
