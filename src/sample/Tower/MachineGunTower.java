@@ -62,7 +62,7 @@ public class MachineGunTower extends Tower {
     }
     public void RotateGun() {
         if(targetEnemy == null) {
-            iv.setRotate(-iv.getRotate());
+            iv.setRotate(0);
             return;
         };
         double delta_x = x_pos - ((Enemy)targetEnemy).getX_pos();

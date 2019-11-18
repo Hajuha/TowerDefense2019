@@ -24,7 +24,7 @@ public class NormalTower extends Tower {
     private int newRange;
     private int newCost;
     private final static int SCREEN_TITLEMAP = 30;
-    private final int Range_Normal = 150;
+    private final int Range_Normal = 250;
     List<sample.Tower> towerList = new ArrayList<>(); //ds tháp được đặt
     private final String SniperTower_IMG = "Tower1";
     ImageView iv;
@@ -60,7 +60,7 @@ public class NormalTower extends Tower {
                 sizeBulet ++;
                 isFoundEnemy = false;
             }
-            i = (i > 50) ? 0 : i + 1;
+            i = (i > 25) ? 0 : i + 1;
         }
         else {
             setTargetEnemy(enemyList); // tim target

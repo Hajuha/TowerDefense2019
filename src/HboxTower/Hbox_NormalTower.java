@@ -14,22 +14,12 @@ public class Hbox_NormalTower extends HBoxTower {
     private final int X_Hbox = 400;
     private final int Y_Hbox = 0;
     public Hbox_NormalTower()
-    {super();
+    {
+        super();
         imageView_Hbox.setImage(image_NormalTower);
         this.tower = new NormalTower(X_Hbox, Y_Hbox);
         this.Hbox_Tower.setTranslateX(X_Hbox);
         this.Hbox_Tower.setTranslateY(Y_Hbox);
     }
 
-    @Override
-    public void Render_Hbox(GraphicsContext gc) {
-        if(this.isDrag)
-        {
-            if(canPut) {
-                gc.setStroke(Color.PAPAYAWHIP);
-            }
-            else gc.setStroke(Color.RED);
-            gc.strokeOval(x_pos - tower.getRange() , y_pos - tower.getRange() , tower.getRange()* 2, tower.getRange() * 2);
-        }
-    }
 }

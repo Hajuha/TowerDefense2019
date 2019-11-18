@@ -20,16 +20,5 @@ public class Hbox_MachineGunTower extends HBoxTower {
         this.Hbox_Tower.setTranslateY(Y_Hbox);
     }
 
-    @Override
-    public void Render_Hbox(GraphicsContext gc) {
-        if(this.isDrag)
-        {
-            if(canPut) {
-                gc.setStroke(Color.PAPAYAWHIP);
-            }
-            else gc.setStroke(Color.RED);
-            gc.strokeOval(x_pos - tower.getRange() , y_pos - tower.getRange() , tower.getRange()* 2, tower.getRange() * 2);
-        }
-    }
 
 }
