@@ -42,7 +42,7 @@ public class GameStage {
     private Group root;
     ImageView iv; //vùng thao tác ảnh
     private SniperTower listTower = new SniperTower();
-    private int cash = 200; // số tiền đang có
+    private int cash = 500; // số tiền đang có
     private int bloodFull = 100; //số máu ban đầu của nhà chủ
 
     private Scanner input = new Scanner(new File("src/MapGame1.txt")); //ds tháp được đặt
@@ -93,8 +93,7 @@ public class GameStage {
                         hbox_sniperTower.setIs_click(false);
                     }
                     System.out.println(hbox_sniperTower.isIs_click());
-                    hbox_machineGunTower.setIs_click(true);
-                    hbox_machineGunTower.setDrag(false);
+
                 }
                 else if(hbox_normalTower.isIs_click() && cash >= CASH_NORMALTOWER)
                 {
@@ -109,7 +108,7 @@ public class GameStage {
                         hbox_normalTower.setPut(false);
                         hbox_normalTower.setIs_click(false);
                     }
-                    hbox_machineGunTower.setDrag(false);
+
 
                 }
                 else if(hbox_machineGunTower.isIs_click() && cash >= CASH_MACHINEGUNTOWER)
@@ -125,6 +124,7 @@ public class GameStage {
                         hbox_machineGunTower.setPut(false);
                         hbox_machineGunTower.setIs_click(false);
                     }
+                    
                 }
 
                 if(!normalEnemyAction.isEmpty() && i == 0)  ListEnemy.adds(normalEnemyAction.remove(0));
