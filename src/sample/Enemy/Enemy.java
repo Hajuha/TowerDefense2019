@@ -31,6 +31,7 @@ public abstract class Enemy extends GameEntity {
     protected int dri ;
     protected int cashIncrease = 0;
     protected int bloodDecrease = 0;
+    protected int cash;
     public void adds(Enemy normalEnemy)
     {
         normalEnemies.add(normalEnemy);
@@ -101,7 +102,7 @@ public abstract class Enemy extends GameEntity {
     }
     public Point getPosition()
     {
-        point = new Point(x_pos + 25, y_pos + 25);
+        point = new Point(x_pos + 15, y_pos + 15);
         return point;
     }
     public void RenderList(GraphicsContext gc)
@@ -110,7 +111,7 @@ public abstract class Enemy extends GameEntity {
         {
             if(normalEnemies.get(i).is_dead()) {
                 normalEnemies.remove(i);
-                cashIncrease += 30;
+                cashIncrease += cash;
             } if (normalEnemies.get(i).is_over()){
                 normalEnemies.remove(i);
                 bloodDecrease += 20;

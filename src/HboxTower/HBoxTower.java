@@ -33,6 +33,7 @@ public abstract class HBoxTower {
     protected boolean isDrag;
     protected boolean canPut;
     protected boolean is_click;
+    private int index_tower;
     public HBoxTower()
     {
         Hbox_Tower.setPrefWidth(BoxTower_WIDTH);
@@ -44,6 +45,7 @@ public abstract class HBoxTower {
         isPut = false;
         isDrag = false;
         canPut = false;
+        index_tower = 0;
     }
     void insertImage(){
         this.setupGestureSource();
@@ -79,6 +81,7 @@ public abstract class HBoxTower {
             @Override
             public void handle(MouseEvent e) {
                 imageView_Hbox.setCursor(Cursor.HAND);
+                is_click = true;
             }
         });
     }
@@ -87,7 +90,6 @@ public abstract class HBoxTower {
             @Override
             public void handle(DragEvent event) {
                 Dragboard db = event.getDragboard();
-                is_click = true;
                 if(db.hasImage()){
                     event.acceptTransferModes(TransferMode.MOVE);
                     setPosition((int)event.getX() , (int) event.getY() );
@@ -99,7 +101,6 @@ public abstract class HBoxTower {
                     }
                     else canPut = false;
                     isDrag = true;
-                    Render_Hbox(graphicsContext);
                 }
                 event.consume();
             }
@@ -118,12 +119,11 @@ public abstract class HBoxTower {
                         tower.setX_pos((x_tiles) *SCREEN_TITLEMAP);
                         tower.setY_pos((y_tiles) * SCREEN_TITLEMAP);
                         isPut = true;
-                        isDrag = false;
                         canPut = false;
+                        isDrag = false;
                     }else {
                         isPut = false;
                         isDrag = false;
-                        is_click = false;
                     }
                 }else{
                     event.setDropCompleted(false);
@@ -131,6 +131,30 @@ public abstract class HBoxTower {
                 event.consume();
             }
         });
+        scene.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                if(event.getX() >= 0 && event.getX()< 60
+                        && event.getY() >= 0 && event.getY() < 60) index_tower = 1;
+                else if(event.getX() >= 200 && event.getX() < 260
+                        && event.getY() >= 0 && event.getY() < 60) index_tower = 3;
+                else if(event.getX() >= 400 && event.getX() < 460
+                        && event.getY() >= 0 && event.getY() < 60) index_tower = 2;
+                if(index_tower != 0) is_click  = true;
+                System.out.println(index_tower);
+            }
+        });
+
+    }
+    public void Render_Hbox(GraphicsContext gc, int range) {
+        if(this.isDrag)
+        {
+            if(canPut) {
+                gc.setStroke(Color.PAPAYAWHIP);
+            }
+            else gc.setStroke(Color.RED);
+            gc.strokeOval(x_pos- range , y_pos- range , range* 2, range * 2);
+        }
     }
 
     public Tower getTower() {
@@ -149,7 +173,13 @@ public abstract class HBoxTower {
         return Hbox_Tower;
     }
 
-    public abstract void Render_Hbox(GraphicsContext gc);
+    public void setIndex_tower(int index_tower) {
+        this.index_tower = index_tower;
+    }
+
+    public int getIndex_tower() {
+        return index_tower;
+    }
 
     public boolean isIs_click() {
         return is_click;
