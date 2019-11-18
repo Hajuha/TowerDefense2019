@@ -32,7 +32,6 @@ public class GameStage {
     private final static int CASH_MACHINEGUNTOWER = 400;
     private static int[][] MapTitle = new int[24][40];
     private static Image[][] imageMap = new Image[24][40];
-    static List<GameTile> listBullet = new ArrayList<>();
     private List<Enemy> normalEnemyAction = new ArrayList<>();
     private List<Point> ListRoad = new ArrayList<>();
     private GraphicsContext mainGraphic;
@@ -44,10 +43,10 @@ public class GameStage {
     private SniperTower listTower = new SniperTower();
     private int cash ;// số tiền đang có
     private int bloodFull ;//số máu ban đầu của nhà chủ
-
-    private Scanner input = new Scanner(new File("src/MapGame1.txt")); //ds tháp được đặt
-    static  int i = 0;
-    static  int j = 0;
+    private Enemy ListEnemy;
+    private   int i;
+    private   int j;
+    private int level = 1;
 
     public GameStage() throws FileNotFoundException, InterruptedException {
         mainCanvas = new Canvas(SCREEN_WIDTH, SCREEN_HEIGHT);
@@ -58,22 +57,25 @@ public class GameStage {
         mainStage = new Stage();
         mainStage.setScene(mainScene);
         mainStage.setTitle(GAME_TITLE);
-        cash = 70;
-        bloodFull = 100;
 
         Hbox_SniperTower hbox_sniperTower= new Hbox_SniperTower();
         Hbox_NormalTower hbox_normalTower= new Hbox_NormalTower();
         Hbox_MachineGunTower hbox_machineGunTower = new Hbox_MachineGunTower();
         root.getChildren().addAll( hbox_sniperTower.getHbox_Tower(), hbox_normalTower.getHbox_Tower(), hbox_machineGunTower.getHbox_Tower());
         hbox_machineGunTower.setupGestureTarget(mainScene,MapTitle, mainGraphic);
-        List<Bullet> bulletAction = new ArrayList<>();
-        LoadMap();
-        Enemy ListEnemy = new NormalEnemy(ListRoad);
+
         Font theFont = Font.font( "Helvetica", FontWeight.BOLD, 24 );
         mainGraphic.setFont( theFont );
         mainGraphic.setFill( Color.GREEN );
         mainGraphic.setStroke( Color.BLACK );
         mainGraphic.setLineWidth(1);
+
+        cash = 70;
+        bloodFull = 100;
+        i = 0 ; j = 0;
+        LoadMap(level);
+        ListEnemy = new NormalEnemy(ListRoad);
+
         AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long now) {
@@ -113,8 +115,6 @@ public class GameStage {
                         hbox_machineGunTower.setPut(false);
                         break;
                 }
-
-
 
                 if(!normalEnemyAction.isEmpty() && i == 0)  ListEnemy.adds(normalEnemyAction.remove(0));
                 i = (i > 120) ? 0 : i + 1;
@@ -161,8 +161,8 @@ public class GameStage {
         }
     }
 
-    public void LoadMap() throws FileNotFoundException {
-
+    public void LoadMap(int level) throws FileNotFoundException {
+     Scanner input = new Scanner(new File("src/MapGame" + level + ".txt")); //ds tháp được đặt
         Image tilemap0 = new Image("file:src/Assets/Map/Map-" + 0 + ".png",
                 30, 30, true, true);
         Image tilemap1 = new Image("file:src/Assets/Map/Map-" + 1 + ".png",
@@ -232,7 +232,33 @@ public class GameStage {
     public Group getRoot() {
         return root;
     }
-
+    public void ResetGame()  {
+        normalEnemyAction = new ArrayList<>();
+        ListRoad = new ArrayList<>();
+        cash = 70;
+        bloodFull = 100;
+        i = 0 ; j = 0;
+        try {
+            LoadMap(level);
+        }
+        catch (Exception e) {}
+        ListEnemy = new NormalEnemy(ListRoad);
+        this.bloodFull = 100;
+        this.cash = 70;
+    }
+    public boolean isWin()
+    {
+        return (ListEnemy.getListEnemy().isEmpty() && normalEnemyAction.isEmpty() && bloodFull > 0 );
+    }
+    public boolean isLose()
+    {
+        return (bloodFull <= 0)
+    }
+    public void NextGame()
+    {
+        level ++;
+        ResetGame();
+    }
 
     public List<Point> getListRoad() {
         return ListRoad;

@@ -21,5 +21,4 @@ public class Hbox_NormalTower extends HBoxTower {
         this.Hbox_Tower.setTranslateX(X_Hbox);
         this.Hbox_Tower.setTranslateY(Y_Hbox);
     }
-
 }
