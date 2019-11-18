@@ -19,7 +19,7 @@ import java.util.List;
 
 public class NormalTower extends Tower {
     private final Image image_NormalTower = new Image("file:src/Assets/Tower/normal.gif",
-            60 , 60, true, true);
+            60 , 90, true, true);
     private int newDame;
     private int newRange;
     private int newCost;
