@@ -28,7 +28,7 @@ import javafx.util.Duration;
 
 public class Start {
 
-    private int width = 1200, height = 720;
+    private int width = 1200, height = 820;
     private static final Font FONT = Font.font("", FontWeight.BOLD, 18);
     private static Font font;
     private MenuBox menu;
@@ -185,11 +185,8 @@ public class Start {
 
             }
         });
-
-
         mediaPlayer.play();
-
-
+        createContent.setTitle("TowerDefense");
         return createContent;
     }
 
