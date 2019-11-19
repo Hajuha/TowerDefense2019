@@ -37,10 +37,11 @@ public class GameStage {
     private final static int SCREEN_WIDTH = 1200;
     private final static int SCREEN_TITLEMAP = 30;
     private final static String GAME_TITLE = "Tower Defense";
-    private final static int CASH_SNIPERTOWER = 50;
-    private final static int CASH_NORMALTOWER = 150;
-    private final static int CASH_MACHINEGUNTOWER = 400;
+    private final static int CASH_SNIPERTOWER = 100;
+    private final static int CASH_NORMALTOWER = 300;
+    private final static int CASH_MACHINEGUNTOWER = 600;
     private final int FirstCash = 300;
+    private final int FirstBlood= 20 ;
     private static int[][] MapTitle = new int[24][40];
     private static Image[][] imageMap = new Image[24][40];
     private List<Enemy> normalEnemyAction = new ArrayList<>();
@@ -63,16 +64,11 @@ public class GameStage {
     private int j;
     private int level = 1;
     private static Font theFont;
-    private AudioClip clickSound;
-    private Scene createWin() {
-        StackPane winner = new StackPane();
-        Rectangle bg = new Rectangle(1200, 820);
-        bg.setOpacity(0.6);
-        bg.setStyle(String.valueOf(Color.RED));
-        winner.getChildren().addAll(bg);
-        winnerScene = new Scene(winner);
-        return winnerScene;
-    }
+
+    private final Image bg = new Image( "file:src/res/Assets/bg2.jpg", 1200, 700, false, false);
+    private final Image victory = new Image("file:src/res/Assets/Victory.png");
+    private final Image defeat = new Image("file:src/res/Assets/Defeat.png");
+    private  int index ;
 
     public GameStage() throws FileNotFoundException, InterruptedException {
         mainCanvas = new Canvas(SCREEN_WIDTH, SCREEN_HEIGHT);
@@ -101,9 +97,10 @@ public class GameStage {
         mainGraphic.setLineWidth(1);
 
         cash = FirstCash;
-        bloodFull = 20;
+        bloodFull = FirstBlood;
         i = 0;
         j = 0;
+        index = 0;
         LoadMap(level);
         ListEnemy = new NormalEnemy(ListRoad);
         mainScene.setOnKeyPressed(event -> {
@@ -122,57 +119,80 @@ public class GameStage {
             @Override
             public void handle(long now) {
                 if (isWin()) {
-                    NextGame();
-                }
-                if (isLose()) {
-                    ResetGame();
-                }
-
-                try {
-                    DrawMap();
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                }
-                switch (hbox_machineGunTower.getIndex_tower()) {
-                    case 1:
-                        ((HBoxTower) hbox_machineGunTower).Render_Hbox(mainGraphic, hbox_sniperTower.getTower().getRange());
-                        if (hbox_machineGunTower.isPut() && cash >= CASH_SNIPERTOWER) {
-                            clickSound.play();
-                            cash -= CASH_SNIPERTOWER;
-                            listTower.towerList.add(new sample.SniperTower(hbox_machineGunTower.getTower().x_pos, hbox_machineGunTower.getTower().y_pos - 20));
-                        }
-                        hbox_machineGunTower.setPut(false);
-                        break;
-                    case 2:
-                        ((HBoxTower) hbox_machineGunTower).Render_Hbox(mainGraphic, hbox_normalTower.getTower().getRange());
-                        if (hbox_machineGunTower.isPut() && cash >= CASH_NORMALTOWER) {
-                            clickSound.play();
-                            cash -= CASH_NORMALTOWER;
-                            listTower.towerList.add(new sample.NormalTower(hbox_machineGunTower.getTower().x_pos, hbox_machineGunTower.getTower().y_pos - 20));
-                        }
-                        hbox_machineGunTower.setPut(false);
-                        break;
-                    case 3:
-                        ((HBoxTower) hbox_machineGunTower).Render_Hbox(mainGraphic, hbox_machineGunTower.getTower().getRange());
-                        if (hbox_machineGunTower.isPut() && cash >= CASH_MACHINEGUNTOWER) {
-                            clickSound.play();
-                            cash -= CASH_MACHINEGUNTOWER;
-                            listTower.towerList.add(new sample.MachineGunTower(hbox_machineGunTower.getTower().x_pos, hbox_machineGunTower.getTower().y_pos - 20));
-                        }
-                        hbox_machineGunTower.setPut(false);
-                        break;
+                    index ++;
+                    double x = 0;
+                    double y = 100;
+                    mainGraphic.drawImage(bg, x, y);
+                    mainGraphic.drawImage(victory, x + 600 - victory.getWidth() / 2, y + 350 - victory.getHeight() / 2);
+                    mainGraphic.setStroke(Color.RED);
+                    mainGraphic.strokeRect(400, 600, 400, 8);
+                    mainGraphic.setFill(Color.WHITE);
+                    mainGraphic.fillRect(401, 601, 398 * index/500, 5 );
+                    mainGraphic.setFont(Font.font("src/Assets/Font/cod_font.ttf", 15));
+                    String levelText = "Loading...  " + index/5 + "%";
+                    mainGraphic.fillText(levelText, 550, 650);
+                    if(index == 500 && level <= 3) NextGame();
                 }
 
-                if (!normalEnemyAction.isEmpty() && i == 0) {
-                    ListEnemy.adds(normalEnemyAction.remove(0));
-                    wave--;
+                else if (isLose()) {
+                    index ++;
+                    double x = 0;
+                    double y = 100;
+                    mainGraphic.drawImage(bg, x, y);
+                    mainGraphic.drawImage(defeat, x + 600 - defeat.getWidth() / 2, y + 350 - defeat.getHeight() / 2);
+                    mainGraphic.setStroke(Color.RED);
+                    mainGraphic.strokeRect(400, 600, 400, 8);
+                    mainGraphic.setFill(Color.WHITE);
+                    mainGraphic.fillRect(401, 601, 398 * index/500, 5 );
+                    mainGraphic.setFont(Font.font("src/Assets/Font/cod_font.ttf", 15));
+                    String levelText = "Loading...  " + index/5 + "%";
+                    mainGraphic.fillText(levelText, 550, 650);
+                    if(index == 500) ResetGame();
+                }
+                else {
+                    try {
+                        DrawMap();
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                    switch (hbox_machineGunTower.getIndex_tower()) {
+                        case 1:
+                            ((HBoxTower) hbox_machineGunTower).Render_Hbox(mainGraphic, hbox_sniperTower.getTower().getRange());
+                            if (hbox_machineGunTower.isPut() && cash >= CASH_SNIPERTOWER) {
+                                cash -= CASH_SNIPERTOWER;
+                                listTower.towerList.add(new sample.SniperTower(hbox_machineGunTower.getTower().x_pos, hbox_machineGunTower.getTower().y_pos - 20));
+                            }
+                            hbox_machineGunTower.setPut(false);
+                            break;
+                        case 2:
+                            System.out.println("lol");
+                            ((HBoxTower) hbox_machineGunTower).Render_Hbox(mainGraphic, hbox_normalTower.getTower().getRange());
+                            if (hbox_machineGunTower.isPut() && cash >= CASH_NORMALTOWER) {
+                                cash -= CASH_NORMALTOWER;
+                                listTower.towerList.add(new sample.NormalTower(hbox_machineGunTower.getTower().x_pos, hbox_machineGunTower.getTower().y_pos - 20));
+                            }
+                            hbox_machineGunTower.setPut(false);
+                            break;
+                        case 3:
+                            ((HBoxTower) hbox_machineGunTower).Render_Hbox(mainGraphic, hbox_machineGunTower.getTower().getRange());
+                            if (hbox_machineGunTower.isPut() && cash >= CASH_MACHINEGUNTOWER) {
+                                cash -= CASH_MACHINEGUNTOWER;
+                                listTower.towerList.add(new sample.MachineGunTower(hbox_machineGunTower.getTower().x_pos, hbox_machineGunTower.getTower().y_pos - 20));
+                            }
+                            hbox_machineGunTower.setPut(false);
+                            break;
+                    }
 
-                }
-                i = (i > 120) ? 0 : i + 1;
-                ListEnemy.RenderList(mainGraphic);
-                for (Tower t : listTower.towerList) {
-                    t.Render(mainGraphic, ListEnemy.getListEnemy());
-                }
+                    if (!normalEnemyAction.isEmpty() && i == 0) {
+                        ListEnemy.adds(normalEnemyAction.remove(0));
+                        wave--;
+                    }
+                    i = (i > 120) ? 0 : i + 1;
+                    ListEnemy.RenderList(mainGraphic);
+                    for (Tower t : listTower.towerList) {
+                        t.Render(mainGraphic, ListEnemy.getListEnemy());
+                    }
+                    
                 cash += ListEnemy.cashIncrease;
                 ListEnemy.cashIncrease = 0;
                 bloodFull -= ListEnemy.bloodDecrease;
@@ -194,13 +214,10 @@ public class GameStage {
                 mainGraphic.fillText(WaveText, 20, 60);
                 mainGraphic.strokeText(WaveText, 20, 60);
 
-
             }
         };
 
         timer.start();
-
-
     }
 
     public Stage getMainStage() {
@@ -240,14 +257,12 @@ public class GameStage {
                 int a = input.nextInt();
                 MapTitle[i][j] = a;
             }
-            //System.out.println();
         }
         int index = 0;
         int maxRoad = input.nextInt();
         while (index < maxRoad) {
             int x = input.nextInt();
             int y = input.nextInt();
-            //System.out.println(x + " " + y);
             ListRoad.add(new Point(x, y));
             index++;
         }
@@ -306,9 +321,10 @@ public class GameStage {
         ListRoad = new ArrayList<>();
         listTower = new SniperTower();
         cash = FirstCash;
-        bloodFull = 100;
+        bloodFull = FirstBlood;
         i = 0;
         j = 0;
+        index = 0;
         try {
             LoadMap(level);
         } catch (Exception e) {
@@ -317,13 +333,11 @@ public class GameStage {
         this.bloodFull = 20;
         this.cash = FirstCash + (level - 1) * 30;
     }
-
     public boolean isWin() {
         return (ListEnemy.getListEnemy().isEmpty() && normalEnemyAction.isEmpty() && bloodFull > 0);
     }
 
     public boolean isLose() {
-
         return (bloodFull <= 0);
     }
 
@@ -346,8 +360,23 @@ public class GameStage {
         level = 1;
         ResetGame();
     }
-
     public List<Point> getListRoad() {
         return ListRoad;
+    }
+    public void RenderNextGame()
+    {
+        double x = 0;
+        double y = 100;
+        for(int i = 0 ; i < 5000; i ++)
+        {
+            mainGraphic.drawImage(bg, x, y);
+            mainGraphic.drawImage(victory,x + 600-  victory.getWidth()/2,y + 350 - victory.getHeight()/2 );
+        }
+    }
+    public void RenderRePlay()  {
+        double x = 0;
+        double y = 100;
+            mainGraphic.drawImage(bg, x, y);
+            mainGraphic.drawImage(defeat, x + 600 - victory.getWidth() / 2, y + 350 - victory.getHeight() / 2);
     }
 }
