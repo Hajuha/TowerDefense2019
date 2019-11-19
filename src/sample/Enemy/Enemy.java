@@ -104,12 +104,12 @@ public abstract class Enemy extends GameEntity {
         for (int i = 0; i < normalEnemies.size(); i ++)
         {
             if(normalEnemies.get(i).is_dead()) {
+                cashIncrease += normalEnemies.get(i).cash;
                 normalEnemies.remove(i);
-                cashIncrease += cash;
             }
             else if (normalEnemies.get(i).is_over()){
                 normalEnemies.remove(i);
-                bloodDecrease += 20;
+                bloodDecrease += 1;
             }
             else {
                 normalEnemies.get(i).Render(gc);
@@ -141,7 +141,7 @@ public abstract class Enemy extends GameEntity {
     }
     public void bleed(int blood_delta)
     {
-        this.Blood -= blood_delta * ( 10 - this.armor) /10;
+        this.Blood -= ((double) blood_delta * (double) ( 10 - this.armor) /10);
     }
     public boolean is_dead()
     {
@@ -149,7 +149,7 @@ public abstract class Enemy extends GameEntity {
     }
     //kiểm tra địch có vượt qua các tháp ko
     public boolean is_over(){
-        return (this.x_pos >= 1220 || this.y_pos >= 750 || this.x_pos <= -30 || this.y_pos <= - 30);
+        return (this.x_pos >= 1220 || this.y_pos >= 850 || this.x_pos <= -30 || this.y_pos <= - 30);
     }
 
     public int getDri() {

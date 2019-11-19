@@ -5,16 +5,17 @@ import javafx.scene.canvas.GraphicsContext;
 import java.util.List;
 
 import javafx.scene.image.Image;
+import javafx.scene.layout.BackgroundImage;
 import javafx.scene.paint.Color;
 import sample.Enemy;
 public class BossEnemy extends Enemy {
-    private final int cash_Boss = 200;
+    private final int cash_Boss = 300;
 
     private final  int blood_first = 1000;
     private final int armor_boss = 2;
     private final  int speed_boss = 1;
-    private final String Boss_Image = "file:src/Assets/Enemy/bos"; // get name to here
-
+    private static final Image  Boss_Img = new Image("file:src/Assets/Enemy/bos.png",
+            60, 60, false, false);
     public BossEnemy(List<Point> pointList)
     {
         super();
@@ -22,7 +23,7 @@ public class BossEnemy extends Enemy {
         setFirst_Blood(blood_first);
         setSpeed(speed_boss);
         setArmor(armor_boss);
-        loadImage(Boss_Image);
+        this.image = Boss_Img;
         loadRoad(pointList);
         setPosition(roadList.get(0).getX(), roadList.get(0).getY());
         setDri(angle_Up);

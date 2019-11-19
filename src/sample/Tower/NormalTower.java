@@ -19,7 +19,7 @@ import java.util.List;
 
 public class NormalTower extends Tower {
     private final Image image_NormalTower = new Image("file:src/Assets/Tower/normal.gif",
-            60 , 90, true, true);
+            60 , 60, true, true);
     private int newDame;
     private int newRange;
     private int newCost;
@@ -60,7 +60,7 @@ public class NormalTower extends Tower {
                 sizeBulet ++;
                 isFoundEnemy = false;
             }
-            i = (i > 25) ? 0 : i + 1;
+            i = (i > 15) ? 0 : i + 1;
         }
         else {
             setTargetEnemy(enemyList); // tim target

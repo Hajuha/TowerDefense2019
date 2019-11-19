@@ -7,9 +7,9 @@ import sample.Point;
 import java.util.List;
 
 public class SmallerEnemy extends Enemy {
-    private final int cash_Small = 30;
+    private final int cash_Small = 50;
 
-    private static final int speed = 1;
+    private static final int speed = 2;
     private static final int blood_first = 10;
     private static final int armor_normal = 0;
     private static final Image  Small_Img = new Image("file:src/Assets/Enemy/SmallEnemy.png",
@@ -17,6 +17,7 @@ public class SmallerEnemy extends Enemy {
     public SmallerEnemy(List<Point> pointList)
     {
         super();
+        this.cash = cash_Small;
         setFirst_Blood(blood_first);
         setSpeed(speed);
         setArmor(armor_normal);
