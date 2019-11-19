@@ -10,7 +10,7 @@ import javafx.scene.paint.Color;
 public class BossEnemy extends Enemy {
     private final int cash_Boss = 300;
 
-    private final int blood_first = 1000;
+    private final int blood_first = 1500;
     private final int armor_boss = 2;
     private final int speed_boss = 1;
     private static final Image Boss_Img = new Image("file:src/res/Assets/Enemy/bos.png",
