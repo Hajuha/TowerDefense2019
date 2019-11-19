@@ -19,7 +19,7 @@ import java.util.List;
 
 public class MachineGunTower extends Tower {
     private final Image image_MachineGun = new Image("file:src/Assets/Tower/a.gif",
-            90 , 90, false, true);
+            80 , 80, false, true);
     private final Image image_Gun = new Image("file:src/Assets/Tower/b.gif", 80, 80, false,true);
     private int newDame;
     private int newRange;
@@ -47,8 +47,6 @@ public class MachineGunTower extends Tower {
 
     public MachineGunTower(double x_pos, double y_pos) {
         super(x_pos, y_pos);
-        this.dame = newDame;
-        this.cost = newCost;
         this.image = image_MachineGun;
         this.gun = image_Gun;
         this.range = Range_Sniper;
@@ -115,7 +113,7 @@ public class MachineGunTower extends Tower {
                 graphicsContext.strokeLine(x_posGun + 40, y_posGun + 45, ((Enemy) targetEnemy).x_pos + 25, ((Enemy) targetEnemy).y_pos + 20);
                 graphicsContext.setFill(Color.YELLOW);
                 graphicsContext.fillOval(((Enemy) targetEnemy).x_pos + 18, ((Enemy) targetEnemy).y_pos + 18, 10, 10);
-                ((Enemy) targetEnemy).bleed(dame);
+                ((Enemy) targetEnemy).bleed(2);
             }
         }
         else {

@@ -7,12 +7,14 @@ import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import sample.Enemy;
 public class TankerEnemy extends Enemy {
-    private final int cash_tank = 100;
+    private final int cash_tank = 230;
 
     private static final int speed = 1;
     private static final int blood_first =400;
     private static final int armor_tank = 4;
     private static final String Tank_Image = "file:src/Assets/Enemy/tank";
+    private static final Image  Tank_Img = new Image("file:src/Assets/Enemy/tank.png",
+            60, 60, false, false);
     public TankerEnemy(List<Point> pointList)
     {
         super();
@@ -20,7 +22,7 @@ public class TankerEnemy extends Enemy {
         setFirst_Blood(blood_first);
         setSpeed(speed);
         setArmor(armor_tank);
-        loadImage(Tank_Image);
+        this.image = Tank_Img;
         loadRoad(pointList);
         setPosition(roadList.get(0).getX(), roadList.get(0).getY());
         setDri(angle_Up);
