@@ -39,7 +39,21 @@ public class Start {
     private MediaPlayer gameMedia = new MediaPlayer(gameSound);
     private AudioClip clickMedia = new AudioClip(new File("src/clickSound.mp3").toURI().toString());
 
-
+    public Start()
+    {
+        gameMedia.setOnEndOfMedia(new Runnable() {
+        @Override
+        public void run() {
+            gameMedia.seek(Duration.ZERO);
+        }
+        });
+       mediaPlayer.setOnEndOfMedia(new Runnable() {
+            @Override
+            public void run() {
+                mediaPlayer.seek(Duration.ZERO);
+            }
+        });
+    }
 
     private Scene createGame() throws FileNotFoundException, InterruptedException {
         GameStage gameStage = new GameStage();

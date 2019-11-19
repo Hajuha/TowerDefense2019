@@ -109,7 +109,7 @@ public abstract class Enemy extends GameEntity {
             }
             else if (normalEnemies.get(i).is_over()){
                 normalEnemies.remove(i);
-                bloodDecrease += 20;
+                bloodDecrease += 1;
             }
             else {
                 normalEnemies.get(i).Render(gc);

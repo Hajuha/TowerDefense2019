@@ -15,7 +15,7 @@ import java.util.List;
 
 public class SniperTower extends Tower {
     private final Image image_NormalTower = new Image("file:src/Assets/Tower/SniperTower.png",
-            60 , 80, true, true);
+            60 , 60, true, true);
     private final  int newDame = 5;
     private int newCost;
     private final static int SCREEN_TITLEMAP = 30;

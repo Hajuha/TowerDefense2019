@@ -35,6 +35,7 @@ public class GameStage {
     private final static int CASH_SNIPERTOWER = 50;
     private final static int CASH_NORMALTOWER = 150;
     private final static int CASH_MACHINEGUNTOWER = 400;
+    private final int FirstCash = 300;
     private static int[][] MapTitle = new int[24][40];
     private static Image[][] imageMap = new Image[24][40];
     private List<Enemy> normalEnemyAction = new ArrayList<>();
@@ -50,10 +51,11 @@ public class GameStage {
     private int bloodFull;//số máu ban đầu của nhà chủ
     private Enemy ListEnemy;
     private  final  Image topbar = new Image("file:src/Assets/Map/Topbar.png");
-
+    private int FirstWave;
+    private int wave;
     private int i;
     private int j;
-    private int level = 2;
+    private int level = 1;
     private static Font theFont;
 
     public GameStage() throws FileNotFoundException, InterruptedException {
@@ -84,8 +86,8 @@ public class GameStage {
         mainGraphic.setStroke(Color.BLACK);
         mainGraphic.setLineWidth(1);
 
-        cash = 500;
-        bloodFull = 100;
+        cash = FirstCash;
+        bloodFull = 20;
         i = 0;
         j = 0;
         LoadMap(level);
@@ -94,6 +96,14 @@ public class GameStage {
         AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long now) {
+                if(isWin())
+                {
+                    NextGame();
+                }
+                if(isLose())
+                {
+                    ResetGame();
+                }
                 try {
                     DrawMap();
                 } catch (FileNotFoundException e) {
@@ -104,7 +114,7 @@ public class GameStage {
                         ((HBoxTower) hbox_machineGunTower).Render_Hbox(mainGraphic, hbox_sniperTower.getTower().getRange());
                         if (hbox_machineGunTower.isPut() && cash >= CASH_SNIPERTOWER) {
                             cash -= CASH_SNIPERTOWER;
-                            listTower.towerList.add(new sample.SniperTower(hbox_machineGunTower.getTower().x_pos, hbox_machineGunTower.getTower().y_pos));
+                            listTower.towerList.add(new sample.SniperTower(hbox_machineGunTower.getTower().x_pos, hbox_machineGunTower.getTower().y_pos - 20 ));
                         }
                         hbox_machineGunTower.setPut(false);
                         break;
@@ -113,7 +123,7 @@ public class GameStage {
                         ((HBoxTower) hbox_machineGunTower).Render_Hbox(mainGraphic, hbox_normalTower.getTower().getRange());
                         if (hbox_machineGunTower.isPut() && cash >= CASH_NORMALTOWER) {
                             cash -= CASH_NORMALTOWER;
-                            listTower.towerList.add(new sample.NormalTower(hbox_machineGunTower.getTower().x_pos - 20, hbox_machineGunTower.getTower().y_pos - 20));
+                            listTower.towerList.add(new sample.NormalTower(hbox_machineGunTower.getTower().x_pos , hbox_machineGunTower.getTower().y_pos - 20));
                         }
                         hbox_machineGunTower.setPut(false);
                         break;
@@ -127,7 +137,12 @@ public class GameStage {
                         break;
                 }
 
-                if (!normalEnemyAction.isEmpty() && i == 0) ListEnemy.adds(normalEnemyAction.remove(0));
+                if (!normalEnemyAction.isEmpty() && i == 0)
+                {
+                    ListEnemy.adds(normalEnemyAction.remove(0));
+                    wave --;
+
+                }
                 i = (i > 120) ? 0 : i + 1;
                 ListEnemy.RenderList(mainGraphic);
                 for (Tower t : listTower.towerList) {
@@ -137,12 +152,24 @@ public class GameStage {
                 ListEnemy.cashIncrease = 0;
                 bloodFull -= ListEnemy.bloodDecrease;
                 ListEnemy.bloodDecrease = 0;
+                mainGraphic.drawImage(topbar, 0, 0);
                 String pointsText = "$" + (cash);
+//                mainGraphic.setFill(Color.YELLOW);
+                mainGraphic.setFill(Color.YELLOW);
+                mainGraphic.setFont(Font.font("src/Assets/Font/cod_font.ttf", 30));
                 mainGraphic.fillText(pointsText, 600, 50);
                 mainGraphic.strokeText(pointsText, SCREEN_WIDTH / 2, 50);
                 String bloodText = "\uD83D\uDDA4" + (bloodFull);
                 mainGraphic.fillText(bloodText, 800, 50);
                 mainGraphic.strokeText(bloodText, 800, 50);
+                String levelText = "Level : " +  level;
+                mainGraphic.fillText(levelText, 1000, 50);
+                mainGraphic.strokeText(levelText, 1000, 50);
+                String WaveText = "Wave : " +  wave + "/" + FirstWave;
+                mainGraphic.fillText(WaveText, 0, 50);
+                mainGraphic.strokeText(WaveText, 0, 50);
+
+
             }
         };
 
@@ -198,6 +225,8 @@ public class GameStage {
             index++;
         }
         int maxEnemy = input.nextInt();
+        FirstWave = maxEnemy;
+        wave = FirstWave;
         index = 0;
         while (index < maxEnemy) {
             index++;
@@ -245,7 +274,8 @@ public class GameStage {
     public void ResetGame() {
         normalEnemyAction = new ArrayList<>();
         ListRoad = new ArrayList<>();
-        cash = 70;
+        listTower = new SniperTower();
+        cash = FirstCash;
         bloodFull = 100;
         i = 0;
         j = 0;
@@ -253,9 +283,9 @@ public class GameStage {
             LoadMap(level);
         } catch (Exception e) {
         }
-        ListEnemy = new NormalEnemy(ListRoad);
+        ListEnemy = new sample.NormalEnemy(ListRoad);
         this.bloodFull = 100;
-        this.cash = 70 + (level - 1) * 30;
+        this.cash = FirstCash + (level - 1) * 30;
     }
 
     public boolean isWin() {
@@ -269,7 +299,7 @@ public class GameStage {
     }
 
     public void NextGame() {
-        level++;
+        level = (level > 3) ? 0 : level + 1;
         ResetGame();
     }
 
