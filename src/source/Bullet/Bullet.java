@@ -1,16 +1,17 @@
-package sample;
+package sample.Bullet;
 
-import javafx.geometry.Rectangle2D;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
-import javafx.scene.transform.Rotate;
+import sample.Enemy;
+import sample.GameTile;
+import sample.Point;
 
 import java.util.List;
 
-public abstract class  Bullet extends GameTile{
+public abstract class  Bullet extends GameTile {
     protected SnapshotParameters snapshotParameters = new SnapshotParameters();
 
     protected Enemy TargetEnemy;

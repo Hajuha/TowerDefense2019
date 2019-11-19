@@ -5,19 +5,18 @@ import javafx.scene.canvas.GraphicsContext;
 import java.util.List;
 
 import javafx.scene.image.Image;
-import javafx.scene.layout.BackgroundImage;
 import javafx.scene.paint.Color;
-import sample.Enemy;
+
 public class BossEnemy extends Enemy {
     private final int cash_Boss = 300;
 
-    private final  int blood_first = 1000;
+    private final int blood_first = 1000;
     private final int armor_boss = 2;
-    private final  int speed_boss = 1;
-    private static final Image  Boss_Img = new Image("file:src/Assets/Enemy/bos.png",
+    private final int speed_boss = 1;
+    private static final Image Boss_Img = new Image("file:src/res/Assets/Enemy/bos.png",
             60, 60, false, false);
-    public BossEnemy(List<Point> pointList)
-    {
+
+    public BossEnemy(List<Point> pointList) {
         super();
         this.cash = cash_Boss;
         setFirst_Blood(blood_first);
@@ -39,12 +38,13 @@ public class BossEnemy extends Enemy {
     @Override
     public void Render(GraphicsContext gc) {
         Move();
-        gc.drawImage(image,this.x_pos, this.y_pos, 50, 50);
+        gc.drawImage(image, this.x_pos, this.y_pos, 50, 50);
         gc.setFill(Color.GRAY);
-        gc.fillRect(x_pos + 40/4 , y_pos - 3, 70/2, 2);
+        gc.fillRect(x_pos + 40 / 4, y_pos - 3, 70 / 2, 2);
         gc.setFill(Color.RED);
-        gc.fillRect(x_pos + 40/4 , y_pos - 3, 70/2 * getBlood()/blood_first, 2);
+        gc.fillRect(x_pos + 40 / 4, y_pos - 3, 70 / 2 * getBlood() / blood_first, 2);
     }
+
     public void loadImage(String path) {
         this.image = new Image(path + ".png");
     }

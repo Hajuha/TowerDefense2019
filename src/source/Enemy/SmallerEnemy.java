@@ -12,7 +12,7 @@ public class SmallerEnemy extends Enemy {
     private static final int speed = 2;
     private static final int blood_first = 10;
     private static final int armor_normal = 0;
-    private static final Image  Small_Img = new Image("file:src/Assets/Enemy/SmallEnemy.png",
+    private static final Image  Small_Img = new Image("file:src/res/Assets/Enemy/SmallEnemy.png",
             40, 40, false, false);
     public SmallerEnemy(List<Point> pointList)
     {

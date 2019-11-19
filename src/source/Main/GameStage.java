@@ -50,7 +50,7 @@ public class GameStage {
     private int cash;// số tiền đang có
     private int bloodFull;//số máu ban đầu của nhà chủ
     private Enemy ListEnemy;
-    private  final  Image topbar = new Image("file:src/Assets/Map/Topbar.png");
+    private final Image topbar = new Image("file:src/res/Assets/Map/Topbar.png");
     private int FirstWave;
     private int wave;
     private int i;
@@ -74,7 +74,7 @@ public class GameStage {
         root.getChildren().addAll(hbox_sniperTower.getHbox_Tower(), hbox_normalTower.getHbox_Tower(), hbox_machineGunTower.getHbox_Tower());
         hbox_machineGunTower.setupGestureTarget(mainScene, MapTitle, mainGraphic);
 
-        try (InputStream fontStream = Files.newInputStream(Paths.get("src/Assets/Font/cod_font.ttf"))) {
+        try (InputStream fontStream = Files.newInputStream(Paths.get("src/res/Assets/Font/cod_font.ttf"))) {
 
             theFont = Font.loadFont(fontStream, 30);
         } catch (IOException e) {
@@ -82,7 +82,7 @@ public class GameStage {
         }
 
         mainGraphic.setFont(theFont);
-       // mainGraphic.setFill(Color.YELLOW);
+        // mainGraphic.setFill(Color.YELLOW);
         mainGraphic.setStroke(Color.BLACK);
         mainGraphic.setLineWidth(1);
 
@@ -96,12 +96,10 @@ public class GameStage {
         AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long now) {
-                if(isWin())
-                {
+                if (isWin()) {
                     NextGame();
                 }
-                if(isLose())
-                {
+                if (isLose()) {
                     ResetGame();
                 }
                 try {
@@ -114,7 +112,7 @@ public class GameStage {
                         ((HBoxTower) hbox_machineGunTower).Render_Hbox(mainGraphic, hbox_sniperTower.getTower().getRange());
                         if (hbox_machineGunTower.isPut() && cash >= CASH_SNIPERTOWER) {
                             cash -= CASH_SNIPERTOWER;
-                            listTower.towerList.add(new sample.SniperTower(hbox_machineGunTower.getTower().x_pos, hbox_machineGunTower.getTower().y_pos - 20 ));
+                            listTower.towerList.add(new sample.SniperTower(hbox_machineGunTower.getTower().x_pos, hbox_machineGunTower.getTower().y_pos - 20));
                         }
                         hbox_machineGunTower.setPut(false);
                         break;
@@ -123,7 +121,7 @@ public class GameStage {
                         ((HBoxTower) hbox_machineGunTower).Render_Hbox(mainGraphic, hbox_normalTower.getTower().getRange());
                         if (hbox_machineGunTower.isPut() && cash >= CASH_NORMALTOWER) {
                             cash -= CASH_NORMALTOWER;
-                            listTower.towerList.add(new sample.NormalTower(hbox_machineGunTower.getTower().x_pos , hbox_machineGunTower.getTower().y_pos - 20));
+                            listTower.towerList.add(new sample.NormalTower(hbox_machineGunTower.getTower().x_pos, hbox_machineGunTower.getTower().y_pos - 20));
                         }
                         hbox_machineGunTower.setPut(false);
                         break;
@@ -131,16 +129,15 @@ public class GameStage {
                         ((HBoxTower) hbox_machineGunTower).Render_Hbox(mainGraphic, hbox_machineGunTower.getTower().getRange());
                         if (hbox_machineGunTower.isPut() && cash >= CASH_MACHINEGUNTOWER) {
                             cash -= CASH_MACHINEGUNTOWER;
-                            listTower.towerList.add(new sample.MachineGunTower(hbox_machineGunTower.getTower().x_pos , hbox_machineGunTower.getTower().y_pos - 20));
+                            listTower.towerList.add(new sample.MachineGunTower(hbox_machineGunTower.getTower().x_pos, hbox_machineGunTower.getTower().y_pos - 20));
                         }
                         hbox_machineGunTower.setPut(false);
                         break;
                 }
 
-                if (!normalEnemyAction.isEmpty() && i == 0)
-                {
+                if (!normalEnemyAction.isEmpty() && i == 0) {
                     ListEnemy.adds(normalEnemyAction.remove(0));
-                    wave --;
+                    wave--;
 
                 }
                 i = (i > 120) ? 0 : i + 1;
@@ -156,16 +153,16 @@ public class GameStage {
                 String pointsText = "$" + (cash);
 //                mainGraphic.setFill(Color.YELLOW);
                 mainGraphic.setFill(Color.YELLOW);
-                mainGraphic.setFont(Font.font("src/Assets/Font/cod_font.ttf", 30));
+                //  mainGraphic.setFont(Font.font("src/Assets/Font/cod_font.ttf", 30));
                 mainGraphic.fillText(pointsText, 600, 50);
                 mainGraphic.strokeText(pointsText, SCREEN_WIDTH / 2, 50);
                 String bloodText = "\uD83D\uDDA4" + (bloodFull);
                 mainGraphic.fillText(bloodText, 800, 50);
                 mainGraphic.strokeText(bloodText, 800, 50);
-                String levelText = "Level : " +  level;
+                String levelText = "Level : " + level;
                 mainGraphic.fillText(levelText, 1000, 50);
                 mainGraphic.strokeText(levelText, 1000, 50);
-                String WaveText = "Wave : " +  wave + "/" + FirstWave;
+                String WaveText = "Wave : " + wave + "/" + FirstWave;
                 mainGraphic.fillText(WaveText, 0, 50);
                 mainGraphic.strokeText(WaveText, 0, 50);
 
@@ -201,12 +198,12 @@ public class GameStage {
     }
 
     public void LoadMap(int level) throws FileNotFoundException {
-        Scanner input = new Scanner(new File("src/MapGame" + level + ".txt")); //ds tháp được đặt
-        Image tilemap0 = new Image("file:src/Assets/Map/Map-" + 0 + ".png",
+        Scanner input = new Scanner(new File("src/TileMap/MapGame" + level + ".txt")); //ds tháp được đặt
+        Image tilemap0 = new Image("file:src/res/Assets/Map/Map-" + 0 + ".png",
                 30, 30, true, true);
-        Image tilemap1 = new Image("file:src/Assets/Map/Map-" + 1 + ".png",
+        Image tilemap1 = new Image("file:src/res/Assets/Map/Map-" + 1 + ".png",
                 30, 30, true, true);
-        Image tilemap2 = new Image("file:src/Assets/Map/Map-" + 2 + ".png",
+        Image tilemap2 = new Image("file:src/res/Assets/Map/Map-" + 2 + ".png",
                 30, 30, true, true);
         for (int i = 0; i < 24; i++) {
             for (int j = 0; j < 40; j++) {
@@ -284,7 +281,7 @@ public class GameStage {
         } catch (Exception e) {
         }
         ListEnemy = new sample.NormalEnemy(ListRoad);
-        this.bloodFull = 100;
+        this.bloodFull = 20;
         this.cash = FirstCash + (level - 1) * 30;
     }
 

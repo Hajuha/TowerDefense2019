@@ -18,9 +18,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MachineGunTower extends Tower {
-    private final Image image_MachineGun = new Image("file:src/Assets/Tower/a.gif",
+    private final Image image_MachineGun = new Image("file:src/res/Assets/Tower/a.gif",
             80 , 80, false, true);
-    private final Image image_Gun = new Image("file:src/Assets/Tower/b.gif", 80, 80, false,true);
+    private final Image image_Gun = new Image("file:src/res/Assets/Tower/b.gif", 80, 80, false,true);
     private int newDame;
     private int newRange;
     private int newCost;

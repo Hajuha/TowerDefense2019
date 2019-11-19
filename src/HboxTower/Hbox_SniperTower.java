@@ -1,18 +1,15 @@
 package HboxTower;
 
-import HboxTower.HBoxTower;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import javafx.scene.paint.Color;
 import sample.SniperTower;
 
 public class Hbox_SniperTower extends HBoxTower {
-    private final Image image_Sniper = new Image("file:src/Assets/Tower/SniperTower.png",
-            40 , 70, false, true);
+    private final Image image_Sniper = new Image("file:src/res/Assets/Tower/SniperTower.png",
+            40, 70, false, true);
     private final int X_Hbox = 280;
     private final int Y_Hbox = 15;
-    public Hbox_SniperTower()
-    {
+
+    public Hbox_SniperTower() {
         super();
         imageView_Hbox.setImage(image_Sniper);
         this.tower = new SniperTower(X_Hbox, Y_Hbox);
