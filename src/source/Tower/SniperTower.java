@@ -1,20 +1,16 @@
 package sample;
 
 
-import javafx.event.EventHandler;
-import javafx.scene.Cursor;
-import javafx.scene.Scene;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.*;
-import sample.Tower;
+import sample.Bullet.Sniper_Bullet;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class SniperTower extends Tower {
-    private final Image image_NormalTower = new Image("file:src/Assets/Tower/SniperTower.png",
+    private final Image image_NormalTower = new Image("file:src/res/Assets/Tower/SniperTower.png",
             60 , 60, true, true);
     private final  int newDame = 5;
     private int newCost;

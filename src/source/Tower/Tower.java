@@ -1,16 +1,15 @@
 package sample;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.effect.Light;
 
 import javafx.scene.image.Image;
-import javafx.scene.paint.Color;
+import sample.Bullet.Bullet;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public abstract class Tower  {
     protected final Image image_Bullt = new Image(Bullet_Img + ".png", 20, 20, true, true);
-    final static String Bullet_Img = "file:src/Assets/Bullet/RocketBullet";
+    final static String Bullet_Img = "file:src/res/Assets/Bullet/RocketBullet";
     protected int dame; // sat thuong
     protected int range; // tam ban
     protected double x_pos;

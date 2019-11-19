@@ -32,12 +32,12 @@ public class Start {
     private static final Font FONT = Font.font("", FontWeight.BOLD, 18);
     private static Font font;
     private MenuBox menu;
-    private String musicFile = "src/sound.mp3";     // For example
+    private String musicFile = "src/res/Audio/sound.mp3";     // For example
     private Media sound = new Media(new File(musicFile).toURI().toString());
     private MediaPlayer mediaPlayer = new MediaPlayer(sound);
-    private Media gameSound = new Media(new File("src/stageSound.mp3").toURI().toString());
+    private Media gameSound = new Media(new File("src/res/Audio/stageSound.mp3").toURI().toString());
     private MediaPlayer gameMedia = new MediaPlayer(gameSound);
-    private AudioClip clickMedia = new AudioClip(new File("src/clickSound.mp3").toURI().toString());
+    private AudioClip clickMedia = new AudioClip(new File("src/res/Audio/clickSound.mp3").toURI().toString());
 
     public Start()
     {
@@ -56,13 +56,13 @@ public class Start {
     }
 
     private Scene createGame() throws FileNotFoundException, InterruptedException {
-        GameStage gameStage = new GameStage();
+        sample.GameStage gameStage = new sample.GameStage();
         return gameStage.getMainScene();
     }
 
     private Scene createInstruction() throws IOException {
         StackPane root = new StackPane();
-        InputStream is = Files.newInputStream(Paths.get("src/Assets/ins.jpg"));
+        InputStream is = Files.newInputStream(Paths.get("src/res/Assets/ins.jpg"));
         ImageView img = new ImageView(new Image(is));
         img.setFitWidth(width);
         img.setFitHeight(height);
@@ -77,8 +77,8 @@ public class Start {
         Rectangle bg = new Rectangle(width, height);
         bg.setOpacity(0.6);
 
-        try (InputStream is = Files.newInputStream(Paths.get("src/Assets/bg2.jpg"));
-             InputStream fontStream = Files.newInputStream(Paths.get("src/Assets/Font/cod_font.ttf"))) {
+        try (InputStream is = Files.newInputStream(Paths.get("src/res/Assets/bg2.jpg"));
+             InputStream fontStream = Files.newInputStream(Paths.get("/home/kev/Data/TowerDefense2019/src/res/Assets/Font/cod_font.ttf"))) {
             ImageView img = new ImageView(new Image(is));
             img.setFitWidth(width);
             img.setFitHeight(height);
@@ -113,8 +113,8 @@ public class Start {
         StackPane root = new StackPane();
         root.setPrefSize(width, height);
 
-        try (InputStream is = Files.newInputStream(Paths.get("src/Assets/bg2.jpg"));
-             InputStream fontStream = Files.newInputStream(Paths.get("src/Assets/Font/cod_font.ttf"))) {
+        try (InputStream is = Files.newInputStream(Paths.get("src/res/Assets/bg2.jpg"));
+             InputStream fontStream = Files.newInputStream(Paths.get("src/res/Assets/Font/cod_font.ttf"))) {
             ImageView img = new ImageView(new Image(is));
             img.setFitWidth(width);
             img.setFitHeight(height);

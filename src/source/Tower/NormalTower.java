@@ -1,24 +1,14 @@
 package sample;
-import javafx.geometry.Rectangle2D;
-import javafx.scene.SnapshotParameters;
-import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.FlowPane;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
-import javafx.scene.shape.Polyline;
-import javafx.scene.transform.Rotate;
-import sample.Tower;
-import sample.Enemy;
+import sample.Bullet.NormalBullet;
 
-import javax.crypto.Cipher;
 import java.util.ArrayList;
 import java.util.List;
 
 public class NormalTower extends Tower {
-    private final Image image_NormalTower = new Image("file:src/Assets/Tower/normal.gif",
+    private final Image image_NormalTower = new Image("file:src/res/Assets/Tower/normal.gif",
             60 , 60, true, true);
     private int newDame;
     private int newRange;
