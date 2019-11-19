@@ -11,12 +11,17 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.layout.StackPane;
+import javafx.scene.media.AudioClip;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 import sample.Tower;
 import sample.Enemy;
+import source.Main.Media;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -43,6 +48,7 @@ public class GameStage {
     private GraphicsContext mainGraphic;
     private Canvas mainCanvas;
     private Scene mainScene;
+    private Scene winnerScene;
     private Stage mainStage;
     private Group root;
     ImageView iv; //vùng thao tác ảnh
@@ -57,6 +63,16 @@ public class GameStage {
     private int j;
     private int level = 1;
     private static Font theFont;
+    private AudioClip clickSound;
+    private Scene createWin() {
+        StackPane winner = new StackPane();
+        Rectangle bg = new Rectangle(1200, 820);
+        bg.setOpacity(0.6);
+        bg.setStyle(String.valueOf(Color.RED));
+        winner.getChildren().addAll(bg);
+        winnerScene = new Scene(winner);
+        return winnerScene;
+    }
 
     public GameStage() throws FileNotFoundException, InterruptedException {
         mainCanvas = new Canvas(SCREEN_WIDTH, SCREEN_HEIGHT);
@@ -74,15 +90,13 @@ public class GameStage {
         root.getChildren().addAll(hbox_sniperTower.getHbox_Tower(), hbox_normalTower.getHbox_Tower(), hbox_machineGunTower.getHbox_Tower());
         hbox_machineGunTower.setupGestureTarget(mainScene, MapTitle, mainGraphic);
 
-        try (InputStream fontStream = Files.newInputStream(Paths.get("src/res/Assets/Font/cod_font.ttf"))) {
-
+        try (InputStream fontStream = Files.newInputStream(Paths.get("src/res/Assets/Font/retro.ttf"))) {
             theFont = Font.loadFont(fontStream, 30);
         } catch (IOException e) {
             System.out.println("Couldn't load image or font");
         }
 
         mainGraphic.setFont(theFont);
-        // mainGraphic.setFill(Color.YELLOW);
         mainGraphic.setStroke(Color.BLACK);
         mainGraphic.setLineWidth(1);
 
@@ -92,7 +106,18 @@ public class GameStage {
         j = 0;
         LoadMap(level);
         ListEnemy = new NormalEnemy(ListRoad);
-
+        mainScene.setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.TAB) {
+                if (level == 3) {
+                    //ListEnemy.clear();
+                    Scene winnerScene = createWin();
+                    mainStage.setScene(winnerScene);
+                } else
+                    NextGame();
+            }
+        });
+        Media sound = new Media();
+        clickSound = sound.getClickMedia();
         AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long now) {
@@ -102,6 +127,7 @@ public class GameStage {
                 if (isLose()) {
                     ResetGame();
                 }
+
                 try {
                     DrawMap();
                 } catch (FileNotFoundException e) {
@@ -111,15 +137,16 @@ public class GameStage {
                     case 1:
                         ((HBoxTower) hbox_machineGunTower).Render_Hbox(mainGraphic, hbox_sniperTower.getTower().getRange());
                         if (hbox_machineGunTower.isPut() && cash >= CASH_SNIPERTOWER) {
+                            clickSound.play();
                             cash -= CASH_SNIPERTOWER;
                             listTower.towerList.add(new sample.SniperTower(hbox_machineGunTower.getTower().x_pos, hbox_machineGunTower.getTower().y_pos - 20));
                         }
                         hbox_machineGunTower.setPut(false);
                         break;
                     case 2:
-                        System.out.println("lol");
                         ((HBoxTower) hbox_machineGunTower).Render_Hbox(mainGraphic, hbox_normalTower.getTower().getRange());
                         if (hbox_machineGunTower.isPut() && cash >= CASH_NORMALTOWER) {
+                            clickSound.play();
                             cash -= CASH_NORMALTOWER;
                             listTower.towerList.add(new sample.NormalTower(hbox_machineGunTower.getTower().x_pos, hbox_machineGunTower.getTower().y_pos - 20));
                         }
@@ -128,6 +155,7 @@ public class GameStage {
                     case 3:
                         ((HBoxTower) hbox_machineGunTower).Render_Hbox(mainGraphic, hbox_machineGunTower.getTower().getRange());
                         if (hbox_machineGunTower.isPut() && cash >= CASH_MACHINEGUNTOWER) {
+                            clickSound.play();
                             cash -= CASH_MACHINEGUNTOWER;
                             listTower.towerList.add(new sample.MachineGunTower(hbox_machineGunTower.getTower().x_pos, hbox_machineGunTower.getTower().y_pos - 20));
                         }
@@ -149,22 +177,22 @@ public class GameStage {
                 ListEnemy.cashIncrease = 0;
                 bloodFull -= ListEnemy.bloodDecrease;
                 ListEnemy.bloodDecrease = 0;
+
                 mainGraphic.drawImage(topbar, 0, 0);
+
                 String pointsText = "$" + (cash);
-//                mainGraphic.setFill(Color.YELLOW);
-                mainGraphic.setFill(Color.YELLOW);
-                //  mainGraphic.setFont(Font.font("src/Assets/Font/cod_font.ttf", 30));
-                mainGraphic.fillText(pointsText, 600, 50);
-                mainGraphic.strokeText(pointsText, SCREEN_WIDTH / 2, 50);
-                String bloodText = "\uD83D\uDDA4" + (bloodFull);
-                mainGraphic.fillText(bloodText, 800, 50);
-                mainGraphic.strokeText(bloodText, 800, 50);
-                String levelText = "Level : " + level;
-                mainGraphic.fillText(levelText, 1000, 50);
-                mainGraphic.strokeText(levelText, 1000, 50);
-                String WaveText = "Wave : " + wave + "/" + FirstWave;
-                mainGraphic.fillText(WaveText, 0, 50);
-                mainGraphic.strokeText(WaveText, 0, 50);
+                mainGraphic.setFill(Color.ORANGE);
+                mainGraphic.fillText(pointsText, 600, 60);
+                mainGraphic.strokeText(pointsText, 600, 60);
+                String bloodText = "♥" + (bloodFull);
+                mainGraphic.fillText(bloodText, 750, 60);
+                mainGraphic.strokeText(bloodText, 750, 60);
+                String levelText = "Level " + level;
+                mainGraphic.fillText(levelText, 900, 60);
+                mainGraphic.strokeText(levelText, 900, 60);
+                String WaveText = "Wave:" + wave;
+                mainGraphic.fillText(WaveText, 20, 60);
+                mainGraphic.strokeText(WaveText, 20, 60);
 
 
             }
@@ -204,6 +232,8 @@ public class GameStage {
         Image tilemap1 = new Image("file:src/res/Assets/Map/Map-" + 1 + ".png",
                 30, 30, true, true);
         Image tilemap2 = new Image("file:src/res/Assets/Map/Map-" + 2 + ".png",
+                30, 30, true, true);
+        Image tilemap3 = new Image("file:src/res/Assets/Map/Map-" + 3 + ".png",
                 30, 30, true, true);
         for (int i = 0; i < 24; i++) {
             for (int j = 0; j < 40; j++) {
@@ -255,6 +285,9 @@ public class GameStage {
                     case 2:
                         imageMap[i][j] = tilemap2;
                         break;
+                    case 3:
+                        imageMap[i][j] = tilemap3;
+                        break;
                 }
             }
         }
@@ -289,14 +322,28 @@ public class GameStage {
         return (ListEnemy.getListEnemy().isEmpty() && normalEnemyAction.isEmpty() && bloodFull > 0);
     }
 
-
     public boolean isLose() {
 
         return (bloodFull <= 0);
     }
 
     public void NextGame() {
-        level = (level > 3) ? 0 : level + 1;
+        switch (level) {
+            case 3:
+                Scene winnerScene = createWin();
+                mainStage.setScene(winnerScene);
+                System.out.println("win");
+                break;
+            default:
+                level++;
+                ResetGame();
+                break;
+        }
+
+    }
+
+    public void NewGame() {
+        level = 1;
         ResetGame();
     }
 
