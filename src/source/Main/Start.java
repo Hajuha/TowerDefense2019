@@ -78,7 +78,7 @@ public class Start {
         bg.setOpacity(0.6);
 
         try (InputStream is = Files.newInputStream(Paths.get("src/res/Assets/bg2.jpg"));
-             InputStream fontStream = Files.newInputStream(Paths.get("/home/kev/Data/TowerDefense2019/src/res/Assets/Font/cod_font.ttf"))) {
+             InputStream fontStream = Files.newInputStream(Paths.get("src/res/Assets/Font/cod_font.ttf"))) {
             ImageView img = new ImageView(new Image(is));
             img.setFitWidth(width);
             img.setFitHeight(height);

@@ -10,7 +10,7 @@ public class TankerEnemy extends Enemy {
     private final int cash_tank = 230;
 
     private static final int speed = 1;
-    private static final int blood_first =400;
+    private static final int blood_first =800;
     private static final int armor_tank = 4;
     private static final String Tank_Image = "file:src/res/Assets/Enemy/tank";
     private static final Image  Tank_Img = new Image("file:src/res/Assets/Enemy/tank.png",
