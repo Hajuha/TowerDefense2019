@@ -1,15 +1,13 @@
 package sample;
 
 import javafx.scene.canvas.GraphicsContext;
-
-import java.util.List;
-
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 
+import java.util.List;
+
 public class BossEnemy extends Enemy {
     private final int cash_Boss = 300;
-
     private final int blood_first = 1500;
     private final int armor_boss = 2;
     private final int speed_boss = 1;
@@ -28,13 +26,10 @@ public class BossEnemy extends Enemy {
         setDri(angle_Up);
         this.i = 0;
         angle = 90;
-        getRoadList();
     }
 
     @Override
-    public void ShowObject(GraphicsContext gc) {
-    }
-
+    public void ShowObject(GraphicsContext gc) { }
     @Override
     public void Render(GraphicsContext gc) {
         Move();
@@ -44,7 +39,6 @@ public class BossEnemy extends Enemy {
         gc.setFill(Color.RED);
         gc.fillRect(x_pos + 40 / 4, y_pos - 3, 70 / 2 * getBlood() / blood_first, 2);
     }
-
     public void loadImage(String path) {
         this.image = new Image(path + ".png");
     }

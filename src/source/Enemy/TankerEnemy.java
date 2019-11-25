@@ -1,24 +1,24 @@
 package sample;
 
-import java.util.List;
-
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
-import sample.Enemy;
+
+import java.util.List;
+
 public class TankerEnemy extends Enemy {
     private final int cash_tank = 230;
 
     private static final int speed = 1;
-    private static final int blood_first =800;
+    private static final int blood_first = 800;
     private static final int armor_tank = 4;
     private static final String Tank_Image = "file:src/res/Assets/Enemy/tank";
-    private static final Image  Tank_Img = new Image("file:src/res/Assets/Enemy/tank.png",
+    private static final Image Tank_Img = new Image("file:src/res/Assets/Enemy/tank.png",
             60, 60, false, false);
-    public TankerEnemy(List<Point> pointList)
-    {
+
+    public TankerEnemy(List<Point> pointList) {
         super();
-        this.cash =cash_tank;
+        this.cash = cash_tank;
         setFirst_Blood(blood_first);
         setSpeed(speed);
         setArmor(armor_tank);
@@ -28,7 +28,6 @@ public class TankerEnemy extends Enemy {
         setDri(angle_Up);
         this.i = 0;
         angle = 90;
-        getRoadList();
     }
 
     @Override
@@ -39,12 +38,13 @@ public class TankerEnemy extends Enemy {
     @Override
     public void Render(GraphicsContext gc) {
         Move();
-        gc.drawImage(image,this.x_pos, this.y_pos, 50, 50);
+        gc.drawImage(image, this.x_pos, this.y_pos, 50, 50);
         gc.setFill(Color.GRAY);
-        gc.fillRect(x_pos + image.getWidth()/4 , y_pos - 3, image.getWidth()/2, 2);
+        gc.fillRect(x_pos + image.getWidth() / 4, y_pos - 3, image.getWidth() / 2, 2);
         gc.setFill(Color.RED);
-        gc.fillRect(x_pos + image.getWidth()/4 , y_pos - 3, image.getWidth()/2 * getBlood()/blood_first, 2);
+        gc.fillRect(x_pos + image.getWidth() / 4, y_pos - 3, image.getWidth() / 2 * getBlood() / blood_first, 2);
     }
+
     public void loadImage(String path) {
         this.image = new Image(path + ".png", 50, 50, true, true);
     }

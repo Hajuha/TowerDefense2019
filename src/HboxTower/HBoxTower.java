@@ -10,20 +10,11 @@ import javafx.scene.input.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.media.AudioClip;
 import javafx.scene.paint.Color;
-import sample.Enemy;
 import sample.Tower;
 
-import sample.*;
-import sample.Enemy;
-import sample.Tower;
-import sample.Tower.*;
-import sample.NormalEnemy;
-import sample.SniperTower;
-import source.Main.Media;
 
-import java.util.Map;
+public abstract class HBoxTower {
 
-public abstract class HBoxTower<clicksound> {
     private final static int SCREEN_TITLEMAP = 30;
     protected HBox Hbox_Tower = new HBox();
     protected ImageView imageView_Hbox = new ImageView();
@@ -102,10 +93,8 @@ public abstract class HBoxTower<clicksound> {
                     setPosition((int) event.getX(), (int) event.getY());
                     int x_tiles = (int) event.getSceneX() / SCREEN_TITLEMAP;
                     int y_tiles = (event.getSceneY() >= 100) ? ((int) event.getSceneY() - 100) / SCREEN_TITLEMAP : 0;
-                    if (MapTitle[y_tiles][x_tiles] == 1 && MapTitle[y_tiles + 1][x_tiles] == 1
-                            && MapTitle[y_tiles + 1][x_tiles + 1] == 1 && MapTitle[y_tiles + 1][x_tiles] == 1) {
-                        canPut = true;
-                    } else canPut = false;
+                    canPut = MapTitle[y_tiles][x_tiles] == 1 && MapTitle[y_tiles + 1][x_tiles] == 1
+                            && MapTitle[y_tiles + 1][x_tiles + 1] == 1 && MapTitle[y_tiles + 1][x_tiles] == 1;
                     isDrag = true;
                 }
                 event.consume();

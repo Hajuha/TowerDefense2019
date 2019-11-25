@@ -11,9 +11,8 @@ import java.util.List;
 
 public class SniperTower extends Tower {
     private final Image image_NormalTower = new Image("file:src/res/Assets/Tower/SniperTower.png",
-            60 , 60, true, true);
-    private final  int newDame = 5;
-    private int newCost;
+            60, 60, true, true);
+    private final int newDame = 5;
     private final static int SCREEN_TITLEMAP = 30;
     private final int Range_Sniper = 200;
     List<Tower> towerList = new ArrayList<>(); //ds tháp được đặt
@@ -27,7 +26,6 @@ public class SniperTower extends Tower {
     public SniperTower(double x_pos, double y_pos) {
         super(x_pos, y_pos);
         this.dame = newDame;
-        this.cost = newCost;
         this.image = image_NormalTower;
         this.range = Range_Sniper;
     }
@@ -37,22 +35,19 @@ public class SniperTower extends Tower {
         Shoot(enemyList);
         RenderBullet(gc, enemyList);
     }
-    public void Shoot(List<sample.Enemy> enemyList)
-    {
-        if(targetEnemy == null || !utilInRange()){
+
+    public void Shoot(List<sample.Enemy> enemyList) {
+        if (targetEnemy == null || !utilInRange()) {
             isFoundEnemy = false;
         }
-        if(isFoundEnemy)
-        {
-            if(i == 0)
-            {
-                bulletList.add(new Sniper_Bullet(targetEnemy, (int)x_pos ,(int) y_pos,indexEnemy, image_Bullt ));
-                sizeBulet ++;
+        if (isFoundEnemy) {
+            if (i == 0) {
+                bulletList.add(new Sniper_Bullet(targetEnemy, (int) x_pos, (int) y_pos, indexEnemy, image_Bullt));
+                sizeBulet++;
                 isFoundEnemy = false;
             }
             i = (i > 50) ? 0 : i + 1;
-        }
-        else {
+        } else {
             setTargetEnemy(enemyList); // tim target
         }
     }
