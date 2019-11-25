@@ -8,10 +8,13 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.*;
 import javafx.scene.layout.HBox;
+import javafx.scene.media.AudioClip;
 import javafx.scene.paint.Color;
 import sample.Tower;
 
+
 public abstract class HBoxTower {
+
     private final static int SCREEN_TITLEMAP = 30;
     protected HBox Hbox_Tower = new HBox();
     protected ImageView imageView_Hbox = new ImageView();
@@ -26,8 +29,8 @@ public abstract class HBoxTower {
     protected boolean canPut;
     protected boolean is_click;
     private int index_tower;
-
     public HBoxTower() {
+
         Hbox_Tower.setPrefWidth(BoxTower_WIDTH);
         Hbox_Tower.setPrefHeight(BoxTower_HEIGHT);
         Hbox_Tower.setStyle("-fx-border-color: red;"
@@ -76,6 +79,7 @@ public abstract class HBoxTower {
             public void handle(MouseEvent e) {
                 imageView_Hbox.setCursor(Cursor.HAND);
             }
+
         });
     }
 

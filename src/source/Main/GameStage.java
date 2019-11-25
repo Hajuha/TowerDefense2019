@@ -11,10 +11,16 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.layout.StackPane;
+import javafx.scene.media.AudioClip;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+
 import source.Main.MapGame;
+
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -53,6 +59,7 @@ public class GameStage {
     private GraphicsContext mainGraphic;
     private Canvas mainCanvas;
     private Scene mainScene;
+    private Scene winnerScene;
     private Stage mainStage;
     private Group root;
 
@@ -64,11 +71,13 @@ public class GameStage {
     private int FirstWave;
     private int wave;
     private static Font theFont;
+
     private int index;
 
     private Hbox_SniperTower hbox_sniperTower = new Hbox_SniperTower();
     private Hbox_NormalTower hbox_normalTower = new Hbox_NormalTower();
     private Hbox_MachineGunTower hbox_machineGunTower = new Hbox_MachineGunTower();
+
 
     public GameStage() throws FileNotFoundException, InterruptedException {
         mainCanvas = new Canvas(SCREEN_WIDTH, SCREEN_HEIGHT);
@@ -81,16 +90,20 @@ public class GameStage {
         mainStage.setTitle(GAME_TITLE);
 
         root.getChildren().addAll(hbox_sniperTower.getHbox_Tower(), hbox_normalTower.getHbox_Tower(), hbox_machineGunTower.getHbox_Tower());
+
         hbox_machineGunTower.setupGestureTarget(mainScene, mapGame.getMapTitle(), mainGraphic);
 
         setFirstGame();
+
         AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long now) {
                 if (isWin()) {
+
                     RenderNext();
                 } else if (isLose()) {
                     RenderReplay();
+
                 }
                 else {
                     mapGame.DrawMap(mainGraphic);
@@ -106,15 +119,19 @@ public class GameStage {
                     for (Tower t : listTower.towerList) {
                         t.Render(mainGraphic, ListEnemy.getListEnemy());
                     }
+
                     update();
                 }
+
             }
         };
         timer.start();
     }
     public Stage getMainStage() { return mainStage; }
 
+
     public Scene getMainScene() { return mainScene; }
+
 
     public void ResetGame() {
         normalEnemyAction = new ArrayList<>();
@@ -132,7 +149,22 @@ public class GameStage {
         return (bloodFull <= 0);
     }
     public void NextGame() {
-        level = (level > 3) ? 0 : level + 1;
+        switch (level) {
+            case 3:
+                Scene winnerScene = createWin();
+                mainStage.setScene(winnerScene);
+                System.out.println("win");
+                break;
+            default:
+                level++;
+                ResetGame();
+                break;
+        }
+
+    }
+
+    public void NewGame() {
+        level = 1;
         ResetGame();
     }
 
