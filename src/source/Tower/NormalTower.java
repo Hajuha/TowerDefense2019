@@ -1,4 +1,5 @@
 package sample;
+
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -9,7 +10,7 @@ import java.util.List;
 
 public class NormalTower extends Tower {
     private final Image image_NormalTower = new Image("file:src/res/Assets/Tower/normal.gif",
-            60 , 60, true, true);
+            60, 60, true, true);
     private int newDame;
     private int newRange;
     private int newCost;
@@ -37,22 +38,18 @@ public class NormalTower extends Tower {
 
         RenderBullet(gc, enemyList);
     }
-    public void Shoot(List<sample.Enemy> enemyList)
-    {
-        if(targetEnemy == null || !utilInRange()){
+    public void Shoot(List<sample.Enemy> enemyList) {
+        if (targetEnemy == null || !utilInRange()) {
             isFoundEnemy = false;
         }
-        if(isFoundEnemy)
-        {
-            if(i == 0)
-            {
-                bulletList.add(new NormalBullet(targetEnemy, (int)x_pos ,(int) y_pos,indexEnemy, image_Bullt ));
-                sizeBulet ++;
+        if (isFoundEnemy) {
+            if (i == 0) {
+                bulletList.add(new NormalBullet(targetEnemy, (int) x_pos, (int) y_pos, indexEnemy, image_Bullt));
+                sizeBulet++;
                 isFoundEnemy = false;
             }
             i = (i > 15) ? 0 : i + 1;
-        }
-        else {
+        } else {
             setTargetEnemy(enemyList); // tim target
         }
     }

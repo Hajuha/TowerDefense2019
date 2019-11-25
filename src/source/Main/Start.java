@@ -1,30 +1,37 @@
 package sample;
 
+import javafx.animation.TranslateTransition;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.Scene;
+import javafx.scene.effect.DropShadow;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
+import javafx.scene.media.AudioClip;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.CycleMethod;
+import javafx.scene.paint.LinearGradient;
+import javafx.scene.paint.Stop;
+import javafx.scene.shape.Line;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
+import javafx.stage.Stage;
+import javafx.util.Duration;
+
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-
-import javafx.concurrent.Task;
-import javafx.scene.media.AudioClip;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
-
-import java.io.File;
-
-import javafx.animation.TranslateTransition;
-import javafx.geometry.*;
-import javafx.scene.*;
-import javafx.scene.image.*;
-import javafx.scene.layout.*;
-import javafx.scene.paint.*;
-import javafx.scene.shape.*;
-import javafx.scene.text.*;
-import javafx.scene.input.KeyCode;
-import javafx.scene.effect.DropShadow;
-import javafx.stage.Stage;
-import javafx.util.Duration;
 
 public class Start {
 
@@ -38,16 +45,15 @@ public class Start {
     private Media gameSound = new Media(new File("src/res/Audio/stageSound.mp3").toURI().toString());
     private MediaPlayer gameMedia = new MediaPlayer(gameSound);
     private AudioClip clickMedia = new AudioClip(new File("src/res/Audio/clickSound.mp3").toURI().toString());
-
-    public Start()
-    {
+    private sample.GameStage  gameStage;
+    public Start() {
         gameMedia.setOnEndOfMedia(new Runnable() {
-        @Override
-        public void run() {
-            gameMedia.seek(Duration.ZERO);
-        }
+            @Override
+            public void run() {
+                gameMedia.seek(Duration.ZERO);
+            }
         });
-       mediaPlayer.setOnEndOfMedia(new Runnable() {
+        mediaPlayer.setOnEndOfMedia(new Runnable() {
             @Override
             public void run() {
                 mediaPlayer.seek(Duration.ZERO);
@@ -56,7 +62,7 @@ public class Start {
     }
 
     private Scene createGame() throws FileNotFoundException, InterruptedException {
-        sample.GameStage gameStage = new sample.GameStage();
+        gameStage = new sample.GameStage();
         return gameStage.getMainScene();
     }
 
@@ -176,12 +182,12 @@ public class Start {
             }
             createContent.setScene(gameScene);
             assert gameScene != null;
-            gameScene.setOnKeyPressed(event -> {
+            createContent.getScene().setOnKeyPressed(event -> {
                 if (event.getCode() == KeyCode.ESCAPE) {
-                    gameMedia.stop();
-                    mediaPlayer.play();
-                    menu.show();
-                    createContent.setScene(startScene);
+                        gameMedia.stop();
+                        mediaPlayer.play();
+                        menu.show();
+                        createContent.setScene(startScene);
                 }
             });
 
@@ -189,14 +195,13 @@ public class Start {
 
         createContent.setScene(startScene);
 
-        startScene.setOnKeyPressed(event -> {
+        createContent.getScene().setOnKeyPressed(event -> {
             if (event.getCode() == KeyCode.ESCAPE) {
                 if (menu.isVisible()) {
                     menu.hide();
                 } else {
                     menu.show();
                 }
-
             }
         });
         mediaPlayer.play();
@@ -215,8 +220,6 @@ public class Start {
 
             DropShadow shadow = new DropShadow(7, 5, 0, Color.BLACK);
             shadow.setSpread(0.8);
-
-            //bg.setEffect(shadow);
 
             Text text = new Text(title);
             text.setFont(font);
@@ -246,8 +249,6 @@ public class Start {
 
             System.out.print(vbox.getPrefHeight());
             vbox.setAlignment(Pos.TOP_CENTER);
-            //setAlignment(Pos.CENTER);
-
 
             VBox endBox = new VBox();
             Text end = new Text("ver 1.0.0. Powered by JavaFX");
@@ -257,7 +258,6 @@ public class Start {
             endBox.getChildren().addAll(end);
             endBox.setAlignment(Pos.BOTTOM_CENTER);
             endBox.setPrefSize(200, 50);
-            //    endBox.setPadding( new Insets(0,0,0,100));
 
             getChildren().addAll(bg, vb, endBox, vbox);
         }
