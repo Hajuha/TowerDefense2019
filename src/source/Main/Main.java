@@ -2,6 +2,7 @@ package sample;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
+import sample.Start;
 
 public class Main extends Application {
 

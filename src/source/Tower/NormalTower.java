@@ -3,10 +3,12 @@ package sample;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import sample.Bullet.NormalBullet;
-
+import sample.NormalBullet;
+import sample.Tower;
+import sample.Enemy;
 import java.util.ArrayList;
 import java.util.List;
+
 
 public class NormalTower extends Tower {
     private final Image image_NormalTower = new Image("file:src/res/Assets/Tower/normal.gif",

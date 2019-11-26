@@ -3,6 +3,7 @@ package sample.Bullet;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import sample.Enemy;
+import sample.Bullet.Bullet;
 
 public class Sniper_Bullet extends Bullet {
     final static int dame = 5;

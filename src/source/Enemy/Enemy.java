@@ -4,7 +4,8 @@ import javafx.scene.SnapshotParameters;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
-import sample.*;
+import sample.GameEntity;
+import sample.Point;
 
 import java.util.ArrayList;
 import java.util.List;
