@@ -20,7 +20,15 @@ import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 import source.Main.MapGame;
-
+import sample.Enemy;
+import sample.NormalEnemy;
+import sample.SmallerEnemy;
+import sample.TankerEnemy;
+import sample.Point;
+import sample.Tower;
+import sample.NormalTower;
+import sample.SniperTower;
+import sample.MachineGunTower;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -98,13 +106,8 @@ public class GameStage {
         AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long now) {
-                if (isWin()) {
-
-                    RenderNext();
-                } else if (isLose()) {
-                    RenderReplay();
-
-                }
+                if (isWin())  RenderNext();
+                else if (isLose()) RenderReplay();
                 else {
                     mapGame.DrawMap(mainGraphic);
                     PutTower();
@@ -119,19 +122,15 @@ public class GameStage {
                     for (Tower t : listTower.towerList) {
                         t.Render(mainGraphic, ListEnemy.getListEnemy());
                     }
-
                     update();
                 }
-
             }
         };
         timer.start();
     }
     public Stage getMainStage() { return mainStage; }
 
-
     public Scene getMainScene() { return mainScene; }
-
 
     public void ResetGame() {
         normalEnemyAction = new ArrayList<>();
@@ -151,7 +150,7 @@ public class GameStage {
     public void NextGame() {
         switch (level) {
             case 3:
-                Scene winnerScene = createWin();
+                //Scene winnerScene = createWin();
                 mainStage.setScene(winnerScene);
                 System.out.println("win");
                 break;
@@ -160,7 +159,6 @@ public class GameStage {
                 ResetGame();
                 break;
         }
-
     }
 
     public void NewGame() {
@@ -178,7 +176,7 @@ public class GameStage {
         FirstWave = mapGame.getWave();
         wave = FirstWave;
         normalEnemyAction = mapGame.getEnemies();
-        ListEnemy = new sample.NormalEnemy();
+        ListEnemy = new NormalEnemy();
         normalEnemyAction = mapGame.getEnemies();
     }
     public void RenderNext()

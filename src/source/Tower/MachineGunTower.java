@@ -9,6 +9,8 @@ import javafx.scene.transform.Rotate;
 
 import java.util.ArrayList;
 import java.util.List;
+import sample.Tower;
+import sample.Enemy;
 
 public class MachineGunTower extends Tower {
     private final Image image_MachineGun = new Image("file:src/res/Assets/Tower/a.gif",

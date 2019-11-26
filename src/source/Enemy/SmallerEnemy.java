@@ -5,6 +5,8 @@ import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 
 import java.util.List;
+import sample.Enemy;
+import sample.Point;
 
 public class SmallerEnemy extends Enemy {
     private final int cash_Small = 50;

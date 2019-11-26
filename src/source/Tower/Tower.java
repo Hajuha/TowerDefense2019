@@ -3,6 +3,7 @@ package sample;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import sample.Bullet.Bullet;
+import sample.Enemy;
 
 import java.util.ArrayList;
 import java.util.List;

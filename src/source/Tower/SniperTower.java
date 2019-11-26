@@ -8,6 +8,7 @@ import sample.Bullet.Sniper_Bullet;
 
 import java.util.ArrayList;
 import java.util.List;
+import sample.Tower;
 
 public class SniperTower extends Tower {
     private final Image image_NormalTower = new Image("file:src/res/Assets/Tower/SniperTower.png",

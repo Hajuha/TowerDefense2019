@@ -5,6 +5,9 @@ import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 
 import java.util.List;
+import sample.Enemy;
+import sample.Point;
+
 
 public class NormalEnemy extends Enemy {
     private static final Image Normal_Img = new Image("file:src/res/Assets/Enemy/NormalEnemy.png",

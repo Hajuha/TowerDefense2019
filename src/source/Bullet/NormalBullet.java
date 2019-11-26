@@ -1,8 +1,9 @@
-package sample.Bullet;
+package sample;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
+import sample.Bullet.Bullet;
 
 public class NormalBullet extends Bullet {
     final static int dame = 10;
